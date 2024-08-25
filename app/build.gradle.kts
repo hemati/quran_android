@@ -108,8 +108,12 @@ android {
 
   packaging {
     resources {
-      excludes += setOf("META-INF/*.kotlin_module", "META-INF/DEPENDENCIES", "META-INF/INDEX.LIST")
-    }
+      excludes += setOf(
+        "META-INF/io.netty.versions.properties",
+        "META-INF/INDEX.LIST",
+        "META-INF/*.kotlin_module",
+        "META-INF/DEPENDENCIES"
+      )    }
   }
 }
 
@@ -137,6 +141,14 @@ if (File(rootDir, "extras/extras.gradle").exists()) {
   apply(from = "pluggable.gradle")
 }
 
+repositories {
+  google()
+  mavenCentral()
+  jcenter()
+  // Add this if it's not already present
+  maven(url = "https://www.jitpack.io")  // Use parentheses and 'url =' for Kotlin DSL
+}
+
 dependencies {
   implementation(project(":common:analytics"))
   implementation(project(":common:audio"))
@@ -159,6 +171,7 @@ dependencies {
   implementation(project(":feature:audiobar"))
   implementation(project(":feature:downloadmanager"))
   implementation(project(":feature:qarilist"))
+  implementation(project(":feature:gpt"))
 
   implementation(libs.kotlinx.coroutines.core)
   implementation(libs.kotlinx.coroutines.android)

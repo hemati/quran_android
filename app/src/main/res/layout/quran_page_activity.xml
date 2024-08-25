@@ -47,11 +47,27 @@
     </androidx.appcompat.widget.Toolbar>
   </FrameLayout>
 
-  <com.quran.mobile.feature.audiobar.AudioBarWrapper
-      android:id="@+id/audio_area"
+  <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="@dimen/audiobar_height"
+      android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
-      android:visibility="gone"
-      />
+      android:orientation="vertical"
+      android:id="@+id/bottom_bar">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/diversity_2"
+        android:backgroundTint="?attr/colorPrimary"
+        android:contentDescription="QuranGPT"/>
+    <com.quran.mobile.feature.audiobar.AudioBarWrapper
+        android:id="@+id/audio_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/audiobar_height"
+        />
+  </LinearLayout>
+
 </com.quran.labs.androidquran.view.FitSystemRelativeLayout>

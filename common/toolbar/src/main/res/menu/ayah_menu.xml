@@ -31,4 +31,7 @@
           android:visible="false"
           android:icon="@drawable/ic_mic"
           android:title="@string/recite_from_here" />
+    <item android:id="@+id/cab_gpt"
+          android:icon="@drawable/diversity_2"
+          android:title="QuranGPT" />
 </menu>

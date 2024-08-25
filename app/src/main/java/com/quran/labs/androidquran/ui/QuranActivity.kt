@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.appcoholic.gpt.DefaultMessagesActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.quran.labs.androidquran.AboutUsActivity
 import com.quran.labs.androidquran.HelpActivity
 import com.quran.labs.androidquran.QuranApplication
@@ -122,6 +125,14 @@ class QuranActivity : AppCompatActivity(),
     indicator.setViewPager(pager)
     if (isRtl) {
       pager.currentItem = TITLES.size - 1
+    }
+
+    // Add this part to handle FAB click
+    val fabChat = findViewById<FloatingActionButton>(R.id.fab_chat)
+    fabChat.setOnClickListener {
+      Toast.makeText(this, "FAB clicked!", Toast.LENGTH_SHORT).show()
+      val intent = Intent(this, DefaultMessagesActivity::class.java)
+      startActivity(intent)
     }
 
     if (savedInstanceState != null) {

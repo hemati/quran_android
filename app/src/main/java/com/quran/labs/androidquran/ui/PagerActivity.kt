@@ -42,6 +42,8 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
 import androidx.window.layout.FoldingFeature
 import androidx.window.layout.WindowInfoTracker
+import com.appcoholic.gpt.DefaultMessagesActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.quran.data.core.QuranInfo
 import com.quran.data.dao.BookmarksDao
 import com.quran.data.model.QuranText
@@ -195,6 +197,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   private lateinit var overlay: FrameLayout
   private lateinit var toolBarArea: View
   private lateinit var audioBarParams: MarginLayoutParams
+  private lateinit var fabChat: FloatingActionButton
 
   private var requestPermissionLauncher: ActivityResultLauncher<String>? = null
 
@@ -382,6 +385,12 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
 
     audioStatusBar = findViewById(R.id.audio_area)
     audioBarParams = audioStatusBar.layoutParams as MarginLayoutParams
+
+    fabChat = findViewById(R.id.fab_chat)
+    fabChat.setOnClickListener {
+      val intent = Intent(this, DefaultMessagesActivity::class.java)
+      startActivity(intent)
+    }
 
     toolBarArea = findViewById(R.id.toolbar_area)
     translationsSpinner = findViewById(R.id.spinner)
@@ -738,6 +747,11 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     // and audio bar
     audioStatusBar.animate()
       .translationY((if (visible) 0 else audioStatusBar.height + bottomMargin).toFloat())
+      .setDuration(250)
+      .start()
+
+    fabChat.animate()
+      .translationY((if (visible) 0 else fabChat.height + bottomMargin).toFloat())
       .setDuration(250)
       .start()
   }
@@ -1703,6 +1717,16 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
         shareAyah(startSuraAyah, endSuraAyah, false)
       } else if (itemId == com.quran.labs.androidquran.common.toolbar.R.id.cab_copy_ayah) {
         shareAyah(startSuraAyah, endSuraAyah, true)
+      } else if (itemId == com.quran.labs.androidquran.common.toolbar.R.id.cab_gpt) {
+        // Start activity DefaultMessagesActivity and pass startSuraAyah - endSuraAyah as reference extra
+        val intent = Intent(this@PagerActivity, DefaultMessagesActivity::class.java)
+        if (startSuraAyah != endSuraAyah) {
+          intent.putExtra("reference", "Context: $startSuraAyah - $endSuraAyah")
+        } else {
+          intent.putExtra("reference", "Context: $startSuraAyah")
+        }
+        startActivity(intent)
+        Toast.makeText(this@PagerActivity, "GPT", Toast.LENGTH_SHORT).show()
       } else {
         return false
       }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Hello! I\'m BibleGPT, your personal assistant for exploring the Bible. You can ask me questions about Bible passages, request explanations of verses, or even ask me to generate a prayer for you. Let\'s dive into the Word together!</string>
+  <string name="chatview_delete_confirmation_title">Delete Confirmation</string>
+  <string name="chatview_delete_confirmation_desc">Are you sure you want to delete all messages?</string>
+  <string name="chatview_delete_selected_confirmation_desc">Are you sure you want to delete selected messages?</string>
+  <string name="chatview_no_internet">No internet. Chat requires connection.</string>
+  <string name="mnuAskBibleGPT">Ask BibleGPT</string>
+  <string name="chatview_quota_reached">Your daily limit of messages has been reached. To enjoy unlimited messaging, consider upgrading to the BibleGPT addon. Simply type \'info\' for more details.</string>
+  <string name="taptargetview_fap_biblegpt_title">Chat with BibleGPT</string>
+  <string name="taptargetview_fap_biblegpt_desc">Your personal Bible assistant. Ask questions, explore verses, or request prayers.</string>
+  <string name="taptargetview_add">Add Tab</string>
+  <string name="taptargetview_add_desc">Add books, parables, articles, plans, gospels, or a random verse.</string>
+</resources>
