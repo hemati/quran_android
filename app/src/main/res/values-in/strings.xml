@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Quran</string>
   <string name="downloadPrompt">Agar Quran Android bisa berjalan lancar,
         kita perlu mengunduh beberapa berkas. Jika anda tidak melakukannya sekarang, aplikasi ini
         mungkin tidak akan bekerja dengan handal dan akan memerlukan sambungan Internet untuk membaca.

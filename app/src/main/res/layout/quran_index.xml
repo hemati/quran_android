@@ -4,39 +4,59 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-      android:id="@+id/fab_chat"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom|end"
-      android:layout_margin="16dp"
-      android:src="@drawable/diversity_2"
-      android:backgroundTint="?attr/colorPrimary"
-      android:contentDescription="QuranGPT"/>
+
+  <!-- Main Content Layout -->
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:orientation="vertical">
 
+    <!-- Toolbar at the top -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-        android:background="?attr/colorPrimary"
-        style="@style/ToolBarArea"/>
+        app:logo="@mipmap/ic_launcher_removebg"
+        style="@style/ToolBarArea"
+        app:title="@string/app_name"
+        app:layout_scrollFlags="scroll|enterAlways"/>
 
+    <!-- ViewPager that takes up the remaining space -->
+    <com.quran.labs.androidquran.view.QuranViewPager
+        android:id="@+id/index_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+  </LinearLayout>
+
+  <!-- LinearLayout wrapping FloatingActionButton and SlidingTabLayout -->
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      android:orientation="vertical">
+
+    <!-- FloatingActionButton positioned above SlidingTabLayout -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_chat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/diversity_2"
+        android:backgroundTint="?attr/colorPrimary"
+        android:contentDescription="QuranGPT"/>
+
+    <!-- SlidingTabLayout at the bottom -->
     <com.quran.labs.androidquran.view.SlidingTabLayout
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         style="@style/ToolBarArea"/>
-
-    <com.quran.labs.androidquran.view.QuranViewPager
-        android:id="@+id/index_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
   </LinearLayout>
+
 </FrameLayout>

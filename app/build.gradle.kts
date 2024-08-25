@@ -14,12 +14,13 @@ plugins {
 
 // whether or not to use Firebase - Firebase is enabled by default, and is only disabled for
 // providing apks for open source distribution stores.
-val useFirebase = !project.hasProperty("disableFirebase") &&
-    !project.hasProperty("disableCrashlytics")
+//val useFirebase = !project.hasProperty("disableFirebase") &&
+//    !project.hasProperty("disableCrashlytics")
+val useFirebase = true
 
 // only want to apply the Firebase plugin if we're building a release build. moving this to the
 // release build type won't work, since debug builds would also implicitly get the plugin.
-if (getGradle().startParameter.taskRequests.toString().contains("Release") && useFirebase) {
+if (true || (getGradle().startParameter.taskRequests.toString().contains("Release") && useFirebase)) {
   apply(plugin = "com.google.gms.google-services")
   apply(plugin = "com.google.firebase.crashlytics")
 }
@@ -35,8 +36,8 @@ android {
   namespace = "com.quran.labs.androidquran"
 
   defaultConfig {
-    versionCode = 3441
-    versionName = "3.4.4"
+    versionCode = 240825
+    versionName = "1.0.1"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
   }
 
@@ -60,21 +61,22 @@ android {
   flavorDimensions += listOf("pageType")
   productFlavors {
     create("madani") {
-      applicationId = "com.quran.labs.androidquran"
+      applicationId = "com.appcoholic.quran"
     }
   }
 
   buildTypes {
     create("beta") {
-      isMinifyEnabled = true
+//      isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg")
-      signingConfig = signingConfigs.getByName("release")
+//      signingConfig = signingConfigs.getByName("release")
       versionNameSuffix = "-beta"
       matchingFallbacks += listOf("debug")
+      signingConfig = signingConfigs.getByName("debug")
     }
 
     getByName("debug") {
-      applicationIdSuffix = ".debug"
+//      applicationIdSuffix = ".debug"
       versionNameSuffix = "-debug"
     }
 

@@ -37,15 +37,14 @@ import com.azure.ai.openai.models.ChatRequestMessage;
 import com.azure.ai.openai.models.ChatRequestSystemMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.core.credential.KeyCredential;
-//import com.google.firebase.analytics.FirebaseAnalytics;
-//import com.google.firebase.crashlytics.FirebaseCrashlytics;
-//import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 import com.appcoholic.gpt.data.model.Message;
 import com.appcoholic.gpt.data.model.User;
-import com.appcoholic.gpt.utils.AppUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -75,8 +74,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private DatabaseHelper db;
     private MessagesList messagesList;
     private List<ChatRequestMessage> chatMessages = new ArrayList<>();
-//    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-//    private FirebaseAnalytics firebaseAnalytics;
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAnalytics firebaseAnalytics;
 
     private OpenAIAsyncClient client;
 
@@ -131,7 +130,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
             // Or use it as a context for your AI model
         }
 
-//        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         messagesList = findViewById(R.id.messagesList);
         client = new OpenAIClientBuilder()
                 .credential(new KeyCredential(BuildConfig.OPENAI_API_KEY))
@@ -171,8 +170,6 @@ public class DefaultMessagesActivity extends AppCompatActivity
         messagesAdapter = new MessagesListAdapter<>(SENDER_ID, null);
         messagesAdapter.enableSelectionMode(this);
         messagesAdapter.setLoadMoreListener(this);
-//        messagesAdapter.registerViewClickListener(R.id.messageUserAvatar,
-//                (view, message) -> AppUtils.showToast(this, message.getUser().getName() + " avatar click", false));
         messagesList.setAdapter(messagesAdapter);
 
         db = new DatabaseHelper(this);
@@ -232,7 +229,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
                             completion -> handleChatCompletion(completion.getChoices()),
                             error -> {
                                 Log.e(TAG, "Failed to get chat completions", error);
-//                                FirebaseCrashlytics.getInstance().recordException(error);
+                                FirebaseCrashlytics.getInstance().recordException(error);
                             },
                             () -> runOnUiThread(() -> messagesAdapter.delete(isTypingMessage))
                     );
@@ -265,26 +262,26 @@ public class DefaultMessagesActivity extends AppCompatActivity
     }
 
     private void addMessageToFirestore(Message message) {
-//        String userId = UniqueIDGenerator.getUniqueID(this);
-//        Map<String, Object> msg = new HashMap<>();
-//        msg.put("id", message.getId());
-//        msg.put("text", message.getText());
-//        msg.put("createdAt", message.getCreatedAt());
-//        msg.put("sender", message.getUser().getName());
-//
-//        firestore.collection("users").document(userId).collection("messages")
-//                .add(msg)
-//                .addOnSuccessListener(documentReference -> Log.d("Firebase", "DocumentSnapshot added with ID: " + documentReference.getId()))
-//                .addOnFailureListener(e -> {
-//                    Log.w("Firebase", "Error adding document", e);
-//                    FirebaseCrashlytics.getInstance().recordException(e);
-//                });
+        String userId = UniqueIDGenerator.getUniqueID(this);
+        Map<String, Object> msg = new HashMap<>();
+        msg.put("id", message.getId());
+        msg.put("text", message.getText());
+        msg.put("createdAt", message.getCreatedAt());
+        msg.put("sender", message.getUser().getName());
+
+        firestore.collection("users").document(userId).collection("messages")
+                .add(msg)
+                .addOnSuccessListener(documentReference -> Log.d("Firebase", "DocumentSnapshot added with ID: " + documentReference.getId()))
+                .addOnFailureListener(e -> {
+                    Log.w("Firebase", "Error adding document", e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                });
     }
 
     private void logFirebaseEvent(String eventName, Message message) {
-//        Bundle params = new Bundle();
-//        params.putString("user_id", message.getUser().getId());
-//        firebaseAnalytics.logEvent(eventName, params);
+        Bundle params = new Bundle();
+        params.putString("user_id", message.getUser().getId());
+        firebaseAnalytics.logEvent(eventName, params);
     }
 
     @Override
@@ -468,7 +465,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
                             BillingResult result = billingClient.launchBillingFlow(DefaultMessagesActivity.this, billingFlowParams);
                             if (result.getResponseCode() != BillingClient.BillingResponseCode.OK) {
                                 Log.e(TAG, "Error launching billing flow: " + result.getDebugMessage());
-//                                FirebaseCrashlytics.getInstance().recordException(new Exception("Error launching billing flow: " + result.getDebugMessage()));
+                                FirebaseCrashlytics.getInstance().recordException(new Exception("Error launching billing flow: " + result.getDebugMessage()));
                             }
                         });
                         // Launch billing flow
@@ -478,7 +475,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
             } else {
                 // Handle error
                 Log.e(TAG, "Error fetching product details: " + billingResult.getDebugMessage());
-//                FirebaseCrashlytics.getInstance().recordException(new Exception("Error fetching product details: " + billingResult.getDebugMessage()));
+                FirebaseCrashlytics.getInstance().recordException(new Exception("Error fetching product details: " + billingResult.getDebugMessage()));
             }
         });
     }

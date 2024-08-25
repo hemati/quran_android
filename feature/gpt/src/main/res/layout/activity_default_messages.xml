@@ -13,6 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/input"
+        app:outcomingDefaultBubbleColor="@color/color_control_normal"
+        app:outcomingDefaultBubblePressedColor="@color/color_control_pressed"
+        app:outcomingDefaultBubbleSelectedColor="@color/color_control_activated"
+        app:incomingDefaultBubbleColor="@color/incomingDefaultBubbleColor"
+        app:incomingDefaultBubblePressedColor="@color/incomingDefaultBubblePressedColor"
+        app:incomingDefaultBubbleSelectedColor="@color/incomingDefaultBubbleSelectedColor"
+        app:incomingTextColor="@color/incomingTextColor"
         />
 
     <View
@@ -21,7 +28,7 @@
         android:layout_above="@+id/input"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/gray" />
+        android:background="@color/panel_background_color" />
 
     <com.stfalcon.chatkit.messages.MessageInput
         android:id="@+id/input"
@@ -31,6 +38,9 @@
         app:inputHint="send"
         app:inputButtonHeight="48dp"
         app:inputButtonWidth="48dp"
+        app:inputButtonDefaultBgColor="@color/accent_color_dark"
+        app:inputButtonDefaultBgPressedColor="@color/accent_color"
+        app:inputTextColor="@color/white"
         />
 
 </RelativeLayout>

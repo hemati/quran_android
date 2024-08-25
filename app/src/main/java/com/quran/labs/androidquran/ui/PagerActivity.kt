@@ -1726,7 +1726,6 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
           intent.putExtra("reference", "Context: $startSuraAyah")
         }
         startActivity(intent)
-        Toast.makeText(this@PagerActivity, "GPT", Toast.LENGTH_SHORT).show()
       } else {
         return false
       }

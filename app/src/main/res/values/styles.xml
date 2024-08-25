@@ -8,7 +8,9 @@
         <item name="android:maxLines">1</item>
     </style>
 
-    <style name="ToolBarArea" />
+    <style name="ToolBarArea"  parent="android:Widget.Material.Toolbar" >
+        <item name="android:background">@color/toolbar_color</item>
+    </style>
 
     <style name="NotificationText"
         parent="android:TextAppearance.StatusBar.EventContent" />

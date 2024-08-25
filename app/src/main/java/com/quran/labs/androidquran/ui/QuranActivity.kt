@@ -130,7 +130,6 @@ class QuranActivity : AppCompatActivity(),
     // Add this part to handle FAB click
     val fabChat = findViewById<FloatingActionButton>(R.id.fab_chat)
     fabChat.setOnClickListener {
-      Toast.makeText(this, "FAB clicked!", Toast.LENGTH_SHORT).show()
       val intent = Intent(this, DefaultMessagesActivity::class.java)
       startActivity(intent)
     }
