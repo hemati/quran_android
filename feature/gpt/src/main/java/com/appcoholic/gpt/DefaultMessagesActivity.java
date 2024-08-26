@@ -15,9 +15,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.BillingClient;
@@ -66,9 +66,9 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private static final String TAG = "DefaultMessagesActivity";
     private static final String SENDER_ID = "User";
     private static final int MAX_CHAT_HISTORY = 6;
-    private static final int MAX_MESSAGES_PER_DAY = 60;
+    private static final int MAX_MESSAGES_PER_DAY = 6;
 
-    private static final String SUBSCRIPTION_SKU = "biblegpt_subscription";
+    private static final String SUBSCRIPTION_SKU = "qurangpt_subscription";
 
     private MessagesListAdapter<Message> messagesAdapter;
     private DatabaseHelper db;
@@ -100,15 +100,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private boolean isSubscribed = false;
 
     private Menu menu;
-
-    public static void open(Context context) {
-        Intent intent = new Intent(context, DefaultMessagesActivity.class);
-        if (!(context instanceof Activity)) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        context.startActivity(intent);
-    }
-
+    private ActionBar toolbar;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -136,16 +128,21 @@ public class DefaultMessagesActivity extends AppCompatActivity
                 .credential(new KeyCredential(BuildConfig.OPENAI_API_KEY))
                 .buildAsyncClient();
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        if (toolbar != null) {
-//            setSupportActionBar(toolbar);
-//        }
+        toolbar = getSupportActionBar();
+        if (toolbar != null) {
+            toolbar.setDisplayShowHomeEnabled(true);
+            toolbar.setDisplayUseLogoEnabled(true);
+            toolbar.setLogo(R.mipmap.ic_launcher_removebg);
+            toolbar.setTitle(R.string.qurangpt);
+//            toolbar.setSubtitle(R.string.qurangpt_pro);
+        }
+
+        setUserSubscribed(false);
 
         initializeMessages();
         setupMessageInput();
         setupMessagesAdapter();
         setupBillingClient();
-
 //        findViewById(R.id.messageSendButton).setContentDescription("send message");
     }
 
@@ -383,7 +380,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                         for (Purchase purchase : purchases) {
                             if (purchase.getProducts().contains(SUBSCRIPTION_SKU)) {
-                                isSubscribed = true;
+                                setUserSubscribed(true);
                                 acknowledgePurchase(purchase);
                                 break;
                             }
@@ -394,6 +391,16 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
     private boolean isUserSubscribed() {
         return isSubscribed;
+    }
+
+    private void setUserSubscribed(boolean subscribed) {
+        isSubscribed = subscribed;
+//        if(isSubscribed) {
+//            toolbar.setTitle(R.string.qurangpt_pro);
+//        }
+//        else{
+//            toolbar.setTitle(R.string.qurangpt);
+//        }
     }
 
     private void acknowledgePurchase(Purchase purchase) {
@@ -421,7 +428,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
     private void handlePurchase(Purchase purchase) {
         if (purchase.getProducts().contains(SUBSCRIPTION_SKU)) {
-            isSubscribed = true;
+            setUserSubscribed(true);
             // Grant the subscription to the user
             // Update your backend or local storage if necessary
             Toast.makeText(this, "Subscription successful", Toast.LENGTH_SHORT).show();
@@ -528,7 +535,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
                             .format(message.getCreatedAt());
 
                     return String.format(Locale.getDefault(), "[%s] %s: %s",
-                            createdAt, message.getUser().getName().equals("User") ? "User" : "BibleGPT", message.getText());
+                            createdAt, message.getUser().getName().equals("User") ? "User" : "QuranGPT", message.getText());
                 }
                 else{
                     return message.getText();

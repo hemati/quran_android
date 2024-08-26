@@ -2,6 +2,7 @@ import net.ltgt.gradle.errorprone.ErrorProneOptions
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Locale
+import java.util.Properties
 
 plugins {
   id("quran.android.application")
@@ -36,8 +37,8 @@ android {
   namespace = "com.quran.labs.androidquran"
 
   defaultConfig {
-    versionCode = 240825
-    versionName = "1.0.1"
+    versionCode = 240826
+    versionName = "1.0.2"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
   }
 
@@ -51,10 +52,21 @@ android {
 
   signingConfigs {
     create("release") {
-      storeFile = file((project.property("STORE_FILE") as String))
-      storePassword = project.property("STORE_PASSWORD") as String
-      keyAlias = project.property("KEY_ALIAS") as String
-      keyPassword = project.property("KEY_PASSWORD") as String
+      val properties = Properties()
+      val propertiesFile = rootProject.file("local.properties")
+      if (propertiesFile.exists()) {
+        properties.load(propertiesFile.inputStream())
+      }
+
+      storeFile = file(properties.getProperty("STORE_FILE"))
+      storePassword = properties.getProperty("STORE_PASSWORD")
+      keyAlias = properties.getProperty("KEY_ALIAS")
+      keyPassword = properties.getProperty("KEY_PASSWORD")
+
+//      storeFile = file((project.property("STORE_FILE") as String))
+//      storePassword = project.property("STORE_PASSWORD") as String
+//      keyAlias = project.property("KEY_ALIAS") as String
+//      keyPassword = project.property("KEY_PASSWORD") as String
     }
   }
 
@@ -77,11 +89,12 @@ android {
 
     getByName("debug") {
 //      applicationIdSuffix = ".debug"
+//      isMinifyEnabled = false
       versionNameSuffix = "-debug"
     }
 
     getByName("release") {
-      isMinifyEnabled = true
+//      isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg")
       signingConfig = signingConfigs.getByName("release")
     }

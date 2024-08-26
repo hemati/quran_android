@@ -11,4 +11,7 @@
   <string name="taptargetview_fap_biblegpt_desc">Your personal Quran assistant. Ask questions, explore verses, or request prayers.</string>
   <string name="taptargetview_add">Add Tab</string>
   <string name="taptargetview_add_desc">Add books, parables, articles, plans, gospels, or a random verse.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
 </resources>
