@@ -395,12 +395,12 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
     private void setUserSubscribed(boolean subscribed) {
         isSubscribed = subscribed;
-//        if(isSubscribed) {
-//            toolbar.setTitle(R.string.qurangpt_pro);
-//        }
-//        else{
-//            toolbar.setTitle(R.string.qurangpt);
-//        }
+        if(isSubscribed) {
+            toolbar.setTitle(R.string.qurangpt_pro);
+        }
+        else{
+            toolbar.setTitle(R.string.qurangpt);
+        }
     }
 
     private void acknowledgePurchase(Purchase purchase) {

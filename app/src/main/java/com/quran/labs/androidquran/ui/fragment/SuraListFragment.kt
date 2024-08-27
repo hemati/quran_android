@@ -120,7 +120,7 @@ class SuraListFragment : Fragment() {
         .withType(QuranRow.HEADER)
         .withText(headerTitle)
         .withPage(quranInfo.getStartingPageForJuz(juz))
-      elements[pos++] = headerBuilder.build()
+//      elements[pos++] = headerBuilder.build()
       next = if (juz == JUZ2_COUNT) {
         numberOfPages + 1
       } else quranInfo.getStartingPageForJuz(juz + 1)
