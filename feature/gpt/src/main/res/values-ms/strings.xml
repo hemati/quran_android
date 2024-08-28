@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Halo! Saya QuranGPT, panduan anda untuk meneroka Al-Quran. Tanyakan saya tentang ayat, penjelasan, atau minta doa. </string>
+  <string name="chatview_delete_confirmation_title">Pengesahan Padam</string>
+  <string name="chatview_delete_confirmation_desc">Adakah anda pasti mahu memadam semua mesej?</string>
+  <string name="chatview_delete_selected_confirmation_desc">Adakah anda pasti mahu memadam mesej yang dipilih?</string>
+  <string name="chatview_no_internet">Tiada internet. Sembang memerlukan sambungan.</string>
+  <string name="mnuAskBibleGPT">Tanya QuranGPT</string>
+  <string name="chatview_quota_reached">Anda telah mencapai had mesej harian anda. Untuk akses tanpa had, tingkatkan ke addon QuranGPT Pro. Taip \'info\' untuk maklumat lanjut.</string>
+  <string name="taptargetview_fap_biblegpt_title">Sembang dengan QuranGPT</string>
+  <string name="taptargetview_fap_biblegpt_desc">Pembantu peribadi anda untuk Al-Quran. Ajukan soalan, terokai ayat, atau minta doa.</string>
+  <string name="taptargetview_add">Tambah Tab</string>
+  <string name="taptargetview_add_desc">Tambah buku, perumpamaan, artikel, rancangan, injil, atau ayat rawak.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

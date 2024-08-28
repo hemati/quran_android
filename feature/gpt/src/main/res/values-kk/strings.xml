@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Сәлем! Мен ҚұранGPT-імін, Құранды зерттеу бойынша нұсқаушыңыз. Менен аяттар, түсіндірмелер туралы сұраңыз немесе дұға сұраңыз. </string>
+  <string name="chatview_delete_confirmation_title">Жоюды растау</string>
+  <string name="chatview_delete_confirmation_desc">Барлық хабарларды жойғыңыз келетініне сенімдісіз бе?</string>
+  <string name="chatview_delete_selected_confirmation_desc">Таңдалған хабарларды жойғыңыз келетініне сенімдісіз бе?</string>
+  <string name="chatview_no_internet">Интернет жоқ. Чат байланыс талап етеді.</string>
+  <string name="mnuAskBibleGPT">ҚұранGPT-ден сұраңыз</string>
+  <string name="chatview_quota_reached">Сіз күнделікті хабарлама лимитіне жеттіңіз. Шексіз қол жетімділік үшін ҚұранGPT Pro қосымшасына жаңартыңыз. Толығырақ ақпарат алу үшін \'info\' теріңіз.</string>
+  <string name="taptargetview_fap_biblegpt_title">ҚұранGPT-мен сөйлесу</string>
+  <string name="taptargetview_fap_biblegpt_desc">Сіздің жеке Құран көмекшіңіз. Сұрақтар қойыңыз, аяттарды зерттеңіз немесе дұғалар сұраңыз.</string>
+  <string name="taptargetview_add">Қойынды қосу</string>
+  <string name="taptargetview_add_desc">Кітаптарды, астарлы әңгімелерді, мақалаларды, жоспарларды, інжілдерді немесе кездейсоқ аятты қосыңыз.</string>
+
+  <string name="qurangpt">ҚұранGPT</string>
+  <string name="qurangpt_pro">ҚұранGPT Pro</string>
+</resources>

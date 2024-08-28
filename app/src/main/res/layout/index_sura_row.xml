@@ -83,7 +83,9 @@
       android:textSize="24sp"
       android:layout_gravity="center_vertical"
       android:layout_marginEnd="16dp"
-      android:gravity="end"/>
+      android:gravity="end"
+      android:textColor="@color/sura_details_color"
+      />
 
   <TextView
       android:id="@+id/pageNumber"

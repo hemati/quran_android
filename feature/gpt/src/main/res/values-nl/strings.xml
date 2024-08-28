@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Hallo! Ik ben QuranGPT, je gids bij het verkennen van de Koran. Vraag me naar verzen, uitleg of zelfs een gebed. </string>
+  <string name="chatview_delete_confirmation_title">Verwijderbevestiging</string>
+  <string name="chatview_delete_confirmation_desc">Weet je zeker dat je alle berichten wilt verwijderen?</string>
+  <string name="chatview_delete_selected_confirmation_desc">Weet je zeker dat je de geselecteerde berichten wilt verwijderen?</string>
+  <string name="chatview_no_internet">Geen internet. Chatten vereist een verbinding.</string>
+  <string name="mnuAskBibleGPT">Vraag het QuranGPT</string>
+  <string name="chatview_quota_reached">Je hebt je dagelijkse berichtlimiet bereikt. Voor onbeperkte toegang, upgrade naar de QuranGPT Pro-addon. Typ \'info\' voor details.</string>
+  <string name="taptargetview_fap_biblegpt_title">Chat met QuranGPT</string>
+  <string name="taptargetview_fap_biblegpt_desc">Je persoonlijke Koran-assistent. Stel vragen, verken verzen of vraag om gebeden.</string>
+  <string name="taptargetview_add">Tabblad toevoegen</string>
+  <string name="taptargetview_add_desc">Voeg boeken, parabels, artikelen, plannen, evangeliën of een willekeurig vers toe.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

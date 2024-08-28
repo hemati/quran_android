@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">¡Hola! Soy QuranGPT, tu guía para explorar el Corán. Pregúntame sobre pasajes, explicaciones o incluso solicita una oración. </string>
+  <string name="chatview_delete_confirmation_title">Confirmación de Eliminación</string>
+  <string name="chatview_delete_confirmation_desc">¿Estás seguro de que deseas eliminar todos los mensajes?</string>
+  <string name="chatview_delete_selected_confirmation_desc">¿Estás seguro de que deseas eliminar los mensajes seleccionados?</string>
+  <string name="chatview_no_internet">Sin internet. El chat requiere conexión.</string>
+  <string name="mnuAskBibleGPT">Preguntar a QuranGPT</string>
+  <string name="chatview_quota_reached">Has alcanzado tu límite diario de mensajes. Para acceso ilimitado, mejora al complemento QuranGPT Pro. Escribe \'info\' para más detalles.</string>
+  <string name="taptargetview_fap_biblegpt_title">Chatear con QuranGPT</string>
+  <string name="taptargetview_fap_biblegpt_desc">Tu asistente personal del Corán. Haz preguntas, explora versos o solicita oraciones.</string>
+  <string name="taptargetview_add">Añadir Pestaña</string>
+  <string name="taptargetview_add_desc">Añade libros, parábolas, artículos, planes, evangelios o un versículo aleatorio.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

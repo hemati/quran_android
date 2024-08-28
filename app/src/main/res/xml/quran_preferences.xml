@@ -221,7 +221,8 @@
   <PreferenceCategory
       android:key="@string/prefs_advanced_path"
       android:title="@string/prefs_category_advanced"
-      app:iconSpaceReserved="false">
+      app:iconSpaceReserved="false"
+      app:isPreferenceVisible="false">
 
     <Preference
         android:key="key_prefs_advanced"

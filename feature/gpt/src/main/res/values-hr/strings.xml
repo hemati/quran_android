@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Pozdrav! Ja sam QuranGPT, vaš vodič za istraživanje Kur\'ana. Pitajte me o ajetima, objašnjenjima ili čak zatražite molitvu. </string>
+  <string name="chatview_delete_confirmation_title">Potvrda brisanja</string>
+  <string name="chatview_delete_confirmation_desc">Jeste li sigurni da želite izbrisati sve poruke?</string>
+  <string name="chatview_delete_selected_confirmation_desc">Jeste li sigurni da želite izbrisati odabrane poruke?</string>
+  <string name="chatview_no_internet">Nema interneta. Chat zahtijeva vezu.</string>
+  <string name="mnuAskBibleGPT">Pitajte QuranGPT</string>
+  <string name="chatview_quota_reached">Dosegli ste svoj dnevni limit poruka. Za neograničen pristup, nadogradite na dodatak QuranGPT Pro. Upišite \'info\' za detalje.</string>
+  <string name="taptargetview_fap_biblegpt_title">Razgovarajte s QuranGPT-om</string>
+  <string name="taptargetview_fap_biblegpt_desc">Vaš osobni asistent za Kur\'an. Postavljajte pitanja, istražujte ajete ili zatražite molitve.</string>
+  <string name="taptargetview_add">Dodaj karticu</string>
+  <string name="taptargetview_add_desc">Dodajte knjige, parabole, članke, planove, evanđelja ili nasumični ajet.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

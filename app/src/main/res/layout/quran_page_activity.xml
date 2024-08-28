@@ -61,7 +61,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:src="@drawable/diversity_2"
-        android:backgroundTint="?attr/colorPrimary"
+        android:backgroundTint="@color/accent_color_dark"
         android:contentDescription="QuranGPT"/>
     <com.quran.mobile.feature.audiobar.AudioBarWrapper
         android:id="@+id/audio_area"

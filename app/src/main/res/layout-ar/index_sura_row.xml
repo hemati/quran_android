@@ -85,4 +85,17 @@
       android:textSize="24sp"
       tools:text="23"
       />
+  <TextView
+      android:id="@+id/sura_name_arabic"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="\uE904"
+      android:fontFamily="@font/surah_names"
+      android:textSize="24sp"
+      android:layout_gravity="center_vertical"
+      android:layout_marginEnd="16dp"
+      android:gravity="end"
+      android:textColor="@color/sura_details_color"
+      android:visibility="gone"
+      />
 </LinearLayout>

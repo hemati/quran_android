@@ -18,6 +18,7 @@ class QuranPreferenceActivity : AppCompatActivity() {
     setSupportActionBar(toolbar)
     val ab = supportActionBar
     ab?.setDisplayHomeAsUpEnabled(true)
+    ab?.setLogo(R.mipmap.ic_launcher_removebg)
 
     val fm = supportFragmentManager
     val fragment = fm.findFragmentById(R.id.content)

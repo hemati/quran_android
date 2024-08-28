@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">สวัสดี! ฉันคือ QuranGPT ไกด์ของคุณในการสำรวจอัลกุรอาน ถามฉันเกี่ยวกับโองการ คำอธิบาย หรือขอพรได้เลย </string>
+  <string name="chatview_delete_confirmation_title">ยืนยันการลบ</string>
+  <string name="chatview_delete_confirmation_desc">คุณแน่ใจหรือว่าต้องการลบข้อความทั้งหมด?</string>
+  <string name="chatview_delete_selected_confirmation_desc">คุณแน่ใจหรือว่าต้องการลบข้อความที่เลือก?</string>
+  <string name="chatview_no_internet">ไม่มีอินเทอร์เน็ต การสนทนาต้องการการเชื่อมต่อ</string>
+  <string name="mnuAskBibleGPT">ถาม QuranGPT</string>
+  <string name="chatview_quota_reached">คุณถึงขีดจำกัดการส่งข้อความประจำวันแล้ว สำหรับการเข้าถึงไม่จำกัด ให้คุณอัปเกรดเป็น QuranGPT Pro พิมพ์ \'info\' เพื่อดูรายละเอียด</string>
+  <string name="taptargetview_fap_biblegpt_title">สนทนากับ QuranGPT</string>
+  <string name="taptargetview_fap_biblegpt_desc">ผู้ช่วยส่วนตัวของคุณสำหรับอัลกุรอาน ถามคำถาม สำรวจโองการ หรือขอพรได้เลย</string>
+  <string name="taptargetview_add">เพิ่มแท็บ</string>
+  <string name="taptargetview_add_desc">เพิ่มหนังสือ อุปมา บทความ แผนการ พระวรสาร หรือโองการแบบสุ่ม</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

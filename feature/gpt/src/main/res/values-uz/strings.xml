@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Salom! Men QuranGPT, Qur\'onni o\'rganish bo\'yicha qo\'llanmangizman. Menga oyatlar, izohlar haqida savol bering yoki hatto duo so\'rang. </string>
+  <string name="chatview_delete_confirmation_title">O\'chirishni tasdiqlash</string>
+  <string name="chatview_delete_confirmation_desc">Barcha xabarlarni o\'chirmoqchi ekanligingizga ishonchingiz komilmi?</string>
+  <string name="chatview_delete_selected_confirmation_desc">Tanlangan xabarlarni o\'chirmoqchi ekanligingizga ishonchingiz komilmi?</string>
+  <string name="chatview_no_internet">Internet yo\'q. Chat uchun ulanish talab qilinadi.</string>
+  <string name="mnuAskBibleGPT">QuranGPT\'dan so\'rang</string>
+  <string name="chatview_quota_reached">Siz kunlik xabarlar limitiga yetdingiz. Cheksiz kirish uchun, QuranGPT Pro qo\'shimchasiga yangilang. Tafsilotlar uchun \'info\' ni yozing.</string>
+  <string name="taptargetview_fap_biblegpt_title">QuranGPT bilan suhbatlashing</string>
+  <string name="taptargetview_fap_biblegpt_desc">Shaxsiy Qur\'on yordamchingiz. Savollar bering, oyatlarni o\'rganing yoki duolarni so\'rang.</string>
+  <string name="taptargetview_add">Tab qo\'shing</string>
+  <string name="taptargetview_add_desc">Kitoblar, masallar, maqolalar, rejalar, Injillar yoki tasodifiy oyat qo\'shing.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

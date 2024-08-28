@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Salam! Mən QuranGPT, Quranı araşdırmaq üçün bələdçinizəm. Məndən ayələr, izahlar haqqında soruşa bilərsiniz, hətta dua istəyə bilərsiniz. </string>
+  <string name="chatview_delete_confirmation_title">Silinmə Təsdiqi</string>
+  <string name="chatview_delete_confirmation_desc">Bütün mesajları silmək istədiyinizə əminsinizmi?</string>
+  <string name="chatview_delete_selected_confirmation_desc">Seçilmiş mesajları silmək istədiyinizə əminsinizmi?</string>
+  <string name="chatview_no_internet">İnternet yoxdur. Çat əlaqə tələb edir.</string>
+  <string name="mnuAskBibleGPT">QuranGPT-dən soruşun</string>
+  <string name="chatview_quota_reached">Günlük mesaj limitinizə çatdınız. Məhdudiyyətsiz giriş üçün QuranGPT Pro əlavəsinə yüksəldin. Təfərrüatlar üçün \'məlumat\' yazın.</string>
+  <string name="taptargetview_fap_biblegpt_title">QuranGPT ilə Çat</string>
+  <string name="taptargetview_fap_biblegpt_desc">Şəxsi Quran köməkçiniz. Suallar verin, ayələri araşdırın və ya dualar istəyin.</string>
+  <string name="taptargetview_add">Əlavə Et</string>
+  <string name="taptargetview_add_desc">Kitablar, məsələlər, məqalələr, planlar, incillər və ya təsadüfi bir ayə əlavə edin.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

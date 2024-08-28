@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_color">
 
   <!-- Toolbar at the top -->
   <androidx.appcompat.widget.Toolbar
@@ -16,6 +17,7 @@
       app:logo="@mipmap/ic_launcher_removebg"
       style="@style/ToolBarArea"
       app:title="@string/app_name"
+      android:background="@color/toolbar_color"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"/>
@@ -35,11 +37,12 @@
       android:id="@+id/indicator"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:background="?attr/colorPrimary"
+      android:background="@color/toolbar_color"
       style="@style/ToolBarArea"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"/>
+      app:layout_constraintEnd_toEndOf="parent"
+      />
 
   <!-- FloatingActionButton positioned above SlidingTabLayout -->
   <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -49,7 +52,7 @@
       android:layout_marginBottom="16dp"
       android:layout_marginEnd="16dp"
       android:src="@drawable/diversity_2"
-      android:backgroundTint="?attr/colorPrimary"
+      android:backgroundTint="@color/accent_color_dark"
       android:contentDescription="QuranGPT"
       app:layout_constraintBottom_toTopOf="@id/indicator"
       app:layout_constraintEnd_toEndOf="parent"

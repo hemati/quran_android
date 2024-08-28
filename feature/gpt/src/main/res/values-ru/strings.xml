@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Привет! Я QuranGPT, ваш проводник по изучению Корана. Спросите меня о стихах, толкованиях или даже попросите молитву. </string>
+  <string name="chatview_delete_confirmation_title">Подтверждение удаления</string>
+  <string name="chatview_delete_confirmation_desc">Вы уверены, что хотите удалить все сообщения?</string>
+  <string name="chatview_delete_selected_confirmation_desc">Вы уверены, что хотите удалить выбранные сообщения?</string>
+  <string name="chatview_no_internet">Нет интернета. Чат требует подключения.</string>
+  <string name="mnuAskBibleGPT">Спросите у QuranGPT</string>
+  <string name="chatview_quota_reached">Вы достигли своего дневного лимита сообщений. Для неограниченного доступа обновитесь до дополнения QuranGPT Pro. Введите \'info\' для подробностей.</string>
+  <string name="taptargetview_fap_biblegpt_title">Чат с QuranGPT</string>
+  <string name="taptargetview_fap_biblegpt_desc">Ваш личный помощник по Корану. Задавайте вопросы, исследуйте стихи или просите молитвы.</string>
+  <string name="taptargetview_add">Добавить вкладку</string>
+  <string name="taptargetview_add_desc">Добавьте книги, притчи, статьи, планы, евангелия или случайный стих.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

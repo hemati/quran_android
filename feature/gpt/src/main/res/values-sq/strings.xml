@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Përshëndetje! Jam QuranGPT, udhëzuesi juaj për të eksploruar Kuranin. Më pyetni për pasazhe, shpjegime, apo edhe kërkoni një lutje. </string>
+  <string name="chatview_delete_confirmation_title">Konfirmimi i Fshirjes</string>
+  <string name="chatview_delete_confirmation_desc">A jeni i sigurt që dëshironi të fshini të gjitha mesazhet?</string>
+  <string name="chatview_delete_selected_confirmation_desc">A jeni i sigurt që dëshironi të fshini mesazhet e zgjedhura?</string>
+  <string name="chatview_no_internet">Nuk ka internet. Chat-i kërkon lidhje.</string>
+  <string name="mnuAskBibleGPT">Pyet QuranGPT</string>
+  <string name="chatview_quota_reached">Keni arritur limitin tuaj ditor të mesazheve. Për akses të pakufizuar, përmirësoni në shtesën QuranGPT Pro. Shkruani \'info\' për detaje.</string>
+  <string name="taptargetview_fap_biblegpt_title">Bisedoni me QuranGPT</string>
+  <string name="taptargetview_fap_biblegpt_desc">Asistenti juaj personal për Kuranin. Bëni pyetje, eksploroni ajetet, ose kërkoni lutje.</string>
+  <string name="taptargetview_add">Shto Tab</string>
+  <string name="taptargetview_add_desc">Shtoni libra, paravoli, artikuj, plane, ungjij, ose një ajet të rastësishëm.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

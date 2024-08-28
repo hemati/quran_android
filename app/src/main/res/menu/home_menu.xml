@@ -66,9 +66,11 @@
   <item
       android:id="@+id/about"
       android:title="@string/menu_about"
-      app:showAsAction="never" />
+      app:showAsAction="never"
+      android:visible="false"/>
   <item
       android:id="@+id/other_apps"
       android:title="@string/menu_other_apps"
-      app:showAsAction="never" />
+      app:showAsAction="never"
+      android:visible="false"/>
 </menu>

@@ -151,7 +151,7 @@
   <string name="error_getting_translation_list">Impossibile scaricare la lista delle traduzioni. Si prega di riprovare più tardi.</string>
   <string name="need_translation">Non hai ancora scaricato nessuna traduzione/tafaseer.</string>
   <string name="remove_dlg_msg">Sei sicuro di voler rimuovere il %1$s</string>
-  <string name="email_us">Se la tua domanda non trova risposta qui sopra, puoi inviare un\'email a quranandroid@gmail.com per il supporto. Si prega di notare che riceviamo molte e-mail, quindi potremmo non essere in grado di rispondere a tutte.</string>
+  <string name="email_us">Se la tua domanda non trova risposta qui sopra, puoi inviare un\'email a support@appcoholic.com per il supporto. Si prega di notare che riceviamo molte e-mail, quindi potremmo non essere in grado di rispondere a tutte.</string>
   <string name="notification_download_canceled">Scaricare annullato</string>
   <string name="process_progress">Elaborazione del file %1$d / %2$d</string>
   <string name="download_error_general">Scaricare fallito</string>

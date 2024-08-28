@@ -32,5 +32,6 @@
       android:key="@string/prefs_send_logs"
       android:summary="@string/prefs_send_logs_summary"
       android:title="@string/prefs_send_logs_title"
-      app:iconSpaceReserved="false"/>
+      app:iconSpaceReserved="false"
+      app:isPreferenceVisible="false"/>
 </PreferenceScreen>

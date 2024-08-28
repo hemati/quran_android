@@ -30,7 +30,7 @@ class JuzView(
   init {
     val resources = context.resources
     val circleColor = ContextCompat.getColor(context, R.color.accent_color)
-    val circleBackground = ContextCompat.getColor(context, R.color.accent_color_dark)
+    val circleBackground = ContextCompat.getColor(context, R.color.accent_color_light)
 
     circlePaint.apply {
       style = Paint.Style.FILL
@@ -45,7 +45,7 @@ class JuzView(
     }
 
     if (!overlayText.isNullOrEmpty()) {
-      val textPaintColor = ContextCompat.getColor(context, R.color.header_background)
+      val textPaintColor = ContextCompat.getColor(context, R.color.accent_color_lightest)
       val textPaintSize = resources.getDimensionPixelSize(R.dimen.juz_overlay_text_size)
       overlayTextPaint = TextPaint()
       overlayTextPaint?.apply {

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Helló! Én vagyok a QuranGPT, a kalauzod a Korán felfedezéséhez. Kérdezz tőlem versekről, magyarázatokról, vagy akár kérj egy imát. </string>
+  <string name="chatview_delete_confirmation_title">Törlés megerősítése</string>
+  <string name="chatview_delete_confirmation_desc">Biztosan törölni szeretnéd az összes üzenetet?</string>
+  <string name="chatview_delete_selected_confirmation_desc">Biztosan törölni szeretnéd a kiválasztott üzeneteket?</string>
+  <string name="chatview_no_internet">Nincs internet. A csevegéshez kapcsolat szükséges.</string>
+  <string name="mnuAskBibleGPT">Kérdezd meg a QuranGPT-t</string>
+  <string name="chatview_quota_reached">Elérted a napi üzenetküldési limitet. Korlátlan hozzáférésért frissítsd a QuranGPT Pro kiegészítőre. Részletekért írd be, hogy \'info\'.</string>
+  <string name="taptargetview_fap_biblegpt_title">Beszélgess a QuranGPT-vel</string>
+  <string name="taptargetview_fap_biblegpt_desc">A személyes Korán asszisztensed. Tegyél fel kérdéseket, fedezd fel a verseket, vagy kérj imát.</string>
+  <string name="taptargetview_add">Fül hozzáadása</string>
+  <string name="taptargetview_add_desc">Adj hozzá könyveket, példázatokat, cikkeket, terveket, evangéliumokat, vagy egy véletlenszerű verset.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Slav! Ez QuranGPT me, rêberê te bo lêkolîna Qur\'anê. Ji min li ser ayetên, şîrove û an jî daxwaza duayek bipirse. </string>
+  <string name="chatview_delete_confirmation_title">Piştrastina Jêbirinê</string>
+  <string name="chatview_delete_confirmation_desc">Ma hûn piştrast in ku hemî peyamên jêbikin?</string>
+  <string name="chatview_delete_selected_confirmation_desc">Ma hûn piştrast in ku peyamên bijartî jêbikin?</string>
+  <string name="chatview_no_internet">Tînet tune. Sohbet pêwîstî bi girêdanekî ye.</string>
+  <string name="mnuAskBibleGPT">Ji QuranGPT bipirse</string>
+  <string name="chatview_quota_reached">Hûn tîşa peyamên rojane ya xwe gîhandin. Ji bo gihîştina neqarî, serlêdana QuranGPT Pro yên hikûmeta xwe biguherînin. Ji bo hûrgulî \'info\' binivîsin.</string>
+  <string name="taptargetview_fap_biblegpt_title">Bi QuranGPT re sohbet bikin</string>
+  <string name="taptargetview_fap_biblegpt_desc">Alîkariya xwe ya taybetî ya bo Qur\'anê. Pirsekan bibin, ayetan lêkolînin an jî duayek daxwazînin.</string>
+  <string name="taptargetview_add">Tabek Zêde Bikin</string>
+  <string name="taptargetview_add_desc">Pirtûk, mînak, gotar, plana xebatê, inçîl an ayetekî xweş xistin zêde bikin.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

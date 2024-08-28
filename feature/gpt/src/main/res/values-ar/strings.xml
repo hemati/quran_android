@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">مرحبًا! أنا قرآنGPT، دليلك لاستكشاف القرآن. اسألني عن الآيات، التفسيرات، أو حتى اطلب دعاء.</string>
+  <string name="chatview_delete_confirmation_title">تأكيد الحذف</string>
+  <string name="chatview_delete_confirmation_desc">هل أنت متأكد أنك تريد حذف جميع الرسائل؟</string>
+  <string name="chatview_delete_selected_confirmation_desc">هل أنت متأكد أنك تريد حذف الرسائل المحددة؟</string>
+  <string name="chatview_no_internet">لا يوجد اتصال بالإنترنت. الدردشة تتطلب اتصال.</string>
+  <string name="mnuAskBibleGPT">اسأل قرآنGPT</string>
+  <string name="chatview_quota_reached">لقد وصلت إلى الحد اليومي للرسائل. للحصول على وصول غير محدود، قم بالترقية إلى إضافة قرآنGPT برو. اكتب \'معلومات\' للحصول على التفاصيل.</string>
+  <string name="taptargetview_fap_biblegpt_title">الدردشة مع قرآنGPT</string>
+  <string name="taptargetview_fap_biblegpt_desc">مساعدك الشخصي للقرآن. اسأل الأسئلة، استكشف الآيات، أو اطلب الدعاء.</string>
+  <string name="taptargetview_add">إضافة تبويب</string>
+  <string name="taptargetview_add_desc">أضف كتب، أمثال، مقالات، خطط، أناجيل، أو آية عشوائية.</string>
+
+  <string name="qurangpt">قرآنGPT</string>
+  <string name="qurangpt_pro">قرآنGPT برو</string>
+</resources>

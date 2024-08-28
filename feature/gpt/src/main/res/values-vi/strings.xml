@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Xin chào! Tôi là QuranGPT, hướng dẫn của bạn để khám phá Kinh Qur\'an. Hãy hỏi tôi về các đoạn văn, giải thích hoặc thậm chí yêu cầu một lời cầu nguyện. </string>
+  <string name="chatview_delete_confirmation_title">Xác nhận Xóa</string>
+  <string name="chatview_delete_confirmation_desc">Bạn có chắc chắn muốn xóa tất cả tin nhắn không?</string>
+  <string name="chatview_delete_selected_confirmation_desc">Bạn có chắc chắn muốn xóa các tin nhắn đã chọn không?</string>
+  <string name="chatview_no_internet">Không có kết nối internet. Trò chuyện yêu cầu kết nối.</string>
+  <string name="mnuAskBibleGPT">Hỏi QuranGPT</string>
+  <string name="chatview_quota_reached">Bạn đã đạt đến giới hạn tin nhắn hàng ngày của mình. Để truy cập không giới hạn, hãy nâng cấp lên tiện ích bổ sung QuranGPT Pro. Nhập \'info\' để biết chi tiết.</string>
+  <string name="taptargetview_fap_biblegpt_title">Trò chuyện với QuranGPT</string>
+  <string name="taptargetview_fap_biblegpt_desc">Trợ lý cá nhân của bạn về Kinh Qur\'an. Hãy đặt câu hỏi, khám phá các câu Kinh, hoặc yêu cầu lời cầu nguyện.</string>
+  <string name="taptargetview_add">Thêm Tab</string>
+  <string name="taptargetview_add_desc">Thêm sách, ngụ ngôn, bài viết, kế hoạch, các sách Phúc Âm, hoặc một câu ngẫu nhiên.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

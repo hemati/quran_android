@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">Hej! Jag är QuranGPT, din guide för att utforska Koranen. Fråga mig om verser, förklaringar eller be om en bön. </string>
+  <string name="chatview_delete_confirmation_title">Bekräfta radering</string>
+  <string name="chatview_delete_confirmation_desc">Är du säker på att du vill radera alla meddelanden?</string>
+  <string name="chatview_delete_selected_confirmation_desc">Är du säker på att du vill radera de valda meddelandena?</string>
+  <string name="chatview_no_internet">Ingen internetanslutning. Chatt kräver en anslutning.</string>
+  <string name="mnuAskBibleGPT">Fråga QuranGPT</string>
+  <string name="chatview_quota_reached">Du har nått din dagliga gräns för meddelanden. För obegränsad tillgång, uppgradera till QuranGPT Pro-tillägget. Skriv \'info\' för mer information.</string>
+  <string name="taptargetview_fap_biblegpt_title">Chatta med QuranGPT</string>
+  <string name="taptargetview_fap_biblegpt_desc">Din personliga assistent för Koranen. Ställ frågor, utforska verser eller be om böner.</string>
+  <string name="taptargetview_add">Lägg till flik</string>
+  <string name="taptargetview_add_desc">Lägg till böcker, liknelser, artiklar, planer, evangelier eller en slumpmässig vers.</string>
+
+  <string name="qurangpt">QuranGPT</string>
+  <string name="qurangpt_pro">QuranGPT Pro</string>
+</resources>

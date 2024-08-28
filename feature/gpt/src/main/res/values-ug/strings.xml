@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="chatview_empty_message">ياخشىمۇسىز! مەن قۇرئانGPT، قۇرئاننى ئۆگەنىشىڭىز ئۈچۈن يېتەكچىمىز. مەن تىڭشاپ بېقىپ بايرامقا، چۈشەندۈرۈشلەرگە، ياكى دۇئا ئىلتىماسى قىلىڭ. </string>
+  <string name="chatview_delete_confirmation_title">ئۆچۈرۈشنى جەزملەشتۈرۈش</string>
+  <string name="chatview_delete_confirmation_desc">ھەممە ئۇچۇرلارنى ئۆچۈرۈشنى چوقۇم قىلىشنى خالامسىز؟</string>
+  <string name="chatview_delete_selected_confirmation_desc">تاللانغان ئۇچۇرلارنى ئۆچۈرۈشنى چوقۇم قىلىشنى خالامسىز؟</string>
+  <string name="chatview_no_internet">تور يوق. پاراڭ قىلىش ئۇلانمىنى تەلەپ قىلىدۇ.</string>
+  <string name="mnuAskBibleGPT">قۇرئانGPTدىن سوراڭ</string>
+  <string name="chatview_quota_reached">كۈندىلىك ئۇچۇر چەككە يەتكەن. ھەجدىن مۇستەسنا ئېرىشمەك ئۈچۈن، قۇرئانGPT Pro قوشۇلمىسىنى يېڭىلاڭ. تېپىش ئۈچۈن \'info\' نى كىرگۈزۈڭ.</string>
+  <string name="taptargetview_fap_biblegpt_title">قۇرئانGPT بىلەن پاراڭ</string>
+  <string name="taptargetview_fap_biblegpt_desc">شەخسى قۇرئان ياردەمچىڭىز. سوئال سوراڭ، ئايەتلەرنى ئىزدەڭ ياكى دۇئانى سوراڭ.</string>
+  <string name="taptargetview_add">بەت قوشۇڭ</string>
+  <string name="taptargetview_add_desc">كىتابلار، مەسەللەر، ماقالىلەر، پىلانلار، ئىنجىللار ياكى توختامسىز بىر ئايەت قوشۇڭ.</string>
+
+  <string name="qurangpt">قۇرئانGPT</string>
+  <string name="qurangpt_pro">قۇرئانGPT Pro</string>
+</resources>
