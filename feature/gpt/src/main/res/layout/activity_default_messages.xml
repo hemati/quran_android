@@ -8,39 +8,53 @@
     android:orientation="vertical"
     tools:context=".DefaultMessagesActivity">
 
-    <com.stfalcon.chatkit.messages.MessagesList
-        android:id="@+id/messagesList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/input"
-        app:outcomingDefaultBubbleColor="@color/outcomingDefaultBubbleColor"
-        app:outcomingDefaultBubblePressedColor="@color/outcomingDefaultBubblePressedColor"
-        app:outcomingDefaultBubbleSelectedColor="@color/outcomingDefaultBubbleSelectedColor"
-        app:incomingDefaultBubbleColor="@color/incomingDefaultBubbleColor"
-        app:incomingDefaultBubblePressedColor="@color/incomingDefaultBubblePressedColor"
-        app:incomingDefaultBubbleSelectedColor="@color/incomingDefaultBubbleSelectedColor"
-        app:incomingTextColor="@color/incomingTextColor"
-        />
+  <!-- Toolbar at the top -->
+  <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="@color/toolbar_color"
+      android:layout_alignParentTop="true"
+      app:titleTextColor="@android:color/white"
+      app:logo="@mipmap/ic_launcher_removebg"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@+id/input"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@color/panel_background_color" />
+  <!-- Messages list, placed below the Toolbar -->
+  <com.stfalcon.chatkit.messages.MessagesList
+      android:id="@+id/messagesList"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@id/toolbar"
+      android:layout_above="@+id/input"
+      app:outcomingDefaultBubbleColor="@color/outcomingDefaultBubbleColor"
+      app:outcomingDefaultBubblePressedColor="@color/outcomingDefaultBubblePressedColor"
+      app:outcomingDefaultBubbleSelectedColor="@color/outcomingDefaultBubbleSelectedColor"
+      app:incomingDefaultBubbleColor="@color/incomingDefaultBubbleColor"
+      app:incomingDefaultBubblePressedColor="@color/incomingDefaultBubblePressedColor"
+      app:incomingDefaultBubbleSelectedColor="@color/incomingDefaultBubbleSelectedColor"
+      app:incomingTextColor="@color/incomingTextColor"
+      />
 
-    <com.stfalcon.chatkit.messages.MessageInput
-        android:id="@+id/input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        app:inputHint="send"
-        app:inputButtonHeight="48dp"
-        app:inputButtonWidth="48dp"
-        app:inputButtonDefaultBgColor="@color/accent_color_dark"
-        app:inputButtonDefaultBgPressedColor="@color/accent_color"
-        app:inputTextColor="@color/white"
-        />
+  <!-- Divider line -->
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_above="@+id/input"
+      android:layout_marginLeft="16dp"
+      android:layout_marginRight="16dp"
+      android:background="@color/panel_background_color" />
+
+  <!-- Message input at the bottom -->
+  <com.stfalcon.chatkit.messages.MessageInput
+      android:id="@+id/input"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      app:inputHint="send"
+      app:inputButtonHeight="48dp"
+      app:inputButtonWidth="48dp"
+      app:inputButtonDefaultBgColor="@color/accent_color_dark"
+      app:inputButtonDefaultBgPressedColor="@color/accent_color"
+      app:inputTextColor="@color/white"
+      />
 
 </RelativeLayout>

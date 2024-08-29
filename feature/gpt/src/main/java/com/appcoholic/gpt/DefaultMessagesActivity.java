@@ -15,9 +15,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.BillingClient;
@@ -100,7 +101,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private boolean isSubscribed = false;
 
     private Menu menu;
-    private ActionBar toolbar;
+    private Toolbar toolbar;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -128,13 +129,12 @@ public class DefaultMessagesActivity extends AppCompatActivity
                 .credential(new KeyCredential(BuildConfig.OPENAI_API_KEY))
                 .buildAsyncClient();
 
-        toolbar = getSupportActionBar();
+        toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
-            toolbar.setDisplayShowHomeEnabled(true);
-            toolbar.setDisplayUseLogoEnabled(true);
+            setSupportActionBar(toolbar);
             toolbar.setLogo(R.mipmap.ic_launcher_removebg);
             toolbar.setTitle(R.string.qurangpt);
-//            toolbar.setSubtitle(R.string.qurangpt_pro);
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.accent_color_darker));
         }
 
         setUserSubscribed(false);
@@ -395,12 +395,12 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
     private void setUserSubscribed(boolean subscribed) {
         isSubscribed = subscribed;
-        if(isSubscribed) {
-            toolbar.setTitle(R.string.qurangpt_pro);
-        }
-        else{
-            toolbar.setTitle(R.string.qurangpt);
-        }
+//        if(isSubscribed) {
+//            toolbar.setTitle(R.string.qurangpt_pro);
+//        }
+//        else{
+//            toolbar.setTitle(R.string.qurangpt);
+//        }
     }
 
     private void acknowledgePurchase(Purchase purchase) {
