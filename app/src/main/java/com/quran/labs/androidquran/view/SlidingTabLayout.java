@@ -32,6 +32,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -53,7 +54,7 @@ import java.util.Locale;
  * position.
  *
  * <p>
- * The views used as tabs can be customized by calling {@link #setCustomTabView(int, int)},
+ * The views used as tabs can be customized by calling ,
  * providing the layout ID of your custom layout.
  *
  * Modified for Quran Android to evenly distribute tabs, while allowing
@@ -82,6 +83,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
   private int mTabViewLayoutId;
   private int mTabViewTextViewId;
+  private int mTabViewImageViewId;
   private final int mSelectedTabColor;
   private final int mUnselectedTabColor;
 
@@ -155,9 +157,10 @@ public class SlidingTabLayout extends HorizontalScrollView {
    * @param layoutResId Layout id to be inflated
    * @param textViewId id of the {@link TextView} in the inflated view
    */
-  public void setCustomTabView(int layoutResId, int textViewId) {
+  public void setCustomTabView(int layoutResId, int textViewId, int imageViewId) {
     mTabViewLayoutId = layoutResId;
     mTabViewTextViewId = textViewId;
+    mTabViewImageViewId = imageViewId;
   }
 
   /**
@@ -177,7 +180,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
 
   /**
    * Create a default view to be used for tabs. This is called if a custom tab view is not set via
-   * {@link #setCustomTabView(int, int)}.
+   * .
    */
   protected TextView createDefaultTabView(Context context) {
     TextView textView = new TextView(context);
@@ -232,12 +235,14 @@ public class SlidingTabLayout extends HorizontalScrollView {
     for (int i = 0; i < adapter.getCount(); i++) {
       View tabView = null;
       TextView tabTitleView = null;
+      ImageView tabImageView = null;
 
       if (mTabViewLayoutId != 0) {
         // If there is a custom tab view layout id set, try and inflate it
         tabView = LayoutInflater.from(getContext())
             .inflate(mTabViewLayoutId, mTabStrip, false);
         tabTitleView = tabView.findViewById(mTabViewTextViewId);
+        tabImageView = tabView.findViewById(mTabViewImageViewId);
       }
 
       if (tabView == null) {
@@ -251,11 +256,29 @@ public class SlidingTabLayout extends HorizontalScrollView {
       if (tabTitleView != null) {
         tabTitleView.setText(adapter.getPageTitle(i));
       }
+
+      if (tabImageView != null) {
+        tabImageView.setImageResource(getIconForTab(i));
+      }
       tabView.setOnClickListener(tabClickListener);
 
       final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
           targetWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
       mTabStrip.addView(tabView, params);
+    }
+  }
+
+  private int getIconForTab(int position) {
+    switch (position) {
+      case 0:
+        return R.drawable.article;
+      case 1:
+        return R.drawable.library_books;
+      case 2:
+        return R.drawable.bookmarks;
+      // Add cases for other tabs
+      default:
+        return R.drawable.article;  // Default icon if position doesn't match
     }
   }
 

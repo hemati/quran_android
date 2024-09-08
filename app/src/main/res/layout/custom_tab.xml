@@ -1,0 +1,23 @@
+<!-- res/layout/custom_tab.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="8dp"
+    android:background="@drawable/quran_row_ripple_light"
+    >
+
+  <ImageView
+      android:id="@+id/tab_icon"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/ic_ab_search"/>
+
+  <TextView
+      android:id="@+id/tab_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="Tab"
+      android:textColor="@color/primary_text_color_dark"/>
+</LinearLayout>

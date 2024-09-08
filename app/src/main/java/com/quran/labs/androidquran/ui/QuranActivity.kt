@@ -1,5 +1,6 @@
 package com.quran.labs.androidquran.ui
 
+import android.app.Activity
 import android.app.SearchManager
 import android.content.ComponentName
 import android.content.Context
@@ -9,10 +10,14 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
+import android.preference.PreferenceManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AlertDialog.Builder
 import androidx.appcompat.app.AppCompatActivity
@@ -25,7 +30,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.appcoholic.gpt.DefaultMessagesActivity
+import com.getkeepsafe.taptargetview.TapTarget
+import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.quran.labs.androidquran.AboutUsActivity
 import com.quran.labs.androidquran.HelpActivity
 import com.quran.labs.androidquran.QuranApplication
@@ -50,6 +58,7 @@ import com.quran.labs.androidquran.ui.helpers.JumpDestination
 import com.quran.labs.androidquran.util.AudioUtils
 import com.quran.labs.androidquran.util.QuranSettings
 import com.quran.labs.androidquran.util.QuranUtils
+import com.quran.labs.androidquran.util.SharedPrefHelper
 import com.quran.labs.androidquran.view.SlidingTabLayout
 import com.quran.mobile.di.ExtraScreenProvider
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -85,6 +94,7 @@ class QuranActivity : AppCompatActivity(),
   private var supportActionMode: ActionMode? = null
   private val compositeDisposable = CompositeDisposable()
   lateinit var latestPageObservable: Observable<Int>
+  private val KEY_TAP_TARGET_SHOWN = "tap_target_shown"
 
   @Inject
   lateinit var settings: QuranSettings
@@ -98,6 +108,13 @@ class QuranActivity : AppCompatActivity(),
   lateinit var quranIndexEventLogger: QuranIndexEventLogger
   @Inject
   lateinit var extraScreens: Set<@JvmSuppressWildcards ExtraScreenProvider>
+
+
+  private lateinit var sharedPrefHelper: SharedPrefHelper
+  private var startTime: Long = 0
+  private val RATING_THRESHOLD = 3
+  private val USAGE_THRESHOLD = 5 * 60 * 1000L // 4 minutes in milliseconds
+
 
   public override fun onCreate(savedInstanceState: Bundle?) {
     val quranApp = application as QuranApplication
@@ -124,6 +141,7 @@ class QuranActivity : AppCompatActivity(),
     val pagerAdapter = PagerAdapter(supportFragmentManager)
     pager.adapter = pagerAdapter
     val indicator = findViewById<SlidingTabLayout>(R.id.indicator)
+    indicator.setCustomTabView(R.layout.custom_tab, R.id.tab_title, R.id.tab_icon)
     indicator.setViewPager(pager)
     if (isRtl) {
       pager.currentItem = TITLES.size - 1
@@ -164,6 +182,106 @@ class QuranActivity : AppCompatActivity(),
     }
     updateTranslationsListAsNeeded()
     quranIndexEventLogger.logAnalytics()
+
+    showTapTargetSequenceIfNeeded(this, tb, false)
+
+
+    sharedPrefHelper = SharedPrefHelper(this)
+    startTime = SystemClock.elapsedRealtime()
+    val openCount = sharedPrefHelper.openCount
+    sharedPrefHelper.saveOpenCount(openCount + 1)
+
+  }
+
+  private fun showRatingDialog() {
+    // Code to show Google Play rating dialog
+    val manager = ReviewManagerFactory.create(this)
+    val request = manager.requestReviewFlow()
+
+    request.addOnCompleteListener { task ->
+      if (task.isSuccessful) {
+        // We got the ReviewInfo object
+        val reviewInfo = task.result
+        val flow = manager.launchReviewFlow(this, reviewInfo)
+
+        flow.addOnCompleteListener { task1 ->
+          // Handle completion of review flow if needed
+        }
+      } else {
+        // Handle error if needed
+      }
+
+      sharedPrefHelper.saveOpenCount(0)
+      sharedPrefHelper.saveUsageTime(0)
+    }
+  }
+
+  private fun showTapTargetSequenceIfNeeded(
+    activity: Activity,
+    toolbar: Toolbar,
+    forceShow: Boolean
+  ) {
+    val prefs = PreferenceManager.getDefaultSharedPreferences(activity)
+
+    if (!prefs.getBoolean(
+        KEY_TAP_TARGET_SHOWN,
+        false
+      ) || forceShow
+    ) {
+      Handler(Looper.getMainLooper()).postDelayed({
+        TapTargetSequence(activity)
+          .targets(
+//            TapTarget.forView(
+//              activity.findViewById(R.id.recycler_view),
+//              getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_title),
+//              getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_desc)
+//            )
+//              .cancelable(false).transparentTarget(true)
+//              .outerCircleColor(R.color.accent_color_darker)
+//              .outerCircleAlpha(0.96f)
+//              .targetCircleColor(android.R.color.white)
+//              .textColor(android.R.color.white),
+//            TapTarget.forToolbarMenuItem(
+//              toolbar, R.id.last_page,
+//              getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_title),
+//              getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_desc)
+//            )
+//              .cancelable(false).transparentTarget(true)
+//              .outerCircleColor(R.color.accent_color_darker)
+//              .outerCircleAlpha(0.96f)
+//              .targetCircleColor(android.R.color.white)
+//              .textColor(android.R.color.white),
+            TapTarget.forView(
+              activity.findViewById(R.id.fab_chat),
+              getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_title),
+              getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_desc)
+            )
+              .cancelable(true).transparentTarget(true)
+              .outerCircleColor(R.color.accent_color_darker)
+              .outerCircleAlpha(0.96f)
+              .targetCircleColor(android.R.color.white)
+              .textColor(android.R.color.white),
+          )
+          .listener(object : TapTargetSequence.Listener {
+            override fun onSequenceFinish() {
+              prefs.edit()
+                .putBoolean(KEY_TAP_TARGET_SHOWN, true)
+                .apply()
+            }
+
+            override fun onSequenceStep(lastTarget: TapTarget, targetClicked: Boolean) {
+              // Handle each step if needed
+            }
+
+            override fun onSequenceCanceled(lastTarget: TapTarget) {
+              prefs.edit()
+                .putBoolean(KEY_TAP_TARGET_SHOWN, true)
+                .apply()
+            }
+          })
+          .start()
+      }, 1000) // 1-second delay
+    }
   }
 
   public override fun onResume() {
@@ -191,11 +309,28 @@ class QuranActivity : AppCompatActivity(),
       )
     }
     isPaused = false
+
+    startTime = SystemClock.elapsedRealtime()
+    val totalUsageTime = sharedPrefHelper.usageTime
+    val openCount = sharedPrefHelper.openCount
+    if (openCount >= RATING_THRESHOLD && totalUsageTime >= USAGE_THRESHOLD) {
+      showRatingDialog()
+    }
   }
+
 
   override fun onPause() {
     compositeDisposable.clear()
     isPaused = true
+    val usageTime = SystemClock.elapsedRealtime() - startTime
+    sharedPrefHelper.saveUsageTime(sharedPrefHelper.usageTime + usageTime)
+
+    Log.d("MainActivity", "onPause called")
+    Log.d(
+      "MainActivity",
+      ("Usage time: " + sharedPrefHelper.usageTime).toString() + " milliseconds"
+    )
+    Log.d("MainActivity", "Open count: " + sharedPrefHelper.openCount)
     super.onPause()
   }
 

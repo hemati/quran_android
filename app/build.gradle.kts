@@ -37,8 +37,8 @@ android {
   namespace = "com.quran.labs.androidquran"
 
   defaultConfig {
-    versionCode = 240826
-    versionName = "1.0.2"
+    versionCode = 240908
+    versionName = "1.2.0"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
   }
 
@@ -242,8 +242,13 @@ dependencies {
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(project(":pages:data:madani"))
 
+
   errorprone(libs.errorprone.core)
 
   // Number Picker
   implementation(libs.number.picker)
+
+  implementation("com.getkeepsafe.taptargetview:taptargetview:1.14.0")
+  implementation("com.google.android.play:review:2.0.1")
+
 }

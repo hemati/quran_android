@@ -16,7 +16,8 @@
       android:background="@color/toolbar_color"
       android:layout_alignParentTop="true"
       app:titleTextColor="@android:color/white"
-      app:logo="@mipmap/ic_launcher_removebg"/>
+      app:logo="@mipmap/ic_launcher_removebg"
+      app:title="QuranGPT"/>
 
   <!-- Messages list, placed below the Toolbar -->
   <com.stfalcon.chatkit.messages.MessagesList
