@@ -84,12 +84,15 @@ android {
       versionNameSuffix = "-beta"
       matchingFallbacks += listOf("debug")
       signingConfig = signingConfigs.getByName("debug")
+      matchingFallbacks += listOf("debug", "release")
+
     }
 
     getByName("debug") {
 //      applicationIdSuffix = ".debug"
 //      isMinifyEnabled = false
       versionNameSuffix = "-debug"
+      matchingFallbacks += "release"
     }
 
     getByName("release") {
