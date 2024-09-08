@@ -6,7 +6,6 @@ import java.util.Properties
 
 plugins {
   id("quran.android.application")
-  alias(libs.plugins.kotlin.kapt)
   alias(libs.plugins.kotlin.parcelize)
   alias(libs.plugins.ksp)
   alias(libs.plugins.errorprone)
@@ -214,8 +213,8 @@ dependencies {
   implementation(libs.rxandroid)
 
   // dagger
-  kapt(libs.dagger.compiler)
-  kaptTest(libs.dagger.compiler)
+  ksp(libs.dagger.compiler)
+  kspTest(libs.dagger.compiler)
   implementation(libs.dagger.runtime)
 
   // workmanager
