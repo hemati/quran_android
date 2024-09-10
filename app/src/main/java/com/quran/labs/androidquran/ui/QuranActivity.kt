@@ -113,7 +113,7 @@ class QuranActivity : AppCompatActivity(),
   private lateinit var sharedPrefHelper: SharedPrefHelper
   private var startTime: Long = 0
   private val RATING_THRESHOLD = 3
-  private val USAGE_THRESHOLD = 5 * 60 * 1000L // 4 minutes in milliseconds
+  private val USAGE_THRESHOLD = 5 * 60 * 1000L // 5 minutes in milliseconds
 
 
   public override fun onCreate(savedInstanceState: Bundle?) {
