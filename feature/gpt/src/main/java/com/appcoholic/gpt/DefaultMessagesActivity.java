@@ -103,6 +103,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private Menu menu;
     private Toolbar toolbar;
 
+    private String localiziedPrice = "0.99 $";
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,7 +152,6 @@ public class DefaultMessagesActivity extends AppCompatActivity
         welcomeMessage = createMessage("-1", "Assistant", getString(R.string.chatview_empty_message));
         isTypingMessage = createMessage("-2", "Assistant", "...");
         noInternetMessage = createMessage("-3", "Assistant", getString(R.string.chatview_no_internet));
-        quotaReachedMessage = createMessage("-4", "Assistant", getString(R.string.chatview_quota_reached));
     }
 
     private void setupMessageInput() {
@@ -196,7 +197,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
                 startSubscriptionPurchase();
             }
             else {
-                runOnUiThread(() -> messagesAdapter.addToStart(quotaReachedMessage, true));
+              quotaReachedMessage = createMessage("-4", "Assistant", getString(R.string.chatview_quota_reached).replace("XXPRICEXX", localiziedPrice));
+              runOnUiThread(() -> messagesAdapter.addToStart(quotaReachedMessage, true));
                 quataReachedMessageShown = true;
             }
         }
@@ -364,6 +366,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     // BillingClient is ready
                     checkUserSubscription();
+                    querySubscriptionPrice();
                 }
             }
 
@@ -373,6 +376,32 @@ public class DefaultMessagesActivity extends AppCompatActivity
             }
         });
     }
+
+  private void querySubscriptionPrice() {
+    List<QueryProductDetailsParams.Product> productList = new ArrayList<>();
+    productList.add(QueryProductDetailsParams.Product.newBuilder()
+        .setProductId(SUBSCRIPTION_SKU)
+        .setProductType(BillingClient.ProductType.SUBS)
+        .build());
+
+    QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder()
+        .setProductList(productList)
+        .build();
+
+    billingClient.queryProductDetailsAsync(queryProductDetailsParams, (billingResult, productDetailsList) -> {
+      if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && productDetailsList != null) {
+        for (ProductDetails productDetails : productDetailsList) {
+          if (productDetails.getProductId().equals(SUBSCRIPTION_SKU)) {
+            // Get the localized price and currency
+            localiziedPrice = productDetails.getSubscriptionOfferDetails().get(0).getPricingPhases()
+                .getPricingPhaseList().get(0).getFormattedPrice();
+          }
+        }
+      } else {
+        Log.e(TAG, "Error fetching product details: " + billingResult.getDebugMessage());
+      }
+    });
+  }
 
     private void checkUserSubscription() {
         billingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build(),

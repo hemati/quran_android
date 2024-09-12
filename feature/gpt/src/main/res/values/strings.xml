@@ -6,7 +6,10 @@
   <string name="chatview_delete_selected_confirmation_desc">Are you sure you want to delete selected messages?</string>
   <string name="chatview_no_internet">No internet. Chat requires connection.</string>
   <string name="mnuAskBibleGPT">Ask QuranGPT</string>
-  <string name="chatview_quota_reached">You\'ve reached your daily message limit. Upgrade to QuranGPT Pro for unlimited access with a 3-day free trial. Cancel anytime. Type \'info\' for details.</string>
+<!--  <string name="chatview_quota_reached">You\'ve reached your daily message limit. Upgrade to QuranGPT Pro for unlimited access with a 3-day free trial. Cancel anytime. Type \'info\' for details.</string>-->
+  <string name="chatview_quota_reached">
+You\'ve reached your daily limit. Start your 3-day free trial for unlimited access to QuranGPT Pro (then XXPRICEXX/month). You can cancel anytime during the 3-day trial and won\'t be charged. Type \'info\' for more details.
+  </string>
   <string name="taptargetview_fap_biblegpt_title">Chat with QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Your personal Quran assistant. Ask questions, explore verses, or request prayers.</string>
   <string name="taptargetview_add">Add Tab</string>
