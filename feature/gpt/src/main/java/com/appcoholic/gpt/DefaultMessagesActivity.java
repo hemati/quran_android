@@ -1,7 +1,6 @@
 package com.appcoholic.gpt;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -103,7 +102,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private Menu menu;
     private Toolbar toolbar;
 
-    private String localiziedPrice = "0.99 $";
+    private String localizedPrice = "0.99 $";
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -197,7 +196,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
                 startSubscriptionPurchase();
             }
             else {
-              quotaReachedMessage = createMessage("-4", "Assistant", getString(R.string.chatview_quota_reached).replace("XXPRICEXX", localiziedPrice));
+              quotaReachedMessage = createMessage("-4", "Assistant", getString(R.string.chatview_quota_reached).replace("XXPRICEXX", localizedPrice));
               runOnUiThread(() -> messagesAdapter.addToStart(quotaReachedMessage, true));
                 quataReachedMessageShown = true;
             }
@@ -393,8 +392,34 @@ public class DefaultMessagesActivity extends AppCompatActivity
         for (ProductDetails productDetails : productDetailsList) {
           if (productDetails.getProductId().equals(SUBSCRIPTION_SKU)) {
             // Get the localized price and currency
-            localiziedPrice = productDetails.getSubscriptionOfferDetails().get(0).getPricingPhases()
-                .getPricingPhaseList().get(0).getFormattedPrice();
+//            localiziedPrice = productDetails.getSubscriptionOfferDetails().get(0).getPricingPhases()
+//                .getPricingPhaseList().get(0).getFormattedPrice();
+
+            List<ProductDetails.SubscriptionOfferDetails> offerDetailsList = productDetails.getSubscriptionOfferDetails();
+            if (offerDetailsList != null && !offerDetailsList.isEmpty()) {
+              // Iterate over offer details to find the correct pricing phase
+              for (ProductDetails.SubscriptionOfferDetails offerDetails : offerDetailsList) {
+                List<ProductDetails.PricingPhase> pricingPhases = offerDetails.getPricingPhases().getPricingPhaseList();
+
+                ProductDetails.PricingPhase regularPricingPhase = null;
+
+                // Iterate through the phases to find the first non-trial/non-introductory phase
+                for (ProductDetails.PricingPhase pricingPhase : pricingPhases) {
+                  // Look for the recurring pricing phase (this is typically after a trial/introductory phase)
+                  if (pricingPhase.getBillingPeriod().equals("P1M") || pricingPhase.getBillingPeriod().equals("P1Y")) {
+                    // Assuming that the regular billing period is either 1 month (P1M) or 1 year (P1Y)
+                    regularPricingPhase = pricingPhase;
+                    break;
+                  }
+                }
+
+                if (regularPricingPhase != null) {
+                  // Get the localized price after the trial phase
+                  localizedPrice = regularPricingPhase.getFormattedPrice();
+                  break;
+                }
+              }
+            }
           }
         }
       } else {
