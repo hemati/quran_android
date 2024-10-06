@@ -131,7 +131,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
         // Initialize Firebase Remote Config
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-            .setMinimumFetchIntervalInSeconds(3600)  // Adjust based on your needs
+            .setMinimumFetchIntervalInSeconds(600)  // Adjust based on your needs
             .build();
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
 
