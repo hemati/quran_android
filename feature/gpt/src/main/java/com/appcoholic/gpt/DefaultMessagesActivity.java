@@ -40,6 +40,8 @@ import com.azure.core.credential.KeyCredential;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
@@ -76,9 +78,10 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private List<ChatRequestMessage> chatMessages = new ArrayList<>();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAnalytics firebaseAnalytics;
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     private OpenAIAsyncClient client;
-
+    private String modelKey = "gpt-4o-mini";
     private final ChatRequestSystemMessage systemMessage = new ChatRequestSystemMessage(
             "You are a helpful assistant. " +
             "You will talk only about religions, primarily Islam and the Quran. " +
@@ -118,17 +121,21 @@ public class DefaultMessagesActivity extends AppCompatActivity
         if (intent != null) {
             // Get the extra data from the intent
             reference = intent.getStringExtra("reference");
-            Log.i(TAG, "onCreate: " + reference);
             // Now you can use the 'reference' variable in your activity
             // For example, you can set it as a message in your chat
             // Or use it as a context for your AI model
         }
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        // Initialize Firebase Remote Config
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+            .setMinimumFetchIntervalInSeconds(3600)  // Adjust based on your needs
+            .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+
         messagesList = findViewById(R.id.messagesList);
-        client = new OpenAIClientBuilder()
-                .credential(new KeyCredential(BuildConfig.OPENAI_API_KEY))
-                .buildAsyncClient();
 
         toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
@@ -144,7 +151,33 @@ public class DefaultMessagesActivity extends AppCompatActivity
         setupMessageInput();
         setupMessagesAdapter();
         setupBillingClient();
+        fetchAndActivateConfig();
 //        findViewById(R.id.messageSendButton).setContentDescription("send message");
+    }
+
+    private void fetchAndActivateConfig() {
+      mFirebaseRemoteConfig.fetchAndActivate()
+          .addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+              // Fetch and activate succeeded
+              String openAiApiKey = mFirebaseRemoteConfig.getString("openai_api_key");
+              String modelKey = mFirebaseRemoteConfig.getString("openai_model_key");
+              if(!modelKey.isEmpty())
+                this.modelKey = modelKey;
+              initializeOpenAIClient(openAiApiKey);
+            } else {
+              // Fetch failed
+              Log.e(TAG, "Fetch failed");
+              FirebaseCrashlytics.getInstance().recordException(new Exception("Fetch failed"));
+            }
+          });
+    }
+
+    private void initializeOpenAIClient(String openAiApiKey) {
+      // Initialize the OpenAI client using the fetched API key
+      client = new OpenAIClientBuilder()
+          .credential(new KeyCredential(openAiApiKey))
+          .buildAsyncClient();
     }
 
     private void initializeMessages() {
@@ -269,7 +302,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
         firestore.collection("users").document(userId).collection("messages")
                 .add(msg)
-                .addOnSuccessListener(documentReference -> Log.d("Firebase", "DocumentSnapshot added with ID: " + documentReference.getId()))
+                .addOnSuccessListener(documentReference -> Log.d("Firebase", "DocumentSnapshot added. "))
                 .addOnFailureListener(e -> {
                     Log.w("Firebase", "Error adding document", e);
                     FirebaseCrashlytics.getInstance().recordException(e);

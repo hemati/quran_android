@@ -3,23 +3,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
-
-// Function to load environment variables from the .env file
-fun loadEnvVariables(): Map<String, String> {
-  val envFile = project.file(".env")
-  if (!envFile.exists()) return emptyMap()
-
-  return envFile.readLines()
-    .filter { it.isNotBlank() && !it.startsWith("#") }
-    .map { it.split("=", limit = 2) }
-    .associate { it[0].trim() to it.getOrElse(1) { "" }.trim() }
-}
-
-// Load environment variables
-val envVariables = loadEnvVariables()
-val openAiApiKey: String = envVariables["OPENAI_API_KEY"] ?: "key_not_found"
-
-
 android {
     namespace = "com.appcoholic.gpt"
     compileSdk = 34
@@ -32,7 +15,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
-        buildConfigField("String", "OPENAI_API_KEY", "\"$openAiApiKey\"")
     }
 
     buildTypes {
@@ -89,5 +71,5 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.firebase:firebase-crashlytics")
-
+    implementation("com.google.firebase:firebase-config")
 }
