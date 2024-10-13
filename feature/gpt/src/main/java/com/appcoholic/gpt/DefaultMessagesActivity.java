@@ -131,7 +131,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
         // Initialize Firebase Remote Config
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-            .setMinimumFetchIntervalInSeconds(600)  // Adjust based on your needs
+            .setMinimumFetchIntervalInSeconds(86400)  // Adjust based on your needs
             .build();
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
 
@@ -161,13 +161,17 @@ public class DefaultMessagesActivity extends AppCompatActivity
             if (task.isSuccessful()) {
               // Fetch and activate succeeded
               String openAiApiKey = mFirebaseRemoteConfig.getString("openai_api_key");
-              String modelKey = mFirebaseRemoteConfig.getString("openai_model_key");
+              String _modelKey = mFirebaseRemoteConfig.getString("openai_model_key");
               if(!modelKey.isEmpty())
-                this.modelKey = modelKey;
+                this.modelKey = _modelKey;
               initializeOpenAIClient(openAiApiKey);
             } else {
-              // Fetch failed
-              Log.e(TAG, "Fetch failed");
+              // Fetch failed, handle specific reasons
+              Exception exception = task.getException();
+              if (exception != null) {
+                Log.e(TAG, "Fetch failed: " + exception.getMessage());
+                FirebaseCrashlytics.getInstance().recordException(exception);
+              }
               FirebaseCrashlytics.getInstance().recordException(new Exception("Fetch failed"));
             }
           });
@@ -254,17 +258,22 @@ public class DefaultMessagesActivity extends AppCompatActivity
             isTypingMessage.setCreatedAt(new Date());
             runOnUiThread(() -> messagesAdapter.addToStart(isTypingMessage, true));
 
-
-            client.getChatCompletions("gpt-4o-mini", new ChatCompletionsOptions(chatMessagesContext))
-                    .subscribe(
-                            completion -> handleChatCompletion(completion.getChoices()),
-                            error -> {
-                                Log.e(TAG, "Failed to get chat completions", error);
-                                FirebaseCrashlytics.getInstance().recordException(error);
-                            },
-                            () -> runOnUiThread(() -> messagesAdapter.delete(isTypingMessage))
-                    );
-
+            if (client != null) {
+                client.getChatCompletions("gpt-4o-mini", new ChatCompletionsOptions(chatMessagesContext))
+                        .subscribe(
+                                completion -> handleChatCompletion(completion.getChoices()),
+                                error -> {
+                                    Log.e(TAG, "Failed to get chat completions", error);
+                                    FirebaseCrashlytics.getInstance().recordException(error);
+                                },
+                                () -> runOnUiThread(() -> messagesAdapter.delete(isTypingMessage))
+                        );
+            }
+            else{
+              Log.e(TAG, "OpenAI client is not initialized");
+              FirebaseCrashlytics.getInstance().recordException(new Exception("OpenAI client is not initialized"));
+              Toast.makeText(this, "QuranGPT is not available at the moment. Please try again later.", Toast.LENGTH_LONG).show();
+            }
             logFirebaseEvent("message_sent", message);
 
         }
