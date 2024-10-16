@@ -146,35 +146,39 @@ public class DefaultMessagesActivity extends AppCompatActivity
         }
 
         setUserSubscribed(false);
+        fetchAndActivateConfig();
 
         initializeMessages();
         setupMessageInput();
         setupMessagesAdapter();
         setupBillingClient();
-        fetchAndActivateConfig();
 //        findViewById(R.id.messageSendButton).setContentDescription("send message");
     }
 
     private void fetchAndActivateConfig() {
-      mFirebaseRemoteConfig.fetchAndActivate()
-          .addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()) {
-              // Fetch and activate succeeded
-              String openAiApiKey = mFirebaseRemoteConfig.getString("openai_api_key");
-              String _modelKey = mFirebaseRemoteConfig.getString("openai_model_key");
-              if(!modelKey.isEmpty())
-                this.modelKey = _modelKey;
-              initializeOpenAIClient(openAiApiKey);
-            } else {
-              // Fetch failed, handle specific reasons
-              Exception exception = task.getException();
-              if (exception != null) {
-                Log.e(TAG, "Fetch failed: " + exception.getMessage());
-                FirebaseCrashlytics.getInstance().recordException(exception);
+      if(isNetworkAvailable()) {
+        mFirebaseRemoteConfig.fetchAndActivate()
+            .addOnCompleteListener(this, task -> {
+              if (task.isSuccessful()) {
+                // Fetch and activate succeeded
+                String openAiApiKey = mFirebaseRemoteConfig.getString("openai_api_key");
+                String _modelKey = mFirebaseRemoteConfig.getString("openai_model_key");
+                if(!modelKey.isEmpty())
+                  this.modelKey = _modelKey;
+                initializeOpenAIClient(openAiApiKey);
+              } else {
+                // Fetch failed, handle specific reasons
+                Exception exception = task.getException();
+                if (exception != null) {
+                  Log.e(TAG, "Fetch failed: " + exception.getMessage());
+                  FirebaseCrashlytics.getInstance().recordException(exception);
+                }
+                FirebaseCrashlytics.getInstance().recordException(new Exception("Fetch failed"));
               }
-              FirebaseCrashlytics.getInstance().recordException(new Exception("Fetch failed"));
-            }
-          });
+            });
+        } else {
+          Log.d(TAG, "No internet connection");
+        }
     }
 
     private void initializeOpenAIClient(String openAiApiKey) {
