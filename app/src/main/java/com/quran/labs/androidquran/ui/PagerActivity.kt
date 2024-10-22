@@ -846,7 +846,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       .start()
 
     fabChat.animate()
-      .translationY((if (visible) 0 else fabChat.height + bottomMargin).toFloat())
+      .translationY((if (visible) 0 else fabChat.height).toFloat())
       .setDuration(250)
       .start()
   }

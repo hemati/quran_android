@@ -26,11 +26,6 @@
       android:layout_height="wrap_content"
       android:background="@color/transparent_actionbar_color"
       >
-    <View
-        android:id="@+id/status_bg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -66,7 +61,7 @@
     <com.quran.mobile.feature.audiobar.AudioBarWrapper
         android:id="@+id/audio_area"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/audiobar_height"
+        android:layout_height="wrap_content"
         />
   </LinearLayout>
 </RelativeLayout>
