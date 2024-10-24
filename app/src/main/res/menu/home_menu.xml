@@ -64,6 +64,10 @@
       android:title="@string/menu_help"
       app:showAsAction="never" />
   <item
+      android:id="@+id/support"
+      android:title="@string/menu_support"
+      app:showAsAction="never" />
+  <item
       android:id="@+id/about"
       android:title="@string/menu_about"
       app:showAsAction="never"

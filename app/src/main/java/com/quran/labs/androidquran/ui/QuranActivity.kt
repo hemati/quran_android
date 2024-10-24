@@ -2,6 +2,7 @@ package com.quran.labs.androidquran.ui
 
 import android.app.Activity
 import android.app.SearchManager
+import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
@@ -20,6 +21,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
@@ -73,6 +75,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import java.net.URLEncoder
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import javax.inject.Inject
 import kotlin.math.abs
@@ -470,6 +473,44 @@ class QuranActivity : AppCompatActivity(),
       }
       R.id.last_page -> {
         jumpToLastPage()
+      }
+      R.id.support -> {
+        val options = arrayOf("via Email", "via WhatsApp")
+        Builder(this)
+          .setTitle("Contact Support")
+          .setItems(options) { dialog, which ->
+            when (which) {
+              0 -> {
+                // Email option selected
+                val emailIntent = Intent(Intent.ACTION_SEND).apply {
+                  type = "message/rfc822"
+                  putExtra(Intent.EXTRA_EMAIL, arrayOf("support@appcoholic.com")) // Replace with your support email
+                  putExtra(Intent.EXTRA_SUBJECT, "Holy Word QuranGPT - Support Request")
+                  putExtra(Intent.EXTRA_TEXT, "Dear Support Team,\n\n")
+                }
+                try {
+                  startActivity(Intent.createChooser(emailIntent, "Send Email"))
+                } catch (e: ActivityNotFoundException) {
+                  Toast.makeText(this, "No email app found", Toast.LENGTH_SHORT).show()
+                }
+              }
+              1 -> {
+                // WhatsApp option selected
+                val whatsappNumber = "+3197019676800" // Replace with your WhatsApp number including country code
+                val message = "Hello, I need support with Holy Word - QuranGPT." // Customize your message
+                val url = "https://wa.me/${whatsappNumber.removePrefix("+")}?text=${URLEncoder.encode(message, "UTF-8")}"
+                val whatsappIntent = Intent(Intent.ACTION_VIEW).apply {
+                  data = Uri.parse(url)
+                }
+                try {
+                  startActivity(whatsappIntent)
+                } catch (e: ActivityNotFoundException) {
+                  Toast.makeText(this, "WhatsApp not installed", Toast.LENGTH_SHORT).show()
+                }
+              }
+            }
+          }
+          .show()
       }
       R.id.help -> {
         startActivity(Intent(this, HelpActivity::class.java))
