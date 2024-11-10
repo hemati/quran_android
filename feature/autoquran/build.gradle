@@ -1,0 +1,33 @@
+plugins {
+  id 'quran.android.library.android'
+  alias libs.plugins.anvil
+  alias libs.plugins.ksp
+}
+
+anvil {
+  useKsp(true)
+  generateDaggerFactories.set(false)
+}
+
+android.namespace = "com.quran.labs.feature.autoquran"
+
+dependencies {
+  implementation libs.androidx.core.ktx
+  implementation libs.androidx.appcompat
+  api libs.androidx.media
+  implementation(libs.androidx.media3.exoplayer)
+  implementation(libs.androidx.media3.exoplayer.dash)
+  api(libs.androidx.media3.session)
+  implementation(libs.androidx.media3.ui)
+
+  implementation project(":common:data")
+  implementation project(":common:di")
+  implementation project(":common:ui:core")
+  implementation project(":common:pages")
+  implementation project(':common:upgrade')
+
+  ksp libs.dagger.compiler
+  kspTest libs.dagger.compiler
+
+  implementation libs.dagger.runtime
+}

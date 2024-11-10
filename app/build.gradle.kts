@@ -190,6 +190,9 @@ dependencies {
   implementation(project(":feature:qarilist"))
   implementation(project(":feature:gpt"))
 
+  // android auto support
+  implementation(project(":feature:autoquran"))
+
   implementation(libs.kotlinx.coroutines.core)
   implementation(libs.kotlinx.coroutines.android)
 
