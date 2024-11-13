@@ -6,7 +6,8 @@
   <string name="chatview_delete_selected_confirmation_desc">آیا مطمئن هستید که می‌خواهید پیام‌های انتخاب‌شده را حذف کنید؟</string>
   <string name="chatview_no_internet">اینترنت موجود نیست. چت نیاز به اتصال دارد.</string>
   <string name="mnuAskBibleGPT">از قرآنGPT بپرسید</string>
-  <string name="chatview_quota_reached">شما به حد روزانه پیام‌ها رسیده‌اید. برای دسترسی نامحدود، به افزونه قرآنGPT Pro ارتقا دهید. برای جزئیات \'info\' را تایپ کنید.</string>
+  <string name="chatview_quota_reached">شما به حد روزانه پیام‌ها رسیده‌اید. برای دسترسی نامحدود، به افزونه قرآنGPT Pro ارتقا دهید. برای جزئیات \'اطلاعات\' را تایپ کنید.</string>
+  <string name="chatview_quota_reached_info">اطلاعات</string>
   <string name="taptargetview_fap_biblegpt_title">چت با قرآنGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">دستیار شخصی شما برای قرآن. سوال بپرسید، آیات را کاوش کنید یا دعاها را درخواست کنید.</string>
   <string name="taptargetview_add">افزودن تب</string>

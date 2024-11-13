@@ -7,6 +7,7 @@
   <string name="chatview_no_internet">Brak internetu. Czat wymaga połączenia.</string>
   <string name="mnuAskBibleGPT">Zapytaj QuranGPT</string>
   <string name="chatview_quota_reached">Osiągnąłeś swój dzienny limit wiadomości. Aby uzyskać nieograniczony dostęp, uaktualnij do dodatku QuranGPT Pro. Wpisz \'info\' po więcej szczegółów.</string>
+  <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Czat z QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Twój osobisty asystent do Koranu. Zadawaj pytania, badaj wersety lub poproś o modlitwy.</string>
   <string name="taptargetview_add">Dodaj kartę</string>

@@ -6,7 +6,8 @@
   <string name="chatview_delete_selected_confirmation_desc">تاللانغان ئۇچۇرلارنى ئۆچۈرۈشنى چوقۇم قىلىشنى خالامسىز؟</string>
   <string name="chatview_no_internet">تور يوق. پاراڭ قىلىش ئۇلانمىنى تەلەپ قىلىدۇ.</string>
   <string name="mnuAskBibleGPT">قۇرئانGPTدىن سوراڭ</string>
-  <string name="chatview_quota_reached">كۈندىلىك ئۇچۇر چەككە يەتكەن. ھەجدىن مۇستەسنا ئېرىشمەك ئۈچۈن، قۇرئانGPT Pro قوشۇلمىسىنى يېڭىلاڭ. تېپىش ئۈچۈن \'info\' نى كىرگۈزۈڭ.</string>
+  <string name="chatview_quota_reached">كۈندىلىك ئۇچۇر چەككە يەتكەن. ھەجدىن مۇستەسنا ئېرىشمەك ئۈچۈن، قۇرئانGPT Pro قوشۇلمىسىنى يېڭىلاڭ. تېپىش ئۈچۈن \'مەلۇمات\' نى كىرگۈزۈڭ.</string>
+  <string name="chatview_quota_reached_info">مەلۇمات</string>
   <string name="taptargetview_fap_biblegpt_title">قۇرئانGPT بىلەن پاراڭ</string>
   <string name="taptargetview_fap_biblegpt_desc">شەخسى قۇرئان ياردەمچىڭىز. سوئال سوراڭ، ئايەتلەرنى ئىزدەڭ ياكى دۇئانى سوراڭ.</string>
   <string name="taptargetview_add">بەت قوشۇڭ</string>

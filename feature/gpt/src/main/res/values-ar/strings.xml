@@ -7,6 +7,7 @@
   <string name="chatview_no_internet">لا يوجد اتصال بالإنترنت. الدردشة تتطلب اتصال.</string>
   <string name="mnuAskBibleGPT">اسأل قرآنGPT</string>
   <string name="chatview_quota_reached">لقد وصلت إلى الحد اليومي للرسائل. للحصول على وصول غير محدود، قم بالترقية إلى إضافة قرآنGPT برو. اكتب \'معلومات\' للحصول على التفاصيل.</string>
+  <string name="chatview_quota_reached_info">معلومات</string>
   <string name="taptargetview_fap_biblegpt_title">الدردشة مع قرآنGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">مساعدك الشخصي للقرآن. اسأل الأسئلة، استكشف الآيات، أو اطلب الدعاء.</string>
   <string name="taptargetview_add">إضافة تبويب</string>

@@ -7,6 +7,7 @@
   <string name="chatview_no_internet">İnternet yok. Sohbet için bağlantı gerekiyor.</string>
   <string name="mnuAskBibleGPT">QuranGPT\'ye Sorun</string>
   <string name="chatview_quota_reached">Günlük mesaj limitinize ulaştınız. Sınırsız erişim için QuranGPT Pro eklentisine yükseltin. Ayrıntılar için \'info\' yazın.</string>
+  <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">QuranGPT ile Sohbet Edin</string>
   <string name="taptargetview_fap_biblegpt_desc">Kişisel Kur\'an asistanınız. Sorular sorun, ayetleri keşfedin veya dualar isteyin.</string>
   <string name="taptargetview_add">Sekme Ekle</string>

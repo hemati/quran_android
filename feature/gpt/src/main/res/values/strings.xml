@@ -10,6 +10,8 @@
   <string name="chatview_quota_reached">
 You\'ve reached your daily limit. Start your 3-day free trial for unlimited access to QuranGPT Pro (then XXPRICEXX/month). You can cancel anytime during the 3-day trial and won\'t be charged. Type \'info\' for more details.
   </string>
+  <string name="chatview_quota_reached_info">info</string>
+
   <string name="taptargetview_fap_biblegpt_title">Chat with QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Your personal Quran assistant. Ask questions, explore verses, or request prayers.</string>
   <string name="taptargetview_add">Add Tab</string>

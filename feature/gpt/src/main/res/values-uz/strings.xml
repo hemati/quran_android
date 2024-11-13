@@ -7,6 +7,7 @@
   <string name="chatview_no_internet">Internet yo\'q. Chat uchun ulanish talab qilinadi.</string>
   <string name="mnuAskBibleGPT">QuranGPT\'dan so\'rang</string>
   <string name="chatview_quota_reached">Siz kunlik xabarlar limitiga yetdingiz. Cheksiz kirish uchun, QuranGPT Pro qo\'shimchasiga yangilang. Tafsilotlar uchun \'info\' ni yozing.</string>
+  <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">QuranGPT bilan suhbatlashing</string>
   <string name="taptargetview_fap_biblegpt_desc">Shaxsiy Qur\'on yordamchingiz. Savollar bering, oyatlarni o\'rganing yoki duolarni so\'rang.</string>
   <string name="taptargetview_add">Tab qo\'shing</string>

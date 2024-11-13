@@ -7,6 +7,7 @@
   <string name="chatview_no_internet">Tidak ada internet. Obrolan memerlukan koneksi.</string>
   <string name="mnuAskBibleGPT">Tanyakan kepada QuranGPT</string>
   <string name="chatview_quota_reached">Anda telah mencapai batas pesan harian Anda. Untuk akses tanpa batas, tingkatkan ke addon QuranGPT Pro. Ketik \'info\' untuk detail lebih lanjut.</string>
+  <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Mengobrol dengan QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Asisten pribadi Anda untuk Al-Quran. Ajukan pertanyaan, jelajahi ayat-ayat, atau minta doa.</string>
   <string name="taptargetview_add">Tambahkan Tab</string>

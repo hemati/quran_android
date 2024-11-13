@@ -7,6 +7,7 @@
   <string name="chatview_no_internet">Nuk ka internet. Chat-i kërkon lidhje.</string>
   <string name="mnuAskBibleGPT">Pyet QuranGPT</string>
   <string name="chatview_quota_reached">Keni arritur limitin tuaj ditor të mesazheve. Për akses të pakufizuar, përmirësoni në shtesën QuranGPT Pro. Shkruani \'info\' për detaje.</string>
+  <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Bisedoni me QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Asistenti juaj personal për Kuranin. Bëni pyetje, eksploroni ajetet, ose kërkoni lutje.</string>
   <string name="taptargetview_add">Shto Tab</string>

@@ -7,6 +7,7 @@
   <string name="chatview_no_internet">Ingen internetanslutning. Chatt kräver en anslutning.</string>
   <string name="mnuAskBibleGPT">Fråga QuranGPT</string>
   <string name="chatview_quota_reached">Du har nått din dagliga gräns för meddelanden. För obegränsad tillgång, uppgradera till QuranGPT Pro-tillägget. Skriv \'info\' för mer information.</string>
+  <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Chatta med QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Din personliga assistent för Koranen. Ställ frågor, utforska verser eller be om böner.</string>
   <string name="taptargetview_add">Lägg till flik</string>

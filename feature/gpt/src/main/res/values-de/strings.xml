@@ -7,6 +7,7 @@
   <string name="chatview_no_internet">Kein Internet. Der Chat erfordert eine Verbindung.</string>
   <string name="mnuAskBibleGPT">Frage QuranGPT</string>
   <string name="chatview_quota_reached"> Du hast dein tägliches Limit erreicht. Starte deine 3-tägige kostenlose Testversion für unbegrenzten Zugang zu QuranGPT Pro (danach XXPRICEXX/Monat). Kündige jederzeit während der Testphase, um nicht belastet zu werden. Gib \'info\' für Details ein.</string>
+  <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Chatte mit QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Dein persönlicher Koran-Assistent. Stelle Fragen, erkunde Verse oder bitte um Gebete.</string>
 

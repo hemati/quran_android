@@ -7,6 +7,7 @@
   <string name="chatview_no_internet">Không có kết nối internet. Trò chuyện yêu cầu kết nối.</string>
   <string name="mnuAskBibleGPT">Hỏi QuranGPT</string>
   <string name="chatview_quota_reached">Bạn đã đạt đến giới hạn tin nhắn hàng ngày của mình. Để truy cập không giới hạn, hãy nâng cấp lên tiện ích bổ sung QuranGPT Pro. Nhập \'info\' để biết chi tiết.</string>
+  <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Trò chuyện với QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Trợ lý cá nhân của bạn về Kinh Qur\'an. Hãy đặt câu hỏi, khám phá các câu Kinh, hoặc yêu cầu lời cầu nguyện.</string>
   <string name="taptargetview_add">Thêm Tab</string>

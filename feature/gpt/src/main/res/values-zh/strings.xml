@@ -6,7 +6,8 @@
   <string name="chatview_delete_selected_confirmation_desc">你确定要删除所选消息吗？</string>
   <string name="chatview_no_internet">没有网络连接。聊天需要连接。</string>
   <string name="mnuAskBibleGPT">询问QuranGPT</string>
-  <string name="chatview_quota_reached">你已达到每日消息限制。要获得无限制访问权限，请升级到QuranGPT Pro附加组件。输入\'info\'了解详情。</string>
+  <string name="chatview_quota_reached">你已达到每日消息限制。要获得无限制访问权限，请升级到QuranGPT Pro附加组件。输入\'信息\'了解详情。</string>
+  <string name="chatview_quota_reached_info">信息</string>
   <string name="taptargetview_fap_biblegpt_title">与QuranGPT聊天</string>
   <string name="taptargetview_fap_biblegpt_desc">你的个人《古兰经》助手。提出问题，探索章节，或请求祷告。</string>
   <string name="taptargetview_add">添加标签</string>

@@ -37,6 +37,10 @@ import com.azure.ai.openai.models.ChatRequestMessage;
 import com.azure.ai.openai.models.ChatRequestSystemMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.core.credential.KeyCredential;
+import com.google.android.gms.tasks.Task;
+import com.google.android.play.core.review.ReviewInfo;
+import com.google.android.play.core.review.ReviewManager;
+import com.google.android.play.core.review.ReviewManagerFactory;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -112,6 +116,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private Toolbar toolbar;
 
     private String localizedPrice = "0.99 $";
+
+    private MessageInput messageInput;  // Add this line
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -201,12 +207,12 @@ public class DefaultMessagesActivity extends AppCompatActivity
     }
 
     private void setupMessageInput() {
-        MessageInput input = findViewById(R.id.input);
-        input.setInputListener(this);
+        messageInput = findViewById(R.id.input);
+        messageInput.setInputListener(this);
         if (reference != null) {
             // Set the reference followed by a new line
-            input.getInputEditText().setText("(" + reference + ")" + System.lineSeparator());
-            input.getInputEditText().requestFocus();
+            messageInput.getInputEditText().setText("(" + reference + ")" + System.lineSeparator());
+            messageInput.getInputEditText().requestFocus();
         }
     }
 
@@ -244,9 +250,15 @@ public class DefaultMessagesActivity extends AppCompatActivity
             }
             else {
               quotaReachedMessage = createMessage("-4", "Assistant", getString(R.string.chatview_quota_reached).replace("XXPRICEXX", localizedPrice));
-              runOnUiThread(() -> messagesAdapter.addToStart(quotaReachedMessage, true));
-                quataReachedMessageShown = true;
+              runOnUiThread(() -> {
+                messagesAdapter.addToStart(quotaReachedMessage, true);
+                messageInput.getInputEditText().setText(R.string.chatview_quota_reached_info);
+                messageInput.getInputEditText().requestFocus();
+
+              });
+              quataReachedMessageShown = true;
             }
+            return false;
         }
         else{
             String messageText = input.toString();
@@ -285,9 +297,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
               Toast.makeText(this, "QuranGPT is not available at the moment. Please try again later.", Toast.LENGTH_LONG).show();
             }
             logFirebaseEvent("message_sent", message);
-
+          return true;
         }
-        return true;
     }
 
     private void handleChatCompletion(List<ChatChoice> choices) {
@@ -519,7 +530,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
             billingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
                 if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                     // Purchase acknowledged
-                    Toast.makeText(this, "Subscription successful", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "Subscription successful", Toast.LENGTH_SHORT).show();
+                    showRatingDialog();
                 } else {
                     // Handle any errors
                     Log.e(TAG, "Failed to acknowledge purchase: " + billingResult.getDebugMessage());
@@ -529,6 +541,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
             // Purchase already acknowledged
             Toast.makeText(this, "Subscription successful", Toast.LENGTH_SHORT).show();
         }
+        messageInput.getInputEditText().setText(null);
     }
 
 
@@ -537,7 +550,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
             setUserSubscribed(true);
             // Grant the subscription to the user
             // Update your backend or local storage if necessary
-            Toast.makeText(this, "Subscription successful", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Subscription successful", Toast.LENGTH_LONG).show();
             acknowledgePurchase(purchase);
         }
     }
@@ -677,4 +690,27 @@ public class DefaultMessagesActivity extends AppCompatActivity
             copyItem.setVisible(count > 0);
         }
     }
+
+  private void showRatingDialog() {
+    // Code to show Google Play rating dialog
+    ReviewManager manager = ReviewManagerFactory.create(this);
+    Task<ReviewInfo> request = manager.requestReviewFlow();
+
+    request.addOnCompleteListener(task -> {
+      if (task.isSuccessful()) {
+        // We got the ReviewInfo object
+        ReviewInfo reviewInfo = task.getResult();
+        Task<Void> flow = manager.launchReviewFlow(this, reviewInfo);
+
+        flow.addOnCompleteListener(task1 -> {
+          // Handle completion of review flow if needed
+        });
+      } else {
+        // Handle error if needed
+        Log.d(TAG, "Failed to get review flow");
+      }
+
+    });
+  }
+
 }

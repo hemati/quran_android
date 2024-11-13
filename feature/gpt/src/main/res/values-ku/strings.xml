@@ -6,7 +6,8 @@
   <string name="chatview_delete_selected_confirmation_desc">Ma hûn piştrast in ku peyamên bijartî jêbikin?</string>
   <string name="chatview_no_internet">Tînet tune. Sohbet pêwîstî bi girêdanekî ye.</string>
   <string name="mnuAskBibleGPT">Ji QuranGPT bipirse</string>
-  <string name="chatview_quota_reached">Hûn tîşa peyamên rojane ya xwe gîhandin. Ji bo gihîştina neqarî, serlêdana QuranGPT Pro yên hikûmeta xwe biguherînin. Ji bo hûrgulî \'info\' binivîsin.</string>
+  <string name="chatview_quota_reached">Hûn tîşa peyamên rojane ya xwe gîhandin. Ji bo gihîştina neqarî, serlêdana QuranGPT Pro yên hikûmeta xwe biguherînin. Ji bo hûrgulî \'agahî\' binivîsin.</string>
+  <string name="chatview_quota_reached_info">agahî</string>
   <string name="taptargetview_fap_biblegpt_title">Bi QuranGPT re sohbet bikin</string>
   <string name="taptargetview_fap_biblegpt_desc">Alîkariya xwe ya taybetî ya bo Qur\'anê. Pirsekan bibin, ayetan lêkolînin an jî duayek daxwazînin.</string>
   <string name="taptargetview_add">Tabek Zêde Bikin</string>

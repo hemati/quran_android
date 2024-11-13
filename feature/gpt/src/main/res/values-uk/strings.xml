@@ -6,7 +6,8 @@
   <string name="chatview_delete_selected_confirmation_desc">Ви впевнені, що хочете видалити вибрані повідомлення?</string>
   <string name="chatview_no_internet">Немає інтернету. Для чату потрібне підключення.</string>
   <string name="mnuAskBibleGPT">Запитайте QuranGPT</string>
-  <string name="chatview_quota_reached">Ви досягли своєї денної межі повідомлень. Щоб отримати необмежений доступ, оновіть додаток до QuranGPT Pro. Введіть \'info\' для деталей.</string>
+  <string name="chatview_quota_reached">Ви досягли своєї денної межі повідомлень. Щоб отримати необмежений доступ, оновіть додаток до QuranGPT Pro. Введіть \'інфо\' для деталей.</string>
+  <string name="chatview_quota_reached_info">інфо</string>
   <string name="taptargetview_fap_biblegpt_title">Чат з QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Ваш особистий помічник з Корану. Задавайте питання, досліджуйте вірші або просіть молитви.</string>
   <string name="taptargetview_add">Додати вкладку</string>

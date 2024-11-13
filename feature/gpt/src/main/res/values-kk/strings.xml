@@ -6,7 +6,8 @@
   <string name="chatview_delete_selected_confirmation_desc">Таңдалған хабарларды жойғыңыз келетініне сенімдісіз бе?</string>
   <string name="chatview_no_internet">Интернет жоқ. Чат байланыс талап етеді.</string>
   <string name="mnuAskBibleGPT">ҚұранGPT-ден сұраңыз</string>
-  <string name="chatview_quota_reached">Сіз күнделікті хабарлама лимитіне жеттіңіз. Шексіз қол жетімділік үшін ҚұранGPT Pro қосымшасына жаңартыңыз. Толығырақ ақпарат алу үшін \'info\' теріңіз.</string>
+  <string name="chatview_quota_reached">Сіз күнделікті хабарлама лимитіне жеттіңіз. Шексіз қол жетімділік үшін ҚұранGPT Pro қосымшасына жаңартыңыз. Толығырақ ақпарат алу үшін \'инфо\' теріңіз.</string>
+  <string name="chatview_quota_reached_info">инфо</string>
   <string name="taptargetview_fap_biblegpt_title">ҚұранGPT-мен сөйлесу</string>
   <string name="taptargetview_fap_biblegpt_desc">Сіздің жеке Құран көмекшіңіз. Сұрақтар қойыңыз, аяттарды зерттеңіз немесе дұғалар сұраңыз.</string>
   <string name="taptargetview_add">Қойынды қосу</string>

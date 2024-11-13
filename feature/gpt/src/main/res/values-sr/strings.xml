@@ -6,7 +6,8 @@
   <string name="chatview_delete_selected_confirmation_desc">Да ли сте сигурни да желите да обришете изабране поруке?</string>
   <string name="chatview_no_internet">Нема интернета. За ћаскање је потребна веза.</string>
   <string name="mnuAskBibleGPT">Питајте QuranGPT</string>
-  <string name="chatview_quota_reached">Достигли сте дневни лимит порука. За неограничен приступ, надоградите на додатак QuranGPT Pro. Укуцајте \'info\' за детаље.</string>
+  <string name="chatview_quota_reached">Достигли сте дневни лимит порука. За неограничен приступ, надоградите на додатак QuranGPT Pro. Укуцајте \'инфо\' за детаље.</string>
+  <string name="chatview_quota_reached_info">инфо</string>
   <string name="taptargetview_fap_biblegpt_title">Ћаскајте са QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Ваш лични асистент за Куран. Постављајте питања, истражујте стихове или затражите молитве.</string>
   <string name="taptargetview_add">Додајте картицу</string>
