@@ -44,13 +44,12 @@ android {
 repositories {
   google()
   mavenCentral()
-  jcenter()
   // Add this if it's not already present
   maven(url = "https://www.jitpack.io")  // Use parentheses and 'url =' for Kotlin DSL
+  maven(url = "https://repo.grails.org/grails/core/")
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
