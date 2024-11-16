@@ -72,7 +72,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private static final String TAG = "DefaultMessagesActivity";
     private static final String SENDER_ID = "User";
     private static final int MAX_CHAT_HISTORY = 6;
-    private static final int MAX_MESSAGES_PER_DAY = 6;
+    private static int MAX_MESSAGES_PER_DAY = 6;
 
     private static final String SUBSCRIPTION_SKU = "qurangpt_subscription";
 
@@ -178,6 +178,10 @@ public class DefaultMessagesActivity extends AppCompatActivity
                 if(!modelKey.isEmpty())
                   this.modelKey = _modelKey;
                 initializeOpenAIClient(openAiApiKey);
+
+                long _max_messages_per_day = mFirebaseRemoteConfig.getLong("max_messages_per_day");
+                if(_max_messages_per_day > 0)
+                  MAX_MESSAGES_PER_DAY = (int) _max_messages_per_day;
               } else {
                 // Fetch failed, handle specific reasons
                 Exception exception = task.getException();
