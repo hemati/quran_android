@@ -10,9 +10,31 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Chatta con QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Il tuo assistente personale per il Corano. Fai domande, esplora i versetti o richiedi preghiere.</string>
-  <string name="taptargetview_add">Aggiungi Scheda</string>
-  <string name="taptargetview_add_desc">Aggiungi libri, parabole, articoli, piani, vangeli o un versetto casuale.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Capitoli</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Esplora il Corano per capitoli e versi.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Sezioni (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Naviga il Corano diviso in 30 sezioni.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Segnalibri</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Salva e organizza i tuoi versi preferiti per un accesso rapido.</string>
+  <string name="taptargetview_fap_biblegpt_search">Ricerca</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Trova rapidamente versi o argomenti nel Corano.</string>
+
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">Aggiorna a \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Goditi le funzionalità premium esclusive:\n\n
+    &#8226; Risposte illimitate da QuranGPT.\n
+    &#8226; Tempi di risposta più veloci.\n
+    &#8226; AI avanzata per approfondimenti più profondi.\n
+</string>
+  <string name="monthly_plan_text">Mensile</string>
+  <string name="yearly_plan_text">Annuale</string>
+  <string name="discount_badge_text">Risparmia il 30%</string>
+  <string name="upgrade_now">Inizia la prova gratuita di 7 giorni</string>
+  <string name="no_thanks">Forse più tardi</string>
+  <string name="trial_conditions">• Annulla in qualsiasi momento\n• Nessun addebito durante il periodo di prova gratuito\n• Funzionalità esclusive durante la prova</string>
+
 </resources>

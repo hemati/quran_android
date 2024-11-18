@@ -10,9 +10,30 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Converse com o QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Seu assistente pessoal para o Alcorão. Faça perguntas, explore versículos ou peça orações.</string>
-  <string name="taptargetview_add">Adicionar Aba</string>
-  <string name="taptargetview_add_desc">Adicione livros, parábolas, artigos, planos, evangelhos ou um versículo aleatório.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Capítulos</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Explore o Alcorão por capítulos e versos.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Seções (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Navegue pelo Alcorão dividido em 30 seções.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Favoritos</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Salve e organize seus versos favoritos para acesso rápido.</string>
+  <string name="taptargetview_fap_biblegpt_search">Pesquisar</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Encontre rapidamente versos ou tópicos no Alcorão.</string>
+
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+  <string name="upgrade_to_premium">Atualize para \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Aproveite recursos premium exclusivos:\n\n
+    &#8226; Respostas ilimitadas do QuranGPT.\n
+    &#8226; Tempos de resposta mais rápidos.\n
+    &#8226; IA avançada para análises mais profundas.\n
+</string>
+  <string name="monthly_plan_text">Mensal</string>
+  <string name="yearly_plan_text">Anual</string>
+  <string name="discount_badge_text">Economize 30%</string>
+  <string name="upgrade_now">Comece o teste gratuito de 7 dias</string>
+  <string name="no_thanks">Talvez mais tarde</string>
+  <string name="trial_conditions">• Cancele a qualquer momento\n• Sem cobranças durante o período de teste gratuito\n• Recursos exclusivos durante o teste</string>
+
 </resources>

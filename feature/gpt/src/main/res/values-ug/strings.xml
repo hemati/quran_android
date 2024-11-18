@@ -10,9 +10,30 @@
   <string name="chatview_quota_reached_info">مەلۇمات</string>
   <string name="taptargetview_fap_biblegpt_title">قۇرئانGPT بىلەن پاراڭ</string>
   <string name="taptargetview_fap_biblegpt_desc">شەخسى قۇرئان ياردەمچىڭىز. سوئال سوراڭ، ئايەتلەرنى ئىزدەڭ ياكى دۇئانى سوراڭ.</string>
-  <string name="taptargetview_add">بەت قوشۇڭ</string>
-  <string name="taptargetview_add_desc">كىتابلار، مەسەللەر، ماقالىلەر، پىلانلار، ئىنجىللار ياكى توختامسىز بىر ئايەت قوشۇڭ.</string>
+  <string name="taptargetview_fap_biblegpt_sura">بابلار</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">قۇرئاننى باب ۋە ئايەت بويىچە تەتقىق قىلىڭ.</string>
+  <string name="taptargetview_fap_biblegpt_juz">بۆلۈملەر (جزء)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">قۇرئاننى 30 بۆلۈمگە ئايرىلغان ھالدا ئۆگىنىڭ.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">بەلگىلەش</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">تېز زىيارەت قىلىش ئۈچۈن ياخشى كۆرىدىغان ئايەتلىرىڭىزنى ساقلاڭ.</string>
+  <string name="taptargetview_fap_biblegpt_search">ئىزدەش</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">قۇرئاندا تېز ئايەت ياكى تېمىلارنى تاپۇڭ.</string>
 
   <string name="qurangpt">قۇرئانGPT</string>
   <string name="qurangpt_pro">قۇرئانGPT Pro</string>
+
+  <string name="upgrade_to_premium">QuranGPT Pro نى ئۆستۈرۈڭ</string>
+  <string name="premium_features_description">
+    مەخسۇس ئالاھىدە مۇلازىمەتتىن ھوزۇرلىنىڭ:\n\n
+    &#8226; چەكلىمىسىز QuranGPT جاۋابلىرى.\n
+    &#8226; تېز جاۋاب ۋاقتى.\n
+    &#8226; ئېنىق ئانالىز ئۈچۈن ئىلغار AI.\n
+</string>
+  <string name="monthly_plan_text">ئايلىق</string>
+  <string name="yearly_plan_text">يىللىق</string>
+  <string name="discount_badge_text">%30 تېجەش</string>
+  <string name="upgrade_now">7 كۈنلۈك ھەقسىز سىناشنى باشلاڭ</string>
+  <string name="no_thanks">بەلكى كېيىنچە</string>
+  <string name="trial_conditions">• ھەر قانداق ۋاقىتتا بىكار قىلىش\n• ھەقسىز سىناش مەزگىلىدە ھەچقانداق ھەق تولانمايدۇ\n• سىناش مەزگىلىدە ئالاھىدە ئىقتىدارلار</string>
+
 </resources>

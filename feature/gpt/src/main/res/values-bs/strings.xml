@@ -10,9 +10,31 @@
   <string name="chatview_quota_reached_info">informacije</string>
   <string name="taptargetview_fap_biblegpt_title">Razgovarajte s QuranGPT-om</string>
   <string name="taptargetview_fap_biblegpt_desc">Vaš lični asistent za Kur\'an. Postavljajte pitanja, istražujte ajete ili zatražite dove.</string>
-  <string name="taptargetview_add">Dodaj Tab</string>
-  <string name="taptargetview_add_desc">Dodajte knjige, parabole, članke, planove, evanđelja ili nasumični ajet.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Poglavlja</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Istražite Kur\'an po poglavljima i ajetima.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Dijelovi (Džuz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Navigirajte kroz Kur\'an podijeljen na 30 dijelova.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Obilježja</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Spremite omiljene ajete za brzi pristup.</string>
+  <string name="taptargetview_fap_biblegpt_search">Pretraga</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Brzo pronađite ajete ili teme u Kur\'anu.</string>
+
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">Nadogradite na \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Uživajte u ekskluzivnim premium funkcijama:\n\n
+    &#8226; Neograničeni odgovori od QuranGPT-a.\n
+    &#8226; Brže vrijeme odgovora.\n
+    &#8226; Napredni AI za dublje uvide.\n
+</string>
+  <string name="monthly_plan_text">Mjesečno</string>
+  <string name="yearly_plan_text">Godišnje</string>
+  <string name="discount_badge_text">Uštedite 30%</string>
+  <string name="upgrade_now">Započnite 7-dnevno besplatno probno razdoblje</string>
+  <string name="no_thanks">Možda kasnije</string>
+  <string name="trial_conditions">• Možete otkazati u bilo kojem trenutku\n• Nema troškova tokom besplatnog probnog perioda\n• Ekskluzivne funkcije tokom probnog perioda</string>
+
 </resources>

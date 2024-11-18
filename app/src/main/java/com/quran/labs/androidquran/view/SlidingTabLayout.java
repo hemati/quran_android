@@ -90,7 +90,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
   private ViewPager mViewPager;
   private ViewPager.OnPageChangeListener mViewPagerPageChangeListener;
 
-  private final SlidingTabStrip mTabStrip;
+  public final SlidingTabStrip mTabStrip;
 
   public SlidingTabLayout(Context context) {
     this(context, null);

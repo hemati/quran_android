@@ -10,9 +10,30 @@
   <string name="chatview_quota_reached_info">معلومات</string>
   <string name="taptargetview_fap_biblegpt_title">الدردشة مع قرآنGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">مساعدك الشخصي للقرآن. اسأل الأسئلة، استكشف الآيات، أو اطلب الدعاء.</string>
-  <string name="taptargetview_add">إضافة تبويب</string>
-  <string name="taptargetview_add_desc">أضف كتب، أمثال، مقالات، خطط، أناجيل، أو آية عشوائية.</string>
+  <string name="taptargetview_fap_biblegpt_sura">الفصول</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">استعرض القرآن حسب الفصول والآيات.</string>
+  <string name="taptargetview_fap_biblegpt_juz">الأجزاء</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">تصفح القرآن مقسمًا إلى 30 جزءًا.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">الإشارات المرجعية</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">احفظ الآيات التي تود الرجوع إليها بسهولة.</string>
+  <string name="taptargetview_fap_biblegpt_search">بحث</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">ابحث بسرعة عن الآيات أو الموضوعات في القرآن.</string>
 
   <string name="qurangpt">قرآنGPT</string>
   <string name="qurangpt_pro">قرآنGPT برو</string>
+
+  <string name="upgrade_to_premium">ترقية إلى \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    استمتع بالميزات الحصرية:\n\n
+    &#8226; إجابات غير محدودة من QuranGPT.\n
+    &#8226; أوقات استجابة أسرع.\n
+    &#8226; ذكاء اصطناعي متقدم لتحليلات أعمق.\n
+</string>
+  <string name="monthly_plan_text">شهرياً</string>
+  <string name="yearly_plan_text">سنوي</string>
+  <string name="discount_badge_text">وفر 30%</string>
+  <string name="upgrade_now">ابدأ فترة تجريبية مجانية لمدة 7 أيام</string>
+  <string name="no_thanks">ربما لاحقًا</string>
+  <string name="trial_conditions">• يمكنك الإلغاء في أي وقت\n• لا رسوم أثناء الفترة التجريبية المجانية\n• ميزات حصرية أثناء التجربة</string>
+
 </resources>

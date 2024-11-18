@@ -10,9 +10,29 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">QuranGPT bilan suhbatlashing</string>
   <string name="taptargetview_fap_biblegpt_desc">Shaxsiy Qur\'on yordamchingiz. Savollar bering, oyatlarni o\'rganing yoki duolarni so\'rang.</string>
-  <string name="taptargetview_add">Tab qo\'shing</string>
-  <string name="taptargetview_add_desc">Kitoblar, masallar, maqolalar, rejalar, Injillar yoki tasodifiy oyat qo\'shing.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Boblar</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Qur’onni bob va oyatlar bo‘yicha o‘rganing.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Bo‘limlar (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Qur’onni 30 qismga bo‘lingan holda ko‘rib chiqing.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Belgilashlar</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Sevimli oyatlaringizni tezkor kirish uchun saqlang va tartibga soling.</string>
+  <string name="taptargetview_fap_biblegpt_search">Qidirish</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Qur’onda tezkor oyat yoki mavzularni toping.</string>
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+  <string name="upgrade_to_premium">QuranGPT Pro ga \nYangilang</string>
+  <string name="premium_features_description">
+    Eksklyuziv premium xususiyatlardan bahramand bo‘ling:\n\n
+    &#8226; Cheksiz QuranGPT javoblari.\n
+    &#8226; Tezroq javob vaqti.\n
+    &#8226; Chuqurroq tushunchalar uchun ilg‘or AI.\n
+</string>
+  <string name="monthly_plan_text">Oylik</string>
+  <string name="yearly_plan_text">Yillik</string>
+  <string name="discount_badge_text">30% tejang</string>
+  <string name="upgrade_now">7 kunlik bepul sinovni boshlang</string>
+  <string name="no_thanks">Ehtimol, keyinroq</string>
+  <string name="trial_conditions">• Istalgan vaqtda bekor qiling\n• Bepul sinov davrida hech qanday to‘lov yo‘q\n• Sinov davrida eksklyuziv xususiyatlar</string>
+
 </resources>

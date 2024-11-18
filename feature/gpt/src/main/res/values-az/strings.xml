@@ -10,9 +10,30 @@
   <string name="chatview_quota_reached_info">məlumat</string>
   <string name="taptargetview_fap_biblegpt_title">QuranGPT ilə Çat</string>
   <string name="taptargetview_fap_biblegpt_desc">Şəxsi Quran köməkçiniz. Suallar verin, ayələri araşdırın və ya dualar istəyin.</string>
-  <string name="taptargetview_add">Əlavə Et</string>
-  <string name="taptargetview_add_desc">Kitablar, məsələlər, məqalələr, planlar, incillər və ya təsadüfi bir ayə əlavə edin.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Fəsillər</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Quranı fəsillər və ayələr üzrə araşdırın.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Hissələr</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Quranı 30 hissəyə bölünərək araşdırın.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Əlfəcinlər</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Sevdiyiniz ayələri tez bir zamanda tapmaq üçün saxlayın.</string>
+  <string name="taptargetview_fap_biblegpt_search">Axtarış</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Quranda xüsusi ayələri və ya mövzuları tapın.</string>
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">QuranGPT Pro-ya \nYüksəldin</string>
+  <string name="premium_features_description">
+    Eksklüziv premium xüsusiyyətlərdən zövq alın:\n\n
+    &#8226; QuranGPT-dən limitsiz cavablar.\n
+    &#8226; Daha sürətli cavab müddətləri.\n
+    &#8226; Daha dərindən anlayış üçün qabaqcıl süni intellekt.\n
+</string>
+  <string name="monthly_plan_text">Aylıq</string>
+  <string name="yearly_plan_text">İllik</string>
+  <string name="discount_badge_text">30% Qənaət edin</string>
+  <string name="upgrade_now">7 günlük pulsuz sınağa başlayın</string>
+  <string name="no_thanks">Bəlkə sonra</string>
+  <string name="trial_conditions">• İstənilən vaxt ləğv edin\n• Pulsuz sınaq dövründə heç bir ödəniş olmayacaq\n• Sınaq müddətində eksklüziv funksiyalar</string>
+
 </resources>

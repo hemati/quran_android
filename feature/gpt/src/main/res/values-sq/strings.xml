@@ -10,9 +10,31 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Bisedoni me QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Asistenti juaj personal për Kuranin. Bëni pyetje, eksploroni ajetet, ose kërkoni lutje.</string>
-  <string name="taptargetview_add">Shto Tab</string>
-  <string name="taptargetview_add_desc">Shtoni libra, paravoli, artikuj, plane, ungjij, ose një ajet të rastësishëm.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Kapituj</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Eksploroni Kuranin sipas kapitujve dhe ajeteve.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Seksionet (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Navigoni Kuranin të ndarë në 30 seksione.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Shënime</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Ruani dhe organizoni ajetet tuaja të preferuara për qasje të shpejtë.</string>
+  <string name="taptargetview_fap_biblegpt_search">Kërko</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Gjeni shpejt ajete ose tema në Kuran.</string>
+
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">Kaloni në \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Shijoni veçoritë ekskluzive premium:\n\n
+    &#8226; Përgjigje të pakufizuara nga QuranGPT.\n
+    &#8226; Koha më e shpejtë e përgjigjes.\n
+    &#8226; AI e avancuar për njohuri më të thella.\n
+</string>
+  <string name="monthly_plan_text">Mujore</string>
+  <string name="yearly_plan_text">Vjetore</string>
+  <string name="discount_badge_text">Kurseni 30%</string>
+  <string name="upgrade_now">Fillo provën falas 7 ditore</string>
+  <string name="no_thanks">Ndoshta më vonë</string>
+  <string name="trial_conditions">• Anulo në çdo kohë\n• Pa pagesa gjatë periudhës së provës falas\n• Veçori ekskluzive gjatë provës</string>
+
 </resources>

@@ -40,10 +40,13 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.appcoholic.gpt.DefaultMessagesActivity
+import com.appcoholic.gpt.SubscriptionDialog
 import com.getkeepsafe.taptargetview.TapTarget
 import com.getkeepsafe.taptargetview.TapTargetSequence
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.quran.labs.androidquran.AboutUsActivity
 import com.quran.labs.androidquran.HelpActivity
 import com.quran.labs.androidquran.QuranApplication
@@ -70,6 +73,7 @@ import com.quran.labs.androidquran.util.QuranSettings
 import com.quran.labs.androidquran.util.QuranUtils
 import com.quran.labs.androidquran.util.SharedPrefHelper
 import com.quran.labs.androidquran.view.SlidingTabLayout
+import com.quran.labs.androidquran.view.SlidingTabStrip
 import com.quran.mobile.di.ExtraScreenProvider
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
@@ -130,6 +134,9 @@ class QuranActivity : AppCompatActivity(),
   private val RATING_THRESHOLD = 3
   private val USAGE_THRESHOLD = 5 * 60 * 1000L // 5 minutes in milliseconds
 
+  private lateinit var remoteConfig: FirebaseRemoteConfig
+
+  private var showProDialog: Boolean = false
 
   public override fun onCreate(savedInstanceState: Bundle?) {
     val quranApp = application as QuranApplication
@@ -224,14 +231,44 @@ class QuranActivity : AppCompatActivity(),
     updateTranslationsListAsNeeded()
     quranIndexEventLogger.logAnalytics()
 
-    showTapTargetSequenceIfNeeded(this, tb, false)
-
-
     sharedPrefHelper = SharedPrefHelper(this)
     startTime = SystemClock.elapsedRealtime()
     val openCount = sharedPrefHelper.openCount
     sharedPrefHelper.saveOpenCount(openCount + 1)
 
+    initializeRemoteConfig()
+    fetchRemoteConfig(tb)
+
+  }
+
+  private fun initializeRemoteConfig() {
+    remoteConfig = FirebaseRemoteConfig.getInstance()
+
+    // Set default values for Remote Config parameters
+    val configDefaults = mapOf(
+      "show_pro_dialog" to false // Default value
+    )
+    remoteConfig.setDefaultsAsync(configDefaults)
+
+    // Set Remote Config settings (optional, for developer mode or faster fetch intervals)
+    val configSettings = FirebaseRemoteConfigSettings.Builder()
+      .setMinimumFetchIntervalInSeconds(3600) // Fetch interval in seconds
+      .build()
+    remoteConfig.setConfigSettingsAsync(configSettings)
+  }
+
+  private fun fetchRemoteConfig(tb: Toolbar) {
+    remoteConfig.fetchAndActivate()
+      .addOnCompleteListener(this) { task ->
+        if (task.isSuccessful) {
+          // Successfully fetched and activated
+          showProDialog = remoteConfig.getBoolean("show_pro_dialog")
+        } else {
+          // Fetch failed, use default value
+          showProDialog = false
+        }
+        showTapTargetSequenceIfNeeded(this, tb, false)
+      }
   }
 
   private fun showRatingDialog() {
@@ -269,59 +306,96 @@ class QuranActivity : AppCompatActivity(),
         false
       ) || forceShow
     ) {
-      Handler(Looper.getMainLooper()).postDelayed({
-        TapTargetSequence(activity)
-          .targets(
-//            TapTarget.forView(
-//              activity.findViewById(R.id.recycler_view),
-//              getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_title),
-//              getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_desc)
-//            )
-//              .cancelable(false).transparentTarget(true)
-//              .outerCircleColor(R.color.accent_color_darker)
-//              .outerCircleAlpha(0.96f)
-//              .targetCircleColor(android.R.color.white)
-//              .textColor(android.R.color.white),
-//            TapTarget.forToolbarMenuItem(
-//              toolbar, R.id.last_page,
-//              getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_title),
-//              getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_desc)
-//            )
-//              .cancelable(false).transparentTarget(true)
-//              .outerCircleColor(R.color.accent_color_darker)
-//              .outerCircleAlpha(0.96f)
-//              .targetCircleColor(android.R.color.white)
-//              .textColor(android.R.color.white),
-            TapTarget.forView(
-              activity.findViewById(R.id.fab_chat),
-              getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_title),
-              getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_desc)
-            )
-              .cancelable(true).transparentTarget(true)
-              .outerCircleColor(R.color.accent_color_darker)
-              .outerCircleAlpha(0.96f)
-              .targetCircleColor(android.R.color.white)
-              .textColor(android.R.color.white),
+      var subscriptionDialog: SubscriptionDialog? = null
+      if(showProDialog) {
+        subscriptionDialog = SubscriptionDialog(this)
+      }
+      val slidingTabStrip = findViewById<SlidingTabLayout>(R.id.indicator).mTabStrip as SlidingTabStrip
+      val firstTabView = slidingTabStrip.getChildAt(0)
+      val secondTabView = slidingTabStrip.getChildAt(1)
+      val thiredTabView= slidingTabStrip.getChildAt(2)
+
+      TapTargetSequence(activity)
+        .targets(
+          TapTarget.forView(
+            firstTabView,
+            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_sura),
+            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_sura_desc)
           )
-          .listener(object : TapTargetSequence.Listener {
-            override fun onSequenceFinish() {
-              prefs.edit()
-                .putBoolean(KEY_TAP_TARGET_SHOWN, true)
-                .apply()
-            }
+            .cancelable(false)
+            .transparentTarget(true)
+            .outerCircleColor(R.color.accent_color_darker)
+            .outerCircleAlpha(0.96f)
+            .targetCircleColor(android.R.color.white)
+            .textColor(android.R.color.white),
 
-            override fun onSequenceStep(lastTarget: TapTarget, targetClicked: Boolean) {
-              // Handle each step if needed
-            }
+          TapTarget.forView(
+            secondTabView,
+            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_juz),
+            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_juz_desc)
+          )
+            .cancelable(false)
+            .transparentTarget(true)
+            .outerCircleColor(R.color.accent_color_darker)
+            .outerCircleAlpha(0.96f)
+            .targetCircleColor(android.R.color.white)
+            .textColor(android.R.color.white),
 
-            override fun onSequenceCanceled(lastTarget: TapTarget) {
-              prefs.edit()
-                .putBoolean(KEY_TAP_TARGET_SHOWN, true)
-                .apply()
-            }
-          })
-          .start()
-      }, 1000) // 1-second delay
+          TapTarget.forView(
+            thiredTabView,
+            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_bookmark),
+            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_bookmark_desc)
+          )
+            .cancelable(false)
+            .transparentTarget(true)
+            .outerCircleColor(R.color.accent_color_darker)
+            .outerCircleAlpha(0.96f)
+            .targetCircleColor(android.R.color.white)
+            .textColor(android.R.color.white),
+          TapTarget.forToolbarMenuItem(
+            toolbar, R.id.search,
+            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_search),
+            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_search_desc)
+          )
+            .cancelable(false).transparentTarget(true)
+            .outerCircleColor(R.color.accent_color_darker)
+            .outerCircleAlpha(0.96f)
+            .targetCircleColor(android.R.color.white)
+            .textColor(android.R.color.white),
+          TapTarget.forView(
+            activity.findViewById(R.id.fab_chat),
+            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_title),
+            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_desc)
+          )
+            .cancelable(false).transparentTarget(true)
+            .outerCircleColor(R.color.accent_color_darker)
+            .outerCircleAlpha(0.96f)
+            .targetCircleColor(android.R.color.white)
+            .textColor(android.R.color.white),
+        )
+        .listener(object : TapTargetSequence.Listener {
+          override fun onSequenceFinish() {
+            prefs.edit()
+              .putBoolean(KEY_TAP_TARGET_SHOWN, true)
+              .apply()
+              if (showProDialog) {
+                Handler(Looper.getMainLooper()).postDelayed({
+                  subscriptionDialog?.show()
+                }, 1000)
+              }
+          }
+
+          override fun onSequenceStep(lastTarget: TapTarget, targetClicked: Boolean) {
+            // Handle each step if needed
+          }
+
+          override fun onSequenceCanceled(lastTarget: TapTarget) {
+            prefs.edit()
+              .putBoolean(KEY_TAP_TARGET_SHOWN, true)
+              .apply()
+          }
+        })
+        .start()
     }
   }
 

@@ -10,9 +10,30 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Mengobrol dengan QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Asisten pribadi Anda untuk Al-Quran. Ajukan pertanyaan, jelajahi ayat-ayat, atau minta doa.</string>
-  <string name="taptargetview_add">Tambahkan Tab</string>
-  <string name="taptargetview_add_desc">Tambahkan buku, perumpamaan, artikel, rencana, injil, atau ayat acak.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Bab</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Jelajahi Quran berdasarkan bab dan ayat.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Bagian (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Navigasikan Quran dalam 30 bagian.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Penanda</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Simpan dan atur ayat favorit untuk akses cepat.</string>
+  <string name="taptargetview_fap_biblegpt_search">Cari</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Cari ayat atau topik dalam Quran dengan cepat.</string>
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">Upgrade ke \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Nikmati fitur premium eksklusif:\n\n
+    &#8226; Jawaban tanpa batas dari QuranGPT.\n
+    &#8226; Waktu respons lebih cepat.\n
+    &#8226; AI canggih untuk wawasan yang lebih dalam.\n
+</string>
+  <string name="monthly_plan_text">Bulanan</string>
+  <string name="yearly_plan_text">Tahunan</string>
+  <string name="discount_badge_text">Hemat 30%</string>
+  <string name="upgrade_now">Mulai uji coba gratis 7 hari</string>
+  <string name="no_thanks">Mungkin nanti</string>
+  <string name="trial_conditions">• Batalkan kapan saja\n• Tidak ada biaya selama masa uji coba gratis\n• Fitur eksklusif selama masa uji coba</string>
+
 </resources>

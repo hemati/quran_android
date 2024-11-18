@@ -10,9 +10,30 @@
   <string name="chatview_quota_reached_info">інфо</string>
   <string name="taptargetview_fap_biblegpt_title">Чат з QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Ваш особистий помічник з Корану. Задавайте питання, досліджуйте вірші або просіть молитви.</string>
-  <string name="taptargetview_add">Додати вкладку</string>
-  <string name="taptargetview_add_desc">Додайте книги, притчі, статті, плани, Євангелія або випадковий вірш.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Глави</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Досліджуйте Коран за главами та аятами.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Розділи (Джуз)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Ознайомтеся з Кораном, розділеним на 30 частин.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Закладки</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Зберігайте та організуйте улюблені аяти для швидкого доступу.</string>
+  <string name="taptargetview_fap_biblegpt_search">Пошук</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Швидко знаходьте аяти чи теми в Корані.</string>
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">Оновіть до \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Насолоджуйтесь ексклюзивними преміум-функціями:\n\n
+    &#8226; Необмежені відповіді QuranGPT.\n
+    &#8226; Швидший час відповіді.\n
+    &#8226; Розширений ШІ для глибших інсайтів.\n
+</string>
+  <string name="monthly_plan_text">Щомісячно</string>
+  <string name="yearly_plan_text">Щорічно</string>
+  <string name="discount_badge_text">Заощаджуйте 30%</string>
+  <string name="upgrade_now">Розпочніть 7-денний безкоштовний пробний період</string>
+  <string name="no_thanks">Можливо, пізніше</string>
+  <string name="trial_conditions">• Скасуйте в будь-який час\n• Немає платежів під час безкоштовного пробного періоду\n• Ексклюзивні функції під час пробного періоду</string>
+
 </resources>

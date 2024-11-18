@@ -10,9 +10,31 @@
   <string name="chatview_quota_reached_info">infó</string>
   <string name="taptargetview_fap_biblegpt_title">Beszélgess a QuranGPT-vel</string>
   <string name="taptargetview_fap_biblegpt_desc">A személyes Korán asszisztensed. Tegyél fel kérdéseket, fedezd fel a verseket, vagy kérj imát.</string>
-  <string name="taptargetview_add">Fül hozzáadása</string>
-  <string name="taptargetview_add_desc">Adj hozzá könyveket, példázatokat, cikkeket, terveket, evangéliumokat, vagy egy véletlenszerű verset.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Fejezetek</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Fedezze fel a Koránt fejezetek és versek szerint.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Szakaszok (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Navigáljon a Korán 30 szakaszában.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Könyvjelző</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Mentse el és rendszerezze kedvenc verseit a gyors hozzáférés érdekében.</string>
+  <string name="taptargetview_fap_biblegpt_search">Keresés</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Keressen gyorsan verseket vagy témákat a Koránban.</string>
+
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">Frissítés \nQuranGPT Pro-ra</string>
+  <string name="premium_features_description">
+    Élvezze a prémium funkciókat:\n\n
+    &#8226; Korlátlan válaszok a QuranGPT-től.\n
+    &#8226; Gyorsabb válaszidők.\n
+    &#8226; Fejlett mesterséges intelligencia mélyebb betekintéshez.\n
+</string>
+  <string name="monthly_plan_text">Havonta</string>
+  <string name="yearly_plan_text">Évente</string>
+  <string name="discount_badge_text">30%-os kedvezmény</string>
+  <string name="upgrade_now">Kezdje el a 7 napos ingyenes próbát</string>
+  <string name="no_thanks">Lehet, hogy később</string>
+  <string name="trial_conditions">• Bármikor lemondható\n• Ingyenes próbaidőszak alatt nincs díj\n• Exkluzív funkciók a próbaidőszak alatt</string>
+
 </resources>

@@ -10,9 +10,29 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">QuranGPT ile Sohbet Edin</string>
   <string name="taptargetview_fap_biblegpt_desc">Kişisel Kur\'an asistanınız. Sorular sorun, ayetleri keşfedin veya dualar isteyin.</string>
-  <string name="taptargetview_add">Sekme Ekle</string>
-  <string name="taptargetview_add_desc">Kitaplar, meseller, makaleler, planlar, İncil veya rastgele bir ayet ekleyin.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Sureler</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Kur\'an\'ı sure ve ayetlere göre keşfedin.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Cüzler</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Kur\'an\'ı 30 bölüme ayrılmış şekilde gezin.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Yer İşaretleri</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Favori ayetlerinizi hızlı erişim için kaydedin ve düzenleyin.</string>
+  <string name="taptargetview_fap_biblegpt_search">Ara</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Kur\'an\'da hızlıca ayet veya konuları bulun.</string>
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+  <string name="upgrade_to_premium">QuranGPT Pro’ya \nGeçiş Yapın</string>
+  <string name="premium_features_description">
+    Özel premium özelliklerin tadını çıkarın:\n\n
+    &#8226; Sınırsız QuranGPT yanıtı.\n
+    &#8226; Daha hızlı yanıt süreleri.\n
+    &#8226; Daha derin içgörüler için gelişmiş yapay zeka.\n
+</string>
+  <string name="monthly_plan_text">Aylık</string>
+  <string name="yearly_plan_text">Yıllık</string>
+  <string name="discount_badge_text">%30 Tasarruf Edin</string>
+  <string name="upgrade_now">7 günlük ücretsiz denemeye başlayın</string>
+  <string name="no_thanks">Belki daha sonra</string>
+  <string name="trial_conditions">• İstediğiniz zaman iptal edin\n• Ücretsiz deneme süresi boyunca hiçbir ücret yok\n• Deneme sırasında özel özellikler</string>
+
 </resources>

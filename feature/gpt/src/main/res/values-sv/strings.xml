@@ -10,9 +10,31 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Chatta med QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Din personliga assistent för Koranen. Ställ frågor, utforska verser eller be om böner.</string>
-  <string name="taptargetview_add">Lägg till flik</string>
-  <string name="taptargetview_add_desc">Lägg till böcker, liknelser, artiklar, planer, evangelier eller en slumpmässig vers.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Kapitel</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Utforska Koranen kapitel för kapitel och vers för vers.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Sektioner (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Navigera genom Koranen uppdelad i 30 sektioner.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Bokmärken</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Spara och organisera dina favoritverser för snabb åtkomst.</string>
+  <string name="taptargetview_fap_biblegpt_search">Sök</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Hitta snabbt verser eller ämnen i Koranen.</string>
+
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">Uppgradera till \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Njut av exklusiva premiumfunktioner:\n\n
+    &#8226; Obegränsade svar från QuranGPT.\n
+    &#8226; Snabbare svarstider.\n
+    &#8226; Avancerad AI för djupare insikter.\n
+</string>
+  <string name="monthly_plan_text">Månadsvis</string>
+  <string name="yearly_plan_text">Årsvis</string>
+  <string name="discount_badge_text">Spara 30%</string>
+  <string name="upgrade_now">Starta 7 dagars gratis provperiod</string>
+  <string name="no_thanks">Kanske senare</string>
+  <string name="trial_conditions">• Avbryt när som helst\n• Inga avgifter under gratis provperiod\n• Exklusiva funktioner under provperioden</string>
+
 </resources>

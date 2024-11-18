@@ -10,7 +10,30 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Chatte mit QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Dein persönlicher Koran-Assistent. Stelle Fragen, erkunde Verse oder bitte um Gebete.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Kapitel</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Erkunden Sie den Quran nach Kapiteln und Versen.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Abschnitte (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Navigieren Sie durch den Quran in 30 Abschnitten.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Lesezeichen</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Speichern und organisieren Sie Ihre Lieblingsverse für den schnellen Zugriff.</string>
+  <string name="taptargetview_fap_biblegpt_search">Suchen</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Finden Sie Verse oder Themen im Quran schnell.</string>
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">Upgrade zu \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Genießen Sie exklusive Premium-Funktionen:\n\n
+    &#8226; Unbegrenzte Antworten von QuranGPT\n
+    &#8226; Schnellere Antwortzeiten\n
+    &#8226; Fortschrittliche KI für tiefere Einblicke\n
+</string>
+  <string name="monthly_plan_text">Monatlich</string>
+  <string name="yearly_plan_text">Jährlich</string>
+  <string name="discount_badge_text">30% Rabatt</string>
+  <string name="upgrade_now">Starten Sie die 7-tägige kostenlose Testversion</string>
+  <string name="no_thanks">Vielleicht später</string>
+  <string name="trial_conditions">• Jederzeit kündbar\n• Keine Kosten während der Testphase\n• Exklusive Funktionen während des Tests</string>
+
 </resources>

@@ -77,4 +77,12 @@
   <color name="incomingTextColor">@color/primary_text_color_dark</color>
   <color name="outcomingTextColor">@color/primary_text_color</color>
 
+
+
+    <color name="primary">#6200EE</color>
+    <color name="secondary">#03DAC6</color>
+    <color name="black">#000000</color>
+    <color name="gray">#757575</color>
+    <color name="light_gray">#BDBDBD</color>
+
 </resources>

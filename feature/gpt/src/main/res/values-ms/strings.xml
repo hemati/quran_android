@@ -10,9 +10,29 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Sembang dengan QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Pembantu peribadi anda untuk Al-Quran. Ajukan soalan, terokai ayat, atau minta doa.</string>
-  <string name="taptargetview_add">Tambah Tab</string>
-  <string name="taptargetview_add_desc">Tambah buku, perumpamaan, artikel, rancangan, injil, atau ayat rawak.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Bab</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Terokai Quran mengikut bab dan ayat.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Bahagian (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Navigasi Quran dalam 30 bahagian.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Penanda Buku</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Simpan dan atur ayat kegemaran anda untuk akses pantas.</string>
+  <string name="taptargetview_fap_biblegpt_search">Carian</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Cari ayat atau topik tertentu dalam Quran dengan pantas.</string>
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+  <string name="upgrade_to_premium">Tingkatkan ke \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Nikmati ciri premium eksklusif:\n\n
+    &#8226; Jawapan QuranGPT tanpa had.\n
+    &#8226; Masa respons lebih pantas.\n
+    &#8226; AI maju untuk pandangan yang lebih mendalam.\n
+</string>
+  <string name="monthly_plan_text">Bulanan</string>
+  <string name="yearly_plan_text">Tahunan</string>
+  <string name="discount_badge_text">Jimat 30%</string>
+  <string name="upgrade_now">Mulakan percubaan percuma 7 hari</string>
+  <string name="no_thanks">Mungkin kemudian</string>
+  <string name="trial_conditions">• Boleh dibatalkan bila-bila masa\n• Tiada caj semasa percubaan percuma\n• Ciri eksklusif semasa percubaan</string>
+
 </resources>

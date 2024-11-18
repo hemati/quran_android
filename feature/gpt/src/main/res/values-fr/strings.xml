@@ -10,9 +10,31 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Discutez avec QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Votre assistant personnel pour le Coran. Posez des questions, explorez des versets ou demandez des prières.</string>
-  <string name="taptargetview_add">Ajouter un onglet</string>
-  <string name="taptargetview_add_desc">Ajoutez des livres, des paraboles, des articles, des plans, des évangiles ou un verset aléatoire.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Chapitres</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Découvrez le Coran par chapitres et versets.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Sections (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Naviguez dans le Coran divisé en 30 sections.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Favoris</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Enregistrez et organisez vos versets préférés pour un accès rapide.</string>
+  <string name="taptargetview_fap_biblegpt_search">Rechercher</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Trouvez rapidement des versets ou des sujets dans le Coran.</string>
+
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">Passer à \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Profitez des fonctionnalités exclusives premium :\n\n
+    &#8226; Réponses illimitées de QuranGPT.\n
+    &#8226; Temps de réponse plus rapides.\n
+    &#8226; IA avancée pour des analyses plus approfondies.\n
+</string>
+  <string name="monthly_plan_text">Mensuel</string>
+  <string name="yearly_plan_text">Annuel</string>
+  <string name="discount_badge_text">Économisez 30%</string>
+  <string name="upgrade_now">Commencez l\'essai gratuit de 7 jours</string>
+  <string name="no_thanks">Peut-être plus tard</string>
+  <string name="trial_conditions">• Annulez à tout moment\n• Aucun frais pendant la période d\'essai gratuite\n• Fonctionnalités exclusives pendant l\'essai</string>
+
 </resources>

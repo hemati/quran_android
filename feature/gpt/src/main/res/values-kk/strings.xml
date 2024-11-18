@@ -10,9 +10,30 @@
   <string name="chatview_quota_reached_info">инфо</string>
   <string name="taptargetview_fap_biblegpt_title">ҚұранGPT-мен сөйлесу</string>
   <string name="taptargetview_fap_biblegpt_desc">Сіздің жеке Құран көмекшіңіз. Сұрақтар қойыңыз, аяттарды зерттеңіз немесе дұғалар сұраңыз.</string>
-  <string name="taptargetview_add">Қойынды қосу</string>
-  <string name="taptargetview_add_desc">Кітаптарды, астарлы әңгімелерді, мақалаларды, жоспарларды, інжілдерді немесе кездейсоқ аятты қосыңыз.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Сүрелер</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Құранды сүрелер мен аяттар бойынша зерттеңіз.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Бөлімдер (Жүз)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Құранды 30 бөлімге бөлінген түрде шолыңыз.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Бетбелгілер</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Сүйікті аяттарыңызды жылдам қол жеткізу үшін сақтаңыз және реттеңіз.</string>
+  <string name="taptargetview_fap_biblegpt_search">Іздеу</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Құрандағы нақты аяттар мен тақырыптарды тез табыңыз.</string>
+
 
   <string name="qurangpt">ҚұранGPT</string>
   <string name="qurangpt_pro">ҚұранGPT Pro</string>
+  <string name="upgrade_to_premium">QuranGPT Pro-ға \nЖаңартыңыз</string>
+  <string name="premium_features_description">
+    Эксклюзивті премиум мүмкіндіктерінен рахат алыңыз:\n\n
+    &#8226; QuranGPT-тен шексіз жауаптар.\n
+    &#8226; Жылдам жауап беру уақыты.\n
+    &#8226; Терең түсініктер үшін жетілдірілген AI.\n
+</string>
+  <string name="monthly_plan_text">Ай сайын</string>
+  <string name="yearly_plan_text">Жыл сайын</string>
+  <string name="discount_badge_text">30% үнемдеңіз</string>
+  <string name="upgrade_now">7 күндік тегін сынақты бастаңыз</string>
+  <string name="no_thanks">Мүмкін кейінірек</string>
+  <string name="trial_conditions">• Кез келген уақытта бас тартуға болады\n• Тегін сынақ кезеңінде ешқандай төлем болмайды\n• Сынақ кезеңінде эксклюзивті мүмкіндіктер</string>
+
 </resources>

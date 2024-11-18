@@ -10,9 +10,30 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Trò chuyện với QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Trợ lý cá nhân của bạn về Kinh Qur\'an. Hãy đặt câu hỏi, khám phá các câu Kinh, hoặc yêu cầu lời cầu nguyện.</string>
-  <string name="taptargetview_add">Thêm Tab</string>
-  <string name="taptargetview_add_desc">Thêm sách, ngụ ngôn, bài viết, kế hoạch, các sách Phúc Âm, hoặc một câu ngẫu nhiên.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Chương</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Khám phá Kinh Quran theo chương và câu.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Phần (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Đi qua Kinh Quran được chia thành 30 phần.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Dấu trang</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Lưu và sắp xếp các câu yêu thích của bạn để truy cập nhanh chóng.</string>
+  <string name="taptargetview_fap_biblegpt_search">Tìm kiếm</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Nhanh chóng tìm các câu hoặc chủ đề trong Kinh Quran.</string>
+
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+  <string name="upgrade_to_premium">Nâng cấp lên \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Tận hưởng các tính năng cao cấp độc quyền:\n\n
+    &#8226; Trả lời không giới hạn từ QuranGPT.\n
+    &#8226; Thời gian phản hồi nhanh hơn.\n
+    &#8226; AI tiên tiến để hiểu sâu hơn.\n
+</string>
+  <string name="monthly_plan_text">Hàng tháng</string>
+  <string name="yearly_plan_text">Hàng năm</string>
+  <string name="discount_badge_text">Tiết kiệm 30%</string>
+  <string name="upgrade_now">Bắt đầu dùng thử miễn phí 7 ngày</string>
+  <string name="no_thanks">Có thể sau</string>
+  <string name="trial_conditions">• Hủy bất kỳ lúc nào\n• Không có phí trong thời gian dùng thử miễn phí\n• Tính năng độc quyền trong thời gian dùng thử</string>
+
 </resources>

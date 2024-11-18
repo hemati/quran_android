@@ -10,9 +10,30 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Chat met QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Je persoonlijke Koran-assistent. Stel vragen, verken verzen of vraag om gebeden.</string>
-  <string name="taptargetview_add">Tabblad toevoegen</string>
-  <string name="taptargetview_add_desc">Voeg boeken, parabels, artikelen, plannen, evangeliën of een willekeurig vers toe.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Hoofdstukken</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Verken de Quran op hoofdstukken en verzen.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Secties (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Navigeer door de Quran verdeeld in 30 secties.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Bladwijzers</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Bewaar en organiseer je favoriete verzen voor snelle toegang.</string>
+  <string name="taptargetview_fap_biblegpt_search">Zoeken</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Vind snel verzen of onderwerpen in de Quran.</string>
+
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+  <string name="upgrade_to_premium">Upgrade naar \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Geniet van exclusieve premium functies:\n\n
+    &#8226; Onbeperkte antwoorden van QuranGPT.\n
+    &#8226; Snellere reactietijden.\n
+    &#8226; Geavanceerde AI voor diepgaandere inzichten.\n
+</string>
+  <string name="monthly_plan_text">Maandelijks</string>
+  <string name="yearly_plan_text">Jaarlijks</string>
+  <string name="discount_badge_text">Bespaar 30%</string>
+  <string name="upgrade_now">Start de gratis proefperiode van 7 dagen</string>
+  <string name="no_thanks">Misschien later</string>
+  <string name="trial_conditions">• Annuleer op elk moment\n• Geen kosten tijdens de gratis proefperiode\n• Exclusieve functies tijdens de proefperiode</string>
+
 </resources>

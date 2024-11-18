@@ -10,9 +10,29 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Czat z QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Twój osobisty asystent do Koranu. Zadawaj pytania, badaj wersety lub poproś o modlitwy.</string>
-  <string name="taptargetview_add">Dodaj kartę</string>
-  <string name="taptargetview_add_desc">Dodaj książki, przypowieści, artykuły, plany, ewangelie lub losowy werset.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Rozdziały</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Odkrywaj Koran według rozdziałów i wersetów.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Sekcje (Dżuz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Przeglądaj Koran podzielony na 30 sekcji.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Zakładki</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Zapisz i zorganizuj ulubione wersety, aby szybko do nich wrócić.</string>
+  <string name="taptargetview_fap_biblegpt_search">Szukaj</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Szybko znajdź wersety lub tematy w Koranie.</string>
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+  <string name="upgrade_to_premium">Ulepsz do \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Ciesz się ekskluzywnymi funkcjami premium:\n\n
+    &#8226; Nieograniczone odpowiedzi od QuranGPT.\n
+    &#8226; Szybsze czasy odpowiedzi.\n
+    &#8226; Zaawansowana AI dla głębszych analiz.\n
+</string>
+  <string name="monthly_plan_text">Miesięcznie</string>
+  <string name="yearly_plan_text">Rocznie</string>
+  <string name="discount_badge_text">Zaoszczędź 30%</string>
+  <string name="upgrade_now">Rozpocznij 7-dniowy darmowy okres próbny</string>
+  <string name="no_thanks">Może później</string>
+  <string name="trial_conditions">• Anuluj w dowolnym momencie\n• Brak opłat podczas bezpłatnego okresu próbnego\n• Ekskluzywne funkcje podczas okresu próbnego</string>
+
 </resources>

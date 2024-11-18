@@ -10,9 +10,31 @@
   <string name="chatview_quota_reached_info">ข้อมูล</string>
   <string name="taptargetview_fap_biblegpt_title">สนทนากับ QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">ผู้ช่วยส่วนตัวของคุณสำหรับอัลกุรอาน ถามคำถาม สำรวจโองการ หรือขอพรได้เลย</string>
-  <string name="taptargetview_add">เพิ่มแท็บ</string>
-  <string name="taptargetview_add_desc">เพิ่มหนังสือ อุปมา บทความ แผนการ พระวรสาร หรือโองการแบบสุ่ม</string>
+  <string name="taptargetview_fap_biblegpt_sura">บท</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">สำรวจอัลกุรอานตามบทและโองการ</string>
+  <string name="taptargetview_fap_biblegpt_juz">ส่วน (จูซ)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">นำทางอัลกุรอานใน 30 ส่วน</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">บุ๊คมาร์ค</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">บันทึกและจัดระเบียบโองการที่คุณชื่นชอบสำหรับการเข้าถึงอย่างรวดเร็ว</string>
+  <string name="taptargetview_fap_biblegpt_search">ค้นหา</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">ค้นหาโองการหรือหัวข้อในอัลกุรอานอย่างรวดเร็ว</string>
+
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">อัปเกรดเป็น \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    เพลิดเพลินกับคุณสมบัติพรีเมียมสุดพิเศษ:\n\n
+    &#8226; คำตอบจาก QuranGPT ไม่จำกัด\n
+    &#8226; เวลาตอบสนองที่เร็วขึ้น\n
+    &#8226; AI ขั้นสูงสำหรับข้อมูลเชิงลึกที่ลึกซึ้งยิ่งขึ้น\n
+</string>
+  <string name="monthly_plan_text">รายเดือน</string>
+  <string name="yearly_plan_text">รายปี</string>
+  <string name="discount_badge_text">ประหยัด 30%</string>
+  <string name="upgrade_now">เริ่มทดลองใช้ฟรี 7 วัน</string>
+  <string name="no_thanks">อาจจะครั้งหน้า</string>
+  <string name="trial_conditions">• ยกเลิกได้ทุกเมื่อ\n• ไม่มีค่าใช้จ่ายในช่วงทดลองใช้ฟรี\n• คุณสมบัติพิเศษระหว่างช่วงทดลอง</string>
+
 </resources>

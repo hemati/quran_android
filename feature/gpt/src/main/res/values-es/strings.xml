@@ -10,9 +10,31 @@
   <string name="chatview_quota_reached_info">info</string>
   <string name="taptargetview_fap_biblegpt_title">Chatear con QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Tu asistente personal del Corán. Haz preguntas, explora versos o solicita oraciones.</string>
-  <string name="taptargetview_add">Añadir Pestaña</string>
-  <string name="taptargetview_add_desc">Añade libros, parábolas, artículos, planes, evangelios o un versículo aleatorio.</string>
+  <string name="taptargetview_fap_biblegpt_sura">Capítulos</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Explora el Corán por capítulos y versos.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Secciones (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Navega por el Corán dividido en 30 secciones.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Marcadores</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Guarda y organiza versos para acceder fácilmente.</string>
+  <string name="taptargetview_fap_biblegpt_search">Buscar</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Encuentra rápidamente versos o temas en el Corán.</string>
+
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">Actualiza a \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    Disfruta de funciones premium exclusivas:\n\n
+    &#8226; Respuestas ilimitadas de QuranGPT.\n
+    &#8226; Tiempos de respuesta más rápidos.\n
+    &#8226; IA avanzada para análisis más profundos.\n
+</string>
+  <string name="monthly_plan_text">Mensual</string>
+  <string name="yearly_plan_text">Anual</string>
+  <string name="discount_badge_text">Ahorra 30%</string>
+  <string name="upgrade_now">Comienza la prueba gratuita de 7 días</string>
+  <string name="no_thanks">Tal vez más tarde</string>
+  <string name="trial_conditions">• Cancela en cualquier momento\n• Sin cargos durante el periodo de prueba gratuito\n• Funciones exclusivas durante la prueba</string>
+
 </resources>

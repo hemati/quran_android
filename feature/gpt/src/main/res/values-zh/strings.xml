@@ -10,9 +10,29 @@
   <string name="chatview_quota_reached_info">信息</string>
   <string name="taptargetview_fap_biblegpt_title">与QuranGPT聊天</string>
   <string name="taptargetview_fap_biblegpt_desc">你的个人《古兰经》助手。提出问题，探索章节，或请求祷告。</string>
-  <string name="taptargetview_add">添加标签</string>
-  <string name="taptargetview_add_desc">添加书籍、寓言、文章、计划、福音或随机经文。</string>
+  <string name="taptargetview_fap_biblegpt_sura">章节</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">按章节和经文探索古兰经。</string>
+  <string name="taptargetview_fap_biblegpt_juz">部分 (Juz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">浏览分为 30 部分的古兰经。</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">书签</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">保存并整理您喜欢的经文以便快速访问。</string>
+  <string name="taptargetview_fap_biblegpt_search">搜索</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">快速查找古兰经中的特定经文或主题。</string>
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+  <string name="upgrade_to_premium">升级到 \nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    享受独家高级功能：\n\n
+    &#8226; 无限制的 QuranGPT 答复。\n
+    &#8226; 更快的响应时间。\n
+    &#8226; 先进的 AI 提供更深入的见解。\n
+</string>
+  <string name="monthly_plan_text">每月</string>
+  <string name="yearly_plan_text">每年</string>
+  <string name="discount_badge_text">节省 30%</string>
+  <string name="upgrade_now">开始 7 天免费试用</string>
+  <string name="no_thanks">可能稍后</string>
+  <string name="trial_conditions">• 随时取消\n• 免费试用期间无费用\n• 试用期间专属功能</string>
+
 </resources>

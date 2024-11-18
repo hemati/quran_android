@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="chatview_empty_message">Slav! Ez QuranGPT me, rêberê te bo lêkolîna Qur\'anê. Ji min li ser ayetên, şîrove û an jî daxwaza duayek bipirse. </string>
-  <string name="chatview_delete_confirmation_title">Piştrastina Jêbirinê</string>
-  <string name="chatview_delete_confirmation_desc">Ma hûn piştrast in ku hemî peyamên jêbikin?</string>
-  <string name="chatview_delete_selected_confirmation_desc">Ma hûn piştrast in ku peyamên bijartî jêbikin?</string>
-  <string name="chatview_no_internet">Tînet tune. Sohbet pêwîstî bi girêdanekî ye.</string>
-  <string name="mnuAskBibleGPT">Ji QuranGPT bipirse</string>
-  <string name="chatview_quota_reached">Hûn tîşa peyamên rojane ya xwe gîhandin. Ji bo gihîştina neqarî, serlêdana QuranGPT Pro yên hikûmeta xwe biguherînin. Ji bo hûrgulî \'agahî\' binivîsin.</string>
-  <string name="chatview_quota_reached_info">agahî</string>
-  <string name="taptargetview_fap_biblegpt_title">Bi QuranGPT re sohbet bikin</string>
-  <string name="taptargetview_fap_biblegpt_desc">Alîkariya xwe ya taybetî ya bo Qur\'anê. Pirsekan bibin, ayetan lêkolînin an jî duayek daxwazînin.</string>
-  <string name="taptargetview_add">Tabek Zêde Bikin</string>
-  <string name="taptargetview_add_desc">Pirtûk, mînak, gotar, plana xebatê, inçîl an ayetekî xweş xistin zêde bikin.</string>
+  <string name="chatview_empty_message">سڵاو! من QuranGPTم، ڕێنمایی تۆ بۆ سەردانی قورئان. پرسیار لە من بکە سەبارەت بە بەرەودەکان، ڕوونکردنەوەکان، یان داوای دوعا بکە.</string>
+  <string name="chatview_delete_confirmation_title">دڵنیاکردنەوەی سڕینەوە</string>
+  <string name="chatview_delete_confirmation_desc">ئایا دڵنیایت کە دەتەوێت هەموو نامەکان بسڕیتەوە؟</string>
+  <string name="chatview_delete_selected_confirmation_desc">ئایا دڵنیایت کە دەتەوێت نامە دیاریکراوەکان بسڕیتەوە؟</string>
+  <string name="chatview_no_internet">هیچ هەستە بە ئینتەرنێت نیە. چات پەیوەندییەک پێویستە.</string>
+  <string name="mnuAskBibleGPT">پرسیار لە QuranGPT</string>
+  <string name="chatview_quota_reached">
+تەواوی بەرهەمهەیەنی ڕۆژانەکت گەیاندووە. ئەرەقی سەهەفتەییەکە بکە بە ئامادەبوونەوە بۆ ئەرێشتەی قورئان GPT Pro بە سنووردانێکی نەسەرەکی . هەر کاتیش لە ماوەی ئەم سەهەفتەیەدا شاردنەوە بکە و پارەیەکت دەچێت. جۆری \'زانیاری\' بنووسە بۆ زانیاری زۆرتر.</string>
+  <string name="chatview_quota_reached_info">زانیاری</string>
+  <string name="taptargetview_fap_biblegpt_title">چات کردن لەگەڵ QuranGPT</string>
+  <string name="taptargetview_fap_biblegpt_desc">یارمەتی زانستی قورئان بە پشتیوانی AI. پرسیار بکە، ماناوەکان بزانە، و ڕێنمایی بەدوای بخوە.</string>
+  <string name="taptargetview_fap_biblegpt_sura">بابەکان</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">قورئان بە بابەکان و ئایەتەکان بزانە.</string>
+  <string name="taptargetview_fap_biblegpt_juz">بەشەکان (جزء)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">قورئان بە 30 بەش بەرەوپێش بەرەوپێشەوە بەفرە.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">ئاستەنجەکان</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">ئەیەتەکانت بپارێزە و ڕیزبەند بکە بۆ دەستگرتنی خێرا.</string>
+  <string name="taptargetview_fap_biblegpt_search">گەڕان</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">ئەیەت یان بابەتەکان بەخێرایی لە قورئاندا بدۆزەرەوە.</string>
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
+
+  <string name="upgrade_to_premium">نوێکردنەوە بۆ\nQuranGPT Pro</string>
+  <string name="premium_features_description">
+    سوود بەرهەم بگەرە لە تایبەتمەندیە تایبەتیەکان:\n\n
+    &#8226; وەڵامەکانی قورئان GPT بێ سنوور.\n
+    &#8226; کاتی وەڵامی خێراتر.\n
+    &#8226; AI پێشکەوتوو بۆ بینینی هەستیارتر.\n
+  </string>
+  <string name="monthly_plan_text">مانگانە</string>
+  <string name="yearly_plan_text">ساڵانە</string>
+  <string name="discount_badge_text">30% پاشەکەوت</string>
+  <string name="upgrade_now">سەرەتا 7 رۆژ بە بێتاکەوە دەست پێ بکە</string>
+  <string name="no_thanks">لە کاتی تر</string>
+  <string name="trial_conditions">• هەر کاتیش لەماوەدا ڕەت کردنەوە دەکرێت\n• هیچ تەرخانێکی نییە لە ماوەی تاقیکردنەوەی بێتاکەوە\n• تایبەتمەندیە تایبەتییەکان لە ماوەی تاقیکردنەوەدا</string>
+
 </resources>

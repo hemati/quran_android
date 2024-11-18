@@ -74,7 +74,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private static final int MAX_CHAT_HISTORY = 6;
     private static int MAX_MESSAGES_PER_DAY = 6;
 
-    private static final String SUBSCRIPTION_SKU = "qurangpt_subscription";
+  private static final String SUBSCRIPTION_SKU = "qurangpt_subscription";
+  private static final String SUBSCRIPTION_SKU_YEARLY = "qurangpt_subscription_yearly";
 
     private MessagesListAdapter<Message> messagesAdapter;
     private DatabaseHelper db;
@@ -500,7 +501,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
                 (billingResult, purchases) -> {
                     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                         for (Purchase purchase : purchases) {
-                            if (purchase.getProducts().contains(SUBSCRIPTION_SKU)) {
+                            if (purchase.getProducts().contains(SUBSCRIPTION_SKU) || purchase.getProducts().contains(SUBSCRIPTION_SKU_YEARLY)) {
                                 setUserSubscribed(true);
                                 acknowledgePurchase(purchase);
                                 break;
@@ -550,7 +551,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
 
     private void handlePurchase(Purchase purchase) {
-        if (purchase.getProducts().contains(SUBSCRIPTION_SKU)) {
+        if (purchase.getProducts().contains(SUBSCRIPTION_SKU) || purchase.getProducts().contains(SUBSCRIPTION_SKU_YEARLY)) {
             setUserSubscribed(true);
             // Grant the subscription to the user
             // Update your backend or local storage if necessary
