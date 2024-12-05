@@ -352,16 +352,16 @@ class QuranActivity : AppCompatActivity(),
             .outerCircleAlpha(0.96f)
             .targetCircleColor(android.R.color.white)
             .textColor(android.R.color.white),
-          TapTarget.forToolbarMenuItem(
-            toolbar, R.id.search,
-            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_search),
-            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_search_desc)
-          )
-            .cancelable(false).transparentTarget(true)
-            .outerCircleColor(R.color.accent_color_darker)
-            .outerCircleAlpha(0.96f)
-            .targetCircleColor(android.R.color.white)
-            .textColor(android.R.color.white),
+//          TapTarget.forToolbarMenuItem(
+//            toolbar, R.id.search,
+//            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_search),
+//            getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_search_desc)
+//          )
+//            .cancelable(false).transparentTarget(true)
+//            .outerCircleColor(R.color.accent_color_darker)
+//            .outerCircleAlpha(0.96f)
+//            .targetCircleColor(android.R.color.white)
+//            .textColor(android.R.color.white),
           TapTarget.forView(
             activity.findViewById(R.id.fab_chat),
             getString(com.appcoholic.gpt.R.string.taptargetview_fap_biblegpt_title),
