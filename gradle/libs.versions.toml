@@ -1,30 +1,30 @@
 [versions]
-agp = "8.7.2"
+agp = "8.7.3"
 junit = "1.2.1"
-kotlin = "2.0.21"
-ksp = "2.0.21-1.0.27"
+kotlin = "2.1.0"
+ksp = "2.1.0-1.0.29"
 
 # required within the Gradle convention plugins - not unused
 composeBomVersion = "2024.11.00"
-media3ExoplayerVersion = "1.4.1"
+media3ExoplayerVersion = "1.5.0"
 okhttpBomVersion = "4.12.0"
 
 # dependencies
 anvil = "0.4.0"
 coroutinesVersion = "1.9.0"
 crashlytics = "3.0.2"
-daggerVersion = "2.52"
-dnsjavaVersion = "3.6.2"
+daggerVersion = "2.53"
+dnsjavaVersion = "2.1.9"
 errorprone = "4.1.0"
-errorproneCoreVersion = "2.35.1"
+errorproneCoreVersion = "2.36.0"
 googleServices = "4.4.2"
 immutableCollectionsVersion = "0.3.8"
 leakcanaryAndroidVersion = "2.14"
-moshiVersion = "1.15.1"
+moshiVersion = "1.15.2"
 okioVersion = "3.9.1"
 retrofitVersion = "2.11.0"
 rxandroidVersion = "3.0.2"
-rxjavaVersion = "3.1.9"
+rxjavaVersion = "3.1.10"
 sqldelight = "2.0.2"
 timberVersion = "5.0.1"
 
@@ -49,7 +49,7 @@ androidxWindowManager = "1.3.0"
 
 # firebase
 firebaseAnalyticsVersion = "22.1.2"
-firebaseCrashlyticsVersion = "19.2.1"
+firebaseCrashlyticsVersion = "19.3.0"
 
 # ui libraries
 accompanistVersion = "0.36.0"
@@ -59,19 +59,19 @@ insetterVersion = "0.6.1"
 materialComponentsVersion = "1.12.0"
 numberPickerVersion = "2.4.13"
 reorderableComposeVersion = "0.9.6"
-molecule = "1.4.3"
+molecule = "2.0.0"
 
 # recitations
-grpcOkhttpVersion = "1.68.1"
+grpcOkhttpVersion = "1.68.2"
 googleAuthVersion = "1.30.0"
-googleCloudSpeechVersion = "4.48.0"
+googleCloudSpeechVersion = "4.49.0"
 
 # testing
 junitVersion = "4.13.2"
 espressoVersion = "3.6.1"
 truthVersion = "1.4.4"
 mockitoVersion = "5.14.2"
-robolectricVersion = "4.13"
+robolectricVersion = "4.14.1"
 turbineVersion = "1.2.0"
 
 [libraries]
@@ -121,6 +121,9 @@ material = { module = "com.google.android.material:material", version.ref = "mat
 # dagger
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerVersion"}
 dagger-runtime = { module = "com.google.dagger:dagger", version.ref = "daggerVersion" }
+
+# molecule
+molecule = { module = "app.cash.molecule:molecule-runtime", version.ref = "molecule" }
 
 # moshi
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshiVersion" }
@@ -203,4 +206,3 @@ anvil = { id = "dev.zacsweers.anvil", version.ref = "anvil"}
 crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "crashlytics" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 errorprone = { id = "net.ltgt.errorprone", version.ref = "errorprone" }
-molecule = { id = "app.cash.molecule", version.ref = "molecule" }
