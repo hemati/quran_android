@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
+import com.appcoholic.gpt.DefaultMessagesActivity
 import com.quran.labs.androidquran.QuranDataActivity
 import com.quran.labs.androidquran.R
 import com.quran.labs.androidquran.SearchActivity
@@ -46,6 +47,11 @@ class SearchWidget : AppWidgetProvider() {
       pendingIntent =
         PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
       widget.setOnClickPendingIntent(R.id.search_widget_btn_jump, pendingIntent)
+
+      intent = Intent(context, DefaultMessagesActivity::class.java)
+      pendingIntent =
+        PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+      widget.setOnClickPendingIntent(R.id.search_widget_btn_gpt, pendingIntent)
 
       appWidgetManager.updateAppWidget(appWidgetId, widget)
     }

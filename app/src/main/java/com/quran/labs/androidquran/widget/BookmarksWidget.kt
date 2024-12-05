@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.RemoteViews
+import com.appcoholic.gpt.DefaultMessagesActivity
 import com.quran.labs.androidquran.QuranApplication
 import com.quran.labs.androidquran.QuranDataActivity
 import com.quran.labs.androidquran.R
@@ -57,6 +58,11 @@ class BookmarksWidget : AppWidgetProvider() {
       pendingIntent =
         PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
       widget.setOnClickPendingIntent(R.id.search_widget_btn_jump, pendingIntent)
+
+      intent = Intent(context, DefaultMessagesActivity::class.java)
+      pendingIntent =
+        PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+      widget.setOnClickPendingIntent(R.id.widget_btn_gpt, pendingIntent)
 
       widget.setRemoteAdapter(R.id.list_view_widget, serviceIntent)
       val clickIntent = Intent(context, PagerActivity::class.java)

@@ -19,7 +19,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@color/translation_verse_text_color"
-        android:src="@drawable/icon" />
+        android:src="@mipmap/ic_launcher_removebg"
+        />
 
     <ImageButton
         android:id="@+id/widget_btn_search"
@@ -45,6 +46,13 @@
         android:background="@color/translation_verse_text_color"
         android:src="@drawable/ic_baseline_arrow_upright_24" />
 
+    <ImageButton
+        android:id="@+id/widget_btn_gpt"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@color/translation_verse_text_color"
+        android:src="@drawable/diversity_2" />
   </LinearLayout>
 
   <ListView

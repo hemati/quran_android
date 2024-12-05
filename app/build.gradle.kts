@@ -1,7 +1,6 @@
 import net.ltgt.gradle.errorprone.ErrorProneOptions
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Locale
+import java.util.Properties
 
 plugins {
   id("quran.android.application")
@@ -35,8 +34,8 @@ android {
   namespace = "com.quran.labs.androidquran"
 
   defaultConfig {
-    versionCode = 241120
-    versionName = "1.5.5"
+    versionCode = 241205
+    versionName = "1.6.0"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
   }
 
@@ -215,14 +214,14 @@ dependencies {
   kspTest(libs.dagger.compiler)
   implementation(libs.dagger.runtime)
 
-//  // analytics
-//  debugImplementation(project(":feature:analytics-noop"))
-//  add("betaImplementation", project(":feature:analytics-noop"))
-//  if (useFirebase) {
-//    releaseImplementation(project(":feature:firebase-analytics"))
-//  } else {
-//    releaseImplementation(project(":feature:analytics-noop"))
-//  }
+  // analytics
+  debugImplementation(project(":feature:analytics-noop"))
+  add("betaImplementation", project(":feature:analytics-noop"))
+  if (useFirebase) {
+    releaseImplementation(project(":feature:firebase-analytics"))
+  } else {
+    releaseImplementation(project(":feature:analytics-noop"))
+  }
 
   // workmanager
   implementation(libs.androidx.work.runtime.ktx)
