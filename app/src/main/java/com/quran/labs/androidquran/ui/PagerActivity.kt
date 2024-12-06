@@ -51,6 +51,7 @@ import com.quran.data.core.QuranInfo
 import com.quran.data.dao.BookmarksDao
 import com.quran.data.model.QuranText
 import com.quran.data.model.SuraAyah
+import com.quran.data.model.bookmark.Bookmark
 import com.quran.data.model.selection.AyahSelection
 import com.quran.data.model.selection.AyahSelection.AyahRange
 import com.quran.data.model.selection.SelectionIndicator
@@ -241,6 +242,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   private lateinit var windowInsetsController: WindowInsetsControllerCompat
 
   private var translationJob: Job? = null
+  private var currentBookmarks: List<Bookmark> = listOf()
   private lateinit var compositeDisposable: CompositeDisposable
   private val foregroundDisposable = CompositeDisposable()
   private val scope = MainScope()
@@ -337,6 +339,8 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     bookmarksDao.pageBookmarksWithoutTags().combine(currentPageFlow) { bookmarks, currentPage ->
       bookmarks to currentPage
     }.onEach { (bookmarks, page) ->
+      currentBookmarks = bookmarks
+
       val isBookmarked = if (isDualPages) {
         bookmarks.any { it.page == page || it.page == page - 1 }
       } else {
@@ -1151,6 +1155,10 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   override fun onPrepareOptionsMenu(menu: Menu): Boolean {
     super.onPrepareOptionsMenu(menu)
 
+    if (bookmarksMenuItem != null) {
+      refreshBookmarksMenu()
+    }
+
     val quran = menu.findItem(R.id.goto_quran)
     val translation = menu.findItem(R.id.goto_translation)
     if (quran != null && translation != null) {
@@ -1435,6 +1443,21 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       val isBookmarked = bookmarksDao.toggleAyahBookmark(suraAyah, page)
       updateAyahBookmark(suraAyah, isBookmarked)
     }
+  }
+
+  private fun refreshBookmarksMenu() {
+    val currentPage = currentPage
+    val isBookmarked = if (isDualPages) {
+      currentBookmarks.any { it.page == currentPage || it.page == currentPage - 1 }
+    } else {
+      currentBookmarks.any { it.page == currentPage }
+    }
+
+    if (isBookmarked) {
+      refreshBookmarksMenu(true)
+    }
+    // don't refresh if it's not bookmarked since it'll cause a loop (since this method is called
+    // from onPrepareOptionsMenu).
   }
 
   private fun refreshBookmarksMenu(isBookmarked: Boolean) {
