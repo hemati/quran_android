@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -39,6 +40,16 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   private BillingHelper billingHelper;
 
   private FirebaseAnalytics firebaseAnalytics;
+
+  private OnSubscriptionStatusChangedListener subscriptionStatusChangedListener;
+
+  public interface OnSubscriptionStatusChangedListener {
+    void onSubscriptionStatusChanged(boolean subscribed);
+  }
+
+  public void setOnSubscriptionStatusChangedListener(OnSubscriptionStatusChangedListener listener) {
+    this.subscriptionStatusChangedListener = listener;
+  }
 
   public SubscriptionDialog(@NonNull Activity activity) {
     super(activity);
@@ -118,6 +129,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
       isPriceUpUpdated = true;
       updatePriceUI();
     });
+    billingHelper.queryPurchases();
   }
 
   private void initiateSubscriptionPurchase(String subscriptionId) {
@@ -171,6 +183,9 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
     for (Purchase purchase : purchases) {
       billingHelper.acknowledgePurchase(purchase);
       this.isGPTPro = true;
+      if (subscriptionStatusChangedListener != null) {
+        subscriptionStatusChangedListener.onSubscriptionStatusChanged(true);
+      }
       dismiss();
     }
   }
@@ -178,6 +193,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   @Override
   public void onPurchaseAcknowledged(Purchase purchase) {
     // Handle acknowledgment if necessary
+    Log.d("SubscriptionDialog", "Purchase acknowledged: " + purchase.getOrderId());
   }
 
   @Override

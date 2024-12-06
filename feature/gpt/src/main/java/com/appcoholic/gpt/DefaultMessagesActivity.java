@@ -19,15 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
-import com.android.billingclient.api.AcknowledgePurchaseParams;
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.ProductDetails;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.QueryProductDetailsParams;
-import com.android.billingclient.api.QueryPurchasesParams;
+import com.appcoholic.gpt.data.model.Message;
+import com.appcoholic.gpt.data.model.User;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.ChatChoice;
@@ -49,8 +42,6 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
-import com.appcoholic.gpt.data.model.Message;
-import com.appcoholic.gpt.data.model.User;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,7 +49,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
@@ -88,26 +78,16 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private OpenAIAsyncClient client;
     private String modelKey = "gpt-4o-mini";
     private final ChatRequestSystemMessage systemMessage = new ChatRequestSystemMessage(
-//            "You are a helpful assistant. " +
-//            "You will talk only about religions, primarily Islam and the Quran. " +
-//            "You will not break character. " +
-//            "You will answer in the language of the user. " +
-//            "You will keep your answers concise and short. " +
-//            "You will not add textstyles besides linebreaks."
-
-                "You are a helpful assistant focused on religions, primarily Islam and the Quran. " +
-                "You will not break character. " +
-                "You will respond based on generally accepted interpretations across different Islamic schools of thought, without favoring a specific theological perspective. " +
-                "You will answer in the language of the user, keeping responses concise and brief. " +
-                "Avoid adding any text styles besides line breaks."
+      "You are a helpful assistant focused on religions, primarily Islam and the Quran. " +
+      "You will not break character. " +
+      "You will respond based on generally accepted interpretations across different Islamic schools of thought, without favoring a specific theological perspective. " +
+      "You will answer in the language of the user, keeping responses concise and brief. " +
+      "Avoid adding any text styles besides line breaks."
     );
 
     private Message welcomeMessage;
     private Message isTypingMessage;
     private Message noInternetMessage;
-    private Message quotaReachedMessage;
-    private boolean quataReachedMessageShown = false;
-    private BillingClient billingClient;
 
 
     private String reference;
@@ -116,56 +96,55 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private Menu menu;
     private Toolbar toolbar;
 
-    private String localizedPrice = "0.99 $";
-
     private MessageInput messageInput;  // Add this line
+
+    private SubscriptionDialog subscriptionDialog;  // Add this line
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+      super.onCreate(savedInstanceState);
 //        final int themeId = PCommon.GetPrefThemeId(getApplicationContext());
 //        setTheme(themeId);
 
-        setContentView(R.layout.activity_default_messages);
+      setContentView(R.layout.activity_default_messages);
 
-        // Get the intent that started this activity
-        Intent intent = getIntent();
-        if (intent != null) {
-            // Get the extra data from the intent
-            reference = intent.getStringExtra("reference");
-            // Now you can use the 'reference' variable in your activity
-            // For example, you can set it as a message in your chat
-            // Or use it as a context for your AI model
-        }
+      // Get the intent that started this activity
+      Intent intent = getIntent();
+      if (intent != null) {
+          // Get the extra data from the intent
+          reference = intent.getStringExtra("reference");
+          // Now you can use the 'reference' variable in your activity
+          // For example, you can set it as a message in your chat
+          // Or use it as a context for your AI model
+      }
 
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+      firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        // Initialize Firebase Remote Config
-        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-            .setMinimumFetchIntervalInSeconds(86400)  // Adjust based on your needs
-            .build();
-        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+      // Initialize Firebase Remote Config
+      mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+      FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+          .setMinimumFetchIntervalInSeconds(86400)  // Adjust based on your needs
+          .build();
+      mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
 
-        messagesList = findViewById(R.id.messagesList);
+      messagesList = findViewById(R.id.messagesList);
 
-        toolbar = findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            toolbar.setLogo(R.mipmap.ic_launcher_removebg);
-            toolbar.setTitle(R.string.qurangpt);
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.accent_color_darker));
-        }
+      toolbar = findViewById(R.id.toolbar);
+      if (toolbar != null) {
+          setSupportActionBar(toolbar);
+          toolbar.setLogo(R.mipmap.ic_launcher_removebg);
+          toolbar.setTitle(R.string.qurangpt);
+          getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.accent_color_darker));
+      }
 
-        setUserSubscribed(false);
-        fetchAndActivateConfig();
+      setUserSubscribed(false);
+      fetchAndActivateConfig();
 
-        initializeMessages();
-        setupMessageInput();
-        setupMessagesAdapter();
-        setupBillingClient();
-//        findViewById(R.id.messageSendButton).setContentDescription("send message");
+      initializeMessages();
+      setupMessageInput();
+      setupMessagesAdapter();subscriptionDialog = new SubscriptionDialog(this);  // Add this line
+      subscriptionDialog.setOnSubscriptionStatusChangedListener(this::setUserSubscribed);
     }
 
     private void fetchAndActivateConfig() {
@@ -248,21 +227,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
     public boolean onSubmit(CharSequence input) {
         // Before sending a message
         if (!updateMessageCount()) {
-            // Show a message to the user that they have exceeded the limit
-            if(quataReachedMessageShown){
-//                Toast.makeText(this, "You have exceeded the limit of 4 messages per day", Toast.LENGTH_SHORT).show();
-                startSubscriptionPurchase();
-            }
-            else {
-              quotaReachedMessage = createMessage("-4", "Assistant", getString(R.string.chatview_quota_reached).replace("XXPRICEXX", localizedPrice));
-              runOnUiThread(() -> {
-                messagesAdapter.addToStart(quotaReachedMessage, true);
-                messageInput.getInputEditText().setText(R.string.chatview_quota_reached_info);
-                messageInput.getInputEditText().requestFocus();
-
-              });
-              quataReachedMessageShown = true;
-            }
+            subscriptionDialog.show();
             return false;
         }
         else{
@@ -409,206 +374,12 @@ public class DefaultMessagesActivity extends AppCompatActivity
         return true;
     }
 
-    private void setupBillingClient() {
-        billingClient = BillingClient.newBuilder(this)
-                .setListener((billingResult, purchases) -> {
-                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
-                        for (Purchase purchase : purchases) {
-                            handlePurchase(purchase);
-                        }
-                    } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-                        // Handle user canceled
-                        Toast.makeText(this, "Purchase canceled", Toast.LENGTH_SHORT).show();
-                    } else {
-                        // Handle other errors
-                        Log.e(TAG, "Purchase failed: " + billingResult.getDebugMessage());
-                    }
-                })
-                .enablePendingPurchases()
-                .build();
-
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    // BillingClient is ready
-                    checkUserSubscription();
-                    querySubscriptionPrice();
-                }
-            }
-
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to Google Play by calling the startConnection() method.
-            }
-        });
-    }
-
-  private void querySubscriptionPrice() {
-    List<QueryProductDetailsParams.Product> productList = new ArrayList<>();
-    productList.add(QueryProductDetailsParams.Product.newBuilder()
-        .setProductId(SUBSCRIPTION_SKU)
-        .setProductType(BillingClient.ProductType.SUBS)
-        .build());
-
-    QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder()
-        .setProductList(productList)
-        .build();
-
-    billingClient.queryProductDetailsAsync(queryProductDetailsParams, (billingResult, productDetailsList) -> {
-      if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && productDetailsList != null) {
-        for (ProductDetails productDetails : productDetailsList) {
-          if (productDetails.getProductId().equals(SUBSCRIPTION_SKU)) {
-            // Get the localized price and currency
-//            localiziedPrice = productDetails.getSubscriptionOfferDetails().get(0).getPricingPhases()
-//                .getPricingPhaseList().get(0).getFormattedPrice();
-
-            List<ProductDetails.SubscriptionOfferDetails> offerDetailsList = productDetails.getSubscriptionOfferDetails();
-            if (offerDetailsList != null && !offerDetailsList.isEmpty()) {
-              // Iterate over offer details to find the correct pricing phase
-              for (ProductDetails.SubscriptionOfferDetails offerDetails : offerDetailsList) {
-                List<ProductDetails.PricingPhase> pricingPhases = offerDetails.getPricingPhases().getPricingPhaseList();
-
-                ProductDetails.PricingPhase regularPricingPhase = null;
-
-                // Iterate through the phases to find the first non-trial/non-introductory phase
-                for (ProductDetails.PricingPhase pricingPhase : pricingPhases) {
-                  // Look for the recurring pricing phase (this is typically after a trial/introductory phase)
-                  if (pricingPhase.getBillingPeriod().equals("P1M") || pricingPhase.getBillingPeriod().equals("P1Y")) {
-                    // Assuming that the regular billing period is either 1 month (P1M) or 1 year (P1Y)
-                    regularPricingPhase = pricingPhase;
-                    break;
-                  }
-                }
-
-                if (regularPricingPhase != null) {
-                  // Get the localized price after the trial phase
-                  localizedPrice = regularPricingPhase.getFormattedPrice();
-                  break;
-                }
-              }
-            }
-          }
-        }
-      } else {
-        Log.e(TAG, "Error fetching product details: " + billingResult.getDebugMessage());
-      }
-    });
-  }
-
-    private void checkUserSubscription() {
-        billingClient.queryPurchasesAsync(QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build(),
-                (billingResult, purchases) -> {
-                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                        for (Purchase purchase : purchases) {
-                            if (purchase.getProducts().contains(SUBSCRIPTION_SKU) || purchase.getProducts().contains(SUBSCRIPTION_SKU_YEARLY)) {
-                                setUserSubscribed(true);
-                                acknowledgePurchase(purchase);
-                                break;
-                            }
-                        }
-                    }
-                });
-    }
-
     private boolean isUserSubscribed() {
         return isSubscribed;
     }
 
     private void setUserSubscribed(boolean subscribed) {
         isSubscribed = subscribed;
-//        if(isSubscribed) {
-//            toolbar.setTitle(R.string.qurangpt_pro);
-//        }
-//        else{
-//            toolbar.setTitle(R.string.qurangpt);
-//        }
-    }
-
-    private void acknowledgePurchase(Purchase purchase) {
-        // Acknowledge the purchase
-        if (!purchase.isAcknowledged()) {
-            AcknowledgePurchaseParams acknowledgePurchaseParams =
-                    AcknowledgePurchaseParams.newBuilder()
-                            .setPurchaseToken(purchase.getPurchaseToken())
-                            .build();
-            billingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    // Purchase acknowledged
-//                    Toast.makeText(this, "Subscription successful", Toast.LENGTH_SHORT).show();
-                    showRatingDialog();
-                } else {
-                    // Handle any errors
-                    Log.e(TAG, "Failed to acknowledge purchase: " + billingResult.getDebugMessage());
-                }
-            });
-        } else {
-            // Purchase already acknowledged
-            Toast.makeText(this, "Subscription successful", Toast.LENGTH_SHORT).show();
-        }
-        messageInput.getInputEditText().setText(null);
-    }
-
-
-    private void handlePurchase(Purchase purchase) {
-        if (purchase.getProducts().contains(SUBSCRIPTION_SKU) || purchase.getProducts().contains(SUBSCRIPTION_SKU_YEARLY)) {
-            setUserSubscribed(true);
-            // Grant the subscription to the user
-            // Update your backend or local storage if necessary
-            Toast.makeText(this, "Subscription successful", Toast.LENGTH_LONG).show();
-            acknowledgePurchase(purchase);
-        }
-    }
-
-    private void startSubscriptionPurchase() {
-        List<QueryProductDetailsParams.Product> productList = new ArrayList<>();
-        productList.add(QueryProductDetailsParams.Product.newBuilder()
-                .setProductId(SUBSCRIPTION_SKU)
-                .setProductType(BillingClient.ProductType.SUBS)
-                .build());
-
-        QueryProductDetailsParams queryProductDetailsParams = QueryProductDetailsParams.newBuilder()
-                .setProductList(productList)
-                .build();
-
-        billingClient.queryProductDetailsAsync(queryProductDetailsParams, (billingResult, productDetailsList) -> {
-            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && productDetailsList != null) {
-                for (ProductDetails productDetails : productDetailsList) {
-                    if (productDetails.getProductId().equals(SUBSCRIPTION_SKU)) {
-                        String offerToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
-
-                        // Create ProductDetailsParams
-                        List<BillingFlowParams.ProductDetailsParams> productDetailsParamsList = new ArrayList<>();
-                        productDetailsParamsList.add(
-                                BillingFlowParams.ProductDetailsParams.newBuilder()
-                                        .setProductDetails(productDetails)
-                                        .setOfferToken(offerToken)
-                                        .build()
-                        );
-
-                        // Create BillingFlowParams
-                        BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
-                                .setProductDetailsParamsList(productDetailsParamsList)
-                                .build();
-
-                        // Ensure launchBillingFlow is called on the main UI thread
-                        runOnUiThread(() -> {
-                            BillingResult result = billingClient.launchBillingFlow(DefaultMessagesActivity.this, billingFlowParams);
-                            if (result.getResponseCode() != BillingClient.BillingResponseCode.OK) {
-                                Log.e(TAG, "Error launching billing flow: " + result.getDebugMessage());
-                                FirebaseCrashlytics.getInstance().recordException(new Exception("Error launching billing flow: " + result.getDebugMessage()));
-                            }
-                        });
-                        // Launch billing flow
-                        return;
-                    }
-                }
-            } else {
-                // Handle error
-                Log.e(TAG, "Error fetching product details: " + billingResult.getDebugMessage());
-                FirebaseCrashlytics.getInstance().recordException(new Exception("Error fetching product details: " + billingResult.getDebugMessage()));
-            }
-        });
     }
 
 
@@ -675,18 +446,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
     protected void onDestroy() {
         db.close();
         super.onDestroy();
-        if (billingClient != null) {
-            billingClient.endConnection();
-        }
     }
 
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        Intent intent = new Intent(this, NotificationService.class);
-//        startService(intent);
-//    }
-//
     @Override
     public void onSelectionChanged(int count) {
         Log.d(TAG, "onSelectionChanged: " + count);
