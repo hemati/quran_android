@@ -31,6 +31,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -464,10 +465,6 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     }
 
     val toolbar = findViewById<Toolbar>(R.id.toolbar)
-    if (quranSettings.isArabicNames || QuranUtils.isRtl()) {
-      // remove when we remove LTR from quran_page_activity's root
-      ViewCompat.setLayoutDirection(toolbar, ViewCompat.LAYOUT_DIRECTION_RTL)
-    }
     setSupportActionBar(toolbar)
 
     supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -494,6 +491,16 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     ayahToolBar.flavor = BuildConfig.FLAVOR
     ayahToolBar.longPressLambda = { charSequence: CharSequence? ->
       makeText(this@PagerActivity, charSequence!!, Toast.LENGTH_SHORT).show()
+    }
+
+    ViewCompat.setOnApplyWindowInsetsListener(ayahToolBar) { view, windowInsets ->
+      val insets = windowInsets.getInsets(
+        WindowInsetsCompat.Type.statusBars() or
+            WindowInsetsCompat.Type.displayCutout() or
+            WindowInsetsCompat.Type.navigationBars()
+      )
+      ayahToolBar.insets = insets
+      windowInsets
     }
 
     val nonRestoringViewPager = findViewById<NonRestoringViewPager>(R.id.quran_pager)
@@ -1355,9 +1362,11 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
             val sura =
               quranDisplayData.getSuraNameFromPage(this@PagerActivity, page, true)
             holder.title.text = sura
+            holder.title.setTextColor(ResourcesCompat.getColor(resources, R.color.toolbar_text, null))
             val desc = quranDisplayData.getPageSubtitle(this@PagerActivity, page)
             holder.subtitle.text = desc
             holder.subtitle.visibility = View.VISIBLE
+            holder.subtitle.setTextColor(ResourcesCompat.getColor(resources, R.color.toolbar_secondary_text, null))
           }
           return view
         }
