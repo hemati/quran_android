@@ -34,8 +34,8 @@ android {
   namespace = "com.quran.labs.androidquran"
 
   defaultConfig {
-    versionCode = 241208
-    versionName = "1.6.2"
+    versionCode = 241222
+    versionName = "1.6.3"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
   }
 
@@ -246,7 +246,6 @@ dependencies {
   testImplementation(libs.turbine)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(project(":pages:data:madani"))
-
 
   errorprone(libs.errorprone.core)
 
