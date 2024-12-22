@@ -64,9 +64,6 @@ public class DefaultMessagesActivity extends AppCompatActivity
     private static final int MAX_CHAT_HISTORY = 6;
     private static int MAX_MESSAGES_PER_DAY = 6;
 
-  private static final String SUBSCRIPTION_SKU = "qurangpt_subscription";
-  private static final String SUBSCRIPTION_SKU_YEARLY = "qurangpt_subscription_yearly";
-
     private MessagesListAdapter<Message> messagesAdapter;
     private DatabaseHelper db;
     private MessagesList messagesList;
@@ -251,15 +248,15 @@ public class DefaultMessagesActivity extends AppCompatActivity
             runOnUiThread(() -> messagesAdapter.addToStart(isTypingMessage, true));
 
             if (client != null) {
-                client.getChatCompletions("gpt-4o-mini", new ChatCompletionsOptions(chatMessagesContext))
-                        .subscribe(
-                                completion -> handleChatCompletion(completion.getChoices()),
-                                error -> {
-                                    Log.e(TAG, "Failed to get chat completions", error);
-                                    FirebaseCrashlytics.getInstance().recordException(error);
-                                },
-                                () -> runOnUiThread(() -> messagesAdapter.delete(isTypingMessage))
-                        );
+              client.getChatCompletions(this.modelKey, new ChatCompletionsOptions(chatMessagesContext))
+                      .subscribe(
+                              completion -> handleChatCompletion(completion.getChoices()),
+                              error -> {
+                                  Log.e(TAG, "Failed to get chat completions", error);
+                                  FirebaseCrashlytics.getInstance().recordException(error);
+                              },
+                              () -> runOnUiThread(() -> messagesAdapter.delete(isTypingMessage))
+                      );
             }
             else{
               Log.e(TAG, "OpenAI client is not initialized");
