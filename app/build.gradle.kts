@@ -34,8 +34,8 @@ android {
   namespace = "com.quran.labs.androidquran"
 
   defaultConfig {
-    versionCode = 241229
-    versionName = "1.6.5"
+    versionCode = 250118
+    versionName = "1.6.6"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
   }
 
@@ -83,7 +83,6 @@ android {
       matchingFallbacks += listOf("debug")
       signingConfig = signingConfigs.getByName("debug")
       matchingFallbacks += listOf("debug", "release")
-
     }
 
     getByName("debug") {
