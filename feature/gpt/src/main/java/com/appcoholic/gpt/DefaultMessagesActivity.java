@@ -140,7 +140,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
       initializeMessages();
       setupMessageInput();
-      setupMessagesAdapter();subscriptionDialog = new SubscriptionDialog(this);  // Add this line
+      setupMessagesAdapter();
+      subscriptionDialog = new SubscriptionDialog(this);  // Add this line
       subscriptionDialog.setOnSubscriptionStatusChangedListener(this::setUserSubscribed);
     }
 
@@ -472,7 +473,6 @@ public class DefaultMessagesActivity extends AppCompatActivity
         // Handle error if needed
         Log.d(TAG, "Failed to get review flow");
       }
-
     });
   }
 

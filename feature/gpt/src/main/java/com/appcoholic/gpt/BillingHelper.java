@@ -14,6 +14,7 @@ import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.QueryProductDetailsParams;
 import com.android.billingclient.api.QueryPurchasesParams;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,8 @@ public class BillingHelper {
   private BillingClient billingClient;
   private Activity activity;
   private BillingUpdatesListener billingUpdatesListener;
+  private FirebaseAnalytics firebaseAnalytics;
+
 
   public interface BillingUpdatesListener {
     void onBillingClientSetupFinished();
@@ -41,6 +44,7 @@ public class BillingHelper {
     this.activity = activity;
     this.billingUpdatesListener = listener;
     setupBillingClient();
+    firebaseAnalytics = FirebaseAnalytics.getInstance(activity);
   }
 
 
@@ -85,10 +89,12 @@ public class BillingHelper {
         Log.d(TAG, "Billing client setup finished");
         if (billingUpdatesListener != null) {
           billingUpdatesListener.onBillingClientSetupFinished();
+          firebaseAnalytics.logEvent("billing_setup_finished", null);
         }
       } else {
         String errorMsg = "Billing setup failed: " + billingResult.getDebugMessage();
         Log.e(TAG, errorMsg);
+        firebaseAnalytics.logEvent("billing_setup_failed", null);
         if (billingUpdatesListener != null) {
           billingUpdatesListener.onPurchaseError(errorMsg);
         }

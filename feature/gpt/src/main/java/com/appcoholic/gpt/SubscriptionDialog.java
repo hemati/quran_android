@@ -33,8 +33,8 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
     MONTHLY, YEARLY
   }
 
-  private String monthlyPlanPrice = "Loading...";
-  private String yearlyPlanPrice = "Loading...";
+  private String monthlyPlanPrice = "0.99$";
+  private String yearlyPlanPrice = "8.49$";
 
   private boolean isPriceUpUpdated = false;
   private BillingHelper billingHelper;
@@ -203,7 +203,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
 
   @Override
   public void show() {
-    if (isPriceUpUpdated && !isGPTPro) {
+    if (!isGPTPro) {
       super.show();
       firebaseAnalytics.logEvent("subscription_overlay_shown", null);
       updatePriceUI();
