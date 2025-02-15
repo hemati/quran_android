@@ -1,18 +1,18 @@
 [versions]
-agp = "8.8.0"
+agp = "8.8.1"
 junit = "1.2.1"
-kotlin = "2.1.0"
-ksp = "2.1.0-1.0.29"
+kotlin = "2.1.10"
+ksp = "2.1.10-1.0.29"
 
 # required within the Gradle convention plugins - not unused
-composeBomVersion = "2025.01.00"
+composeBomVersion = "2025.02.00"
 media3ExoplayerVersion = "1.5.1"
 okhttpBomVersion = "4.12.0"
 
 # dependencies
 anvil = "0.4.1"
 coroutinesVersion = "1.10.1"
-crashlytics = "3.0.2"
+crashlytics = "3.0.3"
 daggerVersion = "2.55"
 dnsjavaVersion = "2.1.9"
 errorprone = "4.1.0"
@@ -33,17 +33,17 @@ androidxAppcompatVersion = "1.7.0"
 androidxActivityComposeVersion = "1.10.0"
 androidxAnnotationVersion = "1.9.1"
 androidxCoreVersion = "1.15.0"
-androidxNavigationVersion = "2.8.5"
+androidxNavigationVersion = "2.8.7"
 androidxDynamicAnimationVersion = "1.0.0"
-androidxFragmentVersion = "1.8.5"
+androidxFragmentVersion = "1.8.6"
 androidxJunitExtVersion = "1.2.1"
 androidxLocalBroadcastVersion = "1.1.0"
 androidxMediaVersion = "1.7.0"
 androidxPreferencesVersion = "1.2.1"
 androidxRecyclerViewVersion = "1.4.0"
 androidxSwipeRefreshVersion = "1.1.0"
-androidxPagingVersion = "3.3.5"
-androidxPagingComposeVersion = "3.3.5"
+androidxPagingVersion = "3.3.6"
+androidxPagingComposeVersion = "3.3.6"
 androidxWorkManagerVersion = "2.10.0"
 androidxWindowManager = "1.3.0"
 
@@ -53,7 +53,7 @@ firebaseCrashlyticsVersion = "19.4.0"
 
 # ui libraries
 accompanistVersion = "0.36.0"
-balloonVersion = "1.6.11"
+balloonVersion = "1.6.12"
 tooltipComposeVersion = "0.2.0"
 insetterVersion = "0.6.1"
 materialComponentsVersion = "1.12.0"
@@ -62,9 +62,9 @@ reorderableComposeVersion = "0.9.6"
 molecule = "2.0.0"
 
 # recitations
-grpcOkhttpVersion = "1.69.0"
-googleAuthVersion = "1.30.1"
-googleCloudSpeechVersion = "4.51.0"
+grpcOkhttpVersion = "1.70.0"
+googleAuthVersion = "1.32.1"
+googleCloudSpeechVersion = "4.52.0"
 
 # testing
 junitVersion = "4.13.2"
