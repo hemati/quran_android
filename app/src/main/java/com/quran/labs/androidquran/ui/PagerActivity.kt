@@ -1840,16 +1840,58 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
         shareAyah(startSuraAyah, endSuraAyah, false)
       } else if (itemId == com.quran.labs.androidquran.common.toolbar.R.id.cab_copy_ayah) {
         shareAyah(startSuraAyah, endSuraAyah, true)
-      } else if (itemId == com.quran.labs.androidquran.common.toolbar.R.id.cab_gpt) {
-        // Start activity DefaultMessagesActivity and pass startSuraAyah - endSuraAyah as reference extra
-        val intent = Intent(this@PagerActivity, DefaultMessagesActivity::class.java)
-        if (startSuraAyah != endSuraAyah) {
-          intent.putExtra("reference", "Context: $startSuraAyah - $endSuraAyah")
-        } else {
-          intent.putExtra("reference", "Context: $startSuraAyah")
+      }
+      else if (itemId == com.quran.labs.androidquran.common.toolbar.R.id.cab_gpt) {
+        // We want to get the actual ayah text for the selected range.
+        // Ensure you have startSuraAyah and endSuraAyah from the selection:
+        val start = startSuraAyah
+        val end = endSuraAyah
+        if (start != null && end != null) {
+          // Retrieve Arabic text from local DB (as done in shareAyah).
+          compositeDisposable.add(
+            arabicDatabaseUtils
+              .getVerses(start, end)
+              // Make sure there is actually something to return:
+              .filter { quranAyahs -> quranAyahs.isNotEmpty() }
+              .observeOn(AndroidSchedulers.mainThread())
+              .subscribe({ quranAyahs ->
+
+                // Build a single string from the verses:
+                val ayahTextBuilder = StringBuilder()
+                for (verse in quranAyahs) {
+                  // verse.text should contain the Arabic text of that ayah
+                  ayahTextBuilder.append(verse.text).append("\n")
+                }
+                val allAyahText = ayahTextBuilder.toString().trim()
+
+                // Now put that text into the Intent:
+                val intent = Intent(this@PagerActivity, DefaultMessagesActivity::class.java)
+
+                // If it’s a range, e.g. Sura 3, Ayah 5 to Sura 3, Ayah 6
+                if (start != end) {
+                  intent.putExtra(
+                    "reference",
+                    "$allAyahText\n(Sura ${start.sura} Ayah ${start.ayah} - " +
+                        "Sura ${end.sura} Ayah ${end.ayah})\n"
+                  )
+                } else {
+                  // Single ayah
+                  intent.putExtra(
+                    "reference",
+                    "$allAyahText\n(Sura ${start.sura} Ayah ${start.ayah})\n"
+                  )
+                }
+
+                startActivity(intent)
+
+              }, { error ->
+                // Handle error
+                error.printStackTrace()
+              })
+          )
         }
-        startActivity(intent)
-      } else {
+      }
+      else {
         return false
       }
 

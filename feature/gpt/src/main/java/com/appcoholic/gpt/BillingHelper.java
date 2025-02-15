@@ -186,7 +186,7 @@ public class BillingHelper {
   }
 
   public void acknowledgePurchase(Purchase purchase) {
-    if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED && !purchase.isAcknowledged()) {
+    if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
       AcknowledgePurchaseParams acknowledgePurchaseParams =
           AcknowledgePurchaseParams.newBuilder()
               .setPurchaseToken(purchase.getPurchaseToken())

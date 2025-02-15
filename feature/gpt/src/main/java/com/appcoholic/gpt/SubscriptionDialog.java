@@ -36,7 +36,6 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   private String monthlyPlanPrice = "0.99$";
   private String yearlyPlanPrice = "8.49$";
 
-  private boolean isPriceUpUpdated = false;
   private BillingHelper billingHelper;
 
   private FirebaseAnalytics firebaseAnalytics;
@@ -68,6 +67,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
 
     setCancelable(false);
     billingHelper = BillingHelper.getInstance(activity, this);
+    billingHelper.queryPurchases();
   }
 
 
@@ -126,7 +126,6 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
           yearlyPlanPrice = extractLocalizedPrice(productDetails);
         }
       }
-      isPriceUpUpdated = true;
       updatePriceUI();
     });
     billingHelper.queryPurchases();
@@ -194,6 +193,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   public void onPurchaseAcknowledged(Purchase purchase) {
     // Handle acknowledgment if necessary
     Log.d("SubscriptionDialog", "Purchase acknowledged: " + purchase.getOrderId());
+    isGPTPro = true;
   }
 
   @Override
