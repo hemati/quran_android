@@ -34,8 +34,8 @@ android {
   namespace = "com.quran.labs.androidquran"
 
   defaultConfig {
-    versionCode = 250215
-    versionName = "1.7.0"
+    versionCode = 250309
+    versionName = "1.7.1"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
   }
 
@@ -178,7 +178,6 @@ dependencies {
   implementation(project(":feature:audiobar"))
   implementation(project(":feature:downloadmanager"))
   implementation(project(":feature:qarilist"))
-  implementation(project(":feature:gpt"))
 
   // android auto support
   implementation(project(":feature:autoquran"))
