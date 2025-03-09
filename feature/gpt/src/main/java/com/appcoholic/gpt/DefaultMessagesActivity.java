@@ -5,7 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.net.Network;
+import android.net.NetworkCapabilities;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -185,6 +186,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
           });
     } else {
       Log.d(TAG, "No internet connection");
+      FirebaseCrashlytics.getInstance().recordException(new Exception("No internet connection"));
+      Toast.makeText(this, "No internet connection", Toast.LENGTH_LONG).show();
     }
   }
 
@@ -364,10 +367,30 @@ public class DefaultMessagesActivity extends AppCompatActivity
   }
 
   private boolean isNetworkAvailable() {
-    ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    ConnectivityManager connectivityManager =
+        (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+    if (connectivityManager == null) {
+      return false;
+    }
+
+    Network network = connectivityManager.getActiveNetwork();
+    if (network == null) {
+      return false;
+    }
+
+    NetworkCapabilities networkCapabilities =
+        connectivityManager.getNetworkCapabilities(network);
+    if (networkCapabilities == null) {
+      return false;
+    }
+
+    // Check for common transports that typically provide internet access
+    return networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+        || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+        || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+        || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH);
   }
+
 
   private String getCurrentDate() {
     return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());

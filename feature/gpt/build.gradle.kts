@@ -62,7 +62,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
 
     implementation("com.github.stfalcon-studio:Chatkit:0.4.1")
-    implementation("com.openai:openai-java:0.23.1")
+    implementation("com.openai:openai-java:0.33.0")
 
     implementation("com.android.billingclient:billing:7.0.0")
 

@@ -178,6 +178,7 @@ dependencies {
   implementation(project(":feature:audiobar"))
   implementation(project(":feature:downloadmanager"))
   implementation(project(":feature:qarilist"))
+  implementation(project(":feature:gpt"))
 
   // android auto support
   implementation(project(":feature:autoquran"))
