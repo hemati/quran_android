@@ -3,12 +3,10 @@ package com.appcoholic.gpt;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +37,7 @@ import com.openai.models.ChatCompletionCreateParams;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
+import com.appcoholic.gpt.MessageQuotaManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,6 +81,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
   private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
   private FirebaseAnalytics firebaseAnalytics;
   private FirebaseRemoteConfig mFirebaseRemoteConfig;
+  private MessageQuotaManager quotaManager;
 
   //    private OpenAIAsyncClient client;
   private OpenAIClientAsync client;
@@ -149,6 +149,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
     }
 
     setUserSubscribed(false);
+    quotaManager = new MessageQuotaManager(this, MAX_MESSAGES_PER_DAY);
     fetchAndActivateConfig();
 
     initializeMessages();
@@ -171,8 +172,10 @@ public class DefaultMessagesActivity extends AppCompatActivity
               initializeOpenAIClient(openAiApiKey);
 
               long _max_messages_per_day = mFirebaseRemoteConfig.getLong("max_messages_per_day");
-              if (_max_messages_per_day > 0)
+              if (_max_messages_per_day > 0) {
                 MAX_MESSAGES_PER_DAY = (int) _max_messages_per_day;
+                quotaManager.setMaxMessagesPerDay(MAX_MESSAGES_PER_DAY);
+              }
             } else {
               // Fetch failed, handle specific reasons
               Exception exception = task.getException();
@@ -255,7 +258,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
   @Override
   public boolean onSubmit(CharSequence input) {
     // Before sending a message
-    if (!updateMessageCount()) {
+    if (!isUserSubscribed() && !quotaManager.incrementAndCheck()) {
+      Toast.makeText(this, getString(R.string.chatview_quota_reached), Toast.LENGTH_LONG).show();
       subscriptionDialog.show();
       return false;
     } else {
@@ -391,40 +395,6 @@ public class DefaultMessagesActivity extends AppCompatActivity
   }
 
 
-  private String getCurrentDate() {
-    return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-  }
-
-  private boolean updateMessageCount() {
-    if (isUserSubscribed()) {
-      return true;
-    }
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-    SharedPreferences.Editor editor = prefs.edit();
-
-    String currentDate = getCurrentDate();
-    String storedDate = prefs.getString("date", "");
-    int messageCount = prefs.getInt("messageCount", 0);
-
-    if (currentDate.equals(storedDate)) {
-      // Same day
-      messageCount++;
-      if (messageCount > MAX_MESSAGES_PER_DAY) {
-        // User has exceeded the limit
-        return false;
-      }
-    } else {
-      // Different day, reset the count
-      messageCount = 1;
-    }
-
-    // Store the new count and date
-    editor.putInt("messageCount", messageCount);
-    editor.putString("date", currentDate);
-    editor.apply();
-
-    return true;
-  }
 
   private boolean isUserSubscribed() {
     return isSubscribed;
