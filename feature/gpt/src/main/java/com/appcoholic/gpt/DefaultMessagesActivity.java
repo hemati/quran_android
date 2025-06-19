@@ -116,8 +116,6 @@ public class DefaultMessagesActivity extends AppCompatActivity
   protected void onCreate(Bundle savedInstanceState) {
 
     super.onCreate(savedInstanceState);
-//        final int themeId = PCommon.GetPrefThemeId(getApplicationContext());
-//        setTheme(themeId);
 
     setContentView(R.layout.activity_default_messages);
 
