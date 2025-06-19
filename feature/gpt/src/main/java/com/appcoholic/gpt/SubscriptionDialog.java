@@ -21,7 +21,6 @@ import com.android.billingclient.api.Purchase;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class SubscriptionDialog extends Dialog implements BillingHelper.BillingUpdatesListener{
@@ -35,6 +34,9 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
 
   private String monthlyPlanPrice = "0.99$";
   private String yearlyPlanPrice = "8.49$";
+
+  private ProductDetails monthlyProductDetails;
+  private ProductDetails yearlyProductDetails;
 
   private BillingHelper billingHelper;
 
@@ -67,7 +69,6 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
 
     setCancelable(false);
     billingHelper = BillingHelper.getInstance(activity, this);
-    billingHelper.queryPurchases();
   }
 
 
@@ -79,12 +80,6 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
 
     setupViews();
   }
-
-  @Override
-  protected void onStart() {
-    super.onStart();
-  }
-
   @Override
   protected void onStop() {
     super.onStop();
@@ -130,8 +125,10 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
       for (ProductDetails productDetails : productDetailsList) {
         if (productDetails.getProductId().equals("qurangpt_subscription")) {
           monthlyPlanPrice = extractLocalizedPrice(productDetails);
+          monthlyProductDetails = productDetails;
         } else if (productDetails.getProductId().equals("qurangpt_subscription_yearly")) {
           yearlyPlanPrice = extractLocalizedPrice(productDetails);
+          yearlyProductDetails = productDetails;
         }
       }
       updatePriceUI();
@@ -140,15 +137,12 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   }
 
   private void initiateSubscriptionPurchase(String subscriptionId) {
-    billingHelper.queryProductDetails(Collections.singletonList(subscriptionId), productDetailsList -> {
-      for (ProductDetails productDetails : productDetailsList) {
-        if (productDetails.getProductId().equals(subscriptionId)) {
-          String offerToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
-          billingHelper.launchBillingFlow(productDetails, offerToken);
-          return;
-        }
-      }
-    });
+    ProductDetails productDetails = subscriptionId.equals("qurangpt_subscription")
+        ? monthlyProductDetails : yearlyProductDetails;
+    if (productDetails != null) {
+      String offerToken = productDetails.getSubscriptionOfferDetails().get(0).getOfferToken();
+      billingHelper.launchBillingFlow(productDetails, offerToken);
+    }
   }
 
   private String extractLocalizedPrice(ProductDetails productDetails) {

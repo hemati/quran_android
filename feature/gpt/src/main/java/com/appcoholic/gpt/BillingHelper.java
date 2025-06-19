@@ -46,7 +46,6 @@ public class BillingHelper {
     this.billingUpdatesListener = listener;
     firebaseAnalytics = FirebaseAnalytics.getInstance(activity.getApplicationContext());
     setupBillingClient();
-    startConnection();
   }
 
 
@@ -62,7 +61,6 @@ public class BillingHelper {
 
   private void updateActivity(Activity activity) {
     this.activityRef = new WeakReference<>(activity);
-    startConnection();
   }
 
   private void setupBillingClient() {
