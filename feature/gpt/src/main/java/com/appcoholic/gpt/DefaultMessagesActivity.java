@@ -37,7 +37,10 @@ import com.openai.models.ChatCompletionCreateParams;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
+import com.stfalcon.chatkit.messages.MessageHolders;
 import com.appcoholic.gpt.MessageQuotaManager;
+import com.appcoholic.gpt.markdown.MarkdownIncomingTextMessageViewHolder;
+import com.appcoholic.gpt.markdown.MarkdownOutcomingTextMessageViewHolder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -217,7 +220,15 @@ public class DefaultMessagesActivity extends AppCompatActivity
   }
 
   private void setupMessagesAdapter() {
-    messagesAdapter = new MessagesListAdapter<>(SENDER_ID, null);
+    MessageHolders holders = new MessageHolders()
+        .setOutcomingTextConfig(
+            MarkdownOutcomingTextMessageViewHolder.class,
+            com.stfalcon.chatkit.R.layout.item_outcoming_text_message)
+        .setIncomingTextConfig(
+            MarkdownIncomingTextMessageViewHolder.class,
+            com.stfalcon.chatkit.R.layout.item_incoming_text_message);
+
+    messagesAdapter = new MessagesListAdapter<>(SENDER_ID, holders, null);
     messagesAdapter.enableSelectionMode(this);
     messagesAdapter.setLoadMoreListener(this);
     messagesList.setAdapter(messagesAdapter);
