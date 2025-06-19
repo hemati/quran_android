@@ -54,7 +54,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
     super(activity);
 
     requestWindowFeature(Window.FEATURE_NO_TITLE);
-    firebaseAnalytics = FirebaseAnalytics.getInstance(activity);
+    firebaseAnalytics = FirebaseAnalytics.getInstance(activity.getApplicationContext());
 
     if (getWindow() != null) {
       getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -83,6 +83,14 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   @Override
   protected void onStart() {
     super.onStart();
+  }
+
+  @Override
+  protected void onStop() {
+    super.onStop();
+    if (billingHelper != null) {
+      billingHelper.endConnection();
+    }
   }
 
   private void setupViews() {
@@ -213,5 +221,8 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   @Override
   public void dismiss() {
     super.dismiss();
+    if (billingHelper != null) {
+      billingHelper.release();
+    }
   }
 }
