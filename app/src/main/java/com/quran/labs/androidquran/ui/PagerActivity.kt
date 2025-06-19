@@ -242,7 +242,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   private lateinit var sharedPrefHelper: SharedPrefHelper
   private val RATING_THRESHOLD = 3
   private val USAGE_THRESHOLD = 5 * 60 * 1000L // 5 minutes
-  private val DAYS_BETWEEN_PROMPTS = 7 * 24 * 60 * 60 * 1000L
+  private val DAYS_BETWEEN_PROMPTS = 3 * 24 * 60 * 60 * 1000L
 
   private var lastSuraOnPage: Int = -1
 
