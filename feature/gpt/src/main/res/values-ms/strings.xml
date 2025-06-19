@@ -34,5 +34,6 @@
   <string name="upgrade_now">Mulakan percubaan percuma 7 hari</string>
   <string name="no_thanks">Mungkin kemudian</string>
   <string name="trial_conditions">• Boleh dibatalkan bila-bila masa\n• Tiada caj semasa percubaan percuma\n• Ciri eksklusif semasa percubaan</string>
+  <string name="message_input_hint">Taip mesej anda</string>
 
 </resources>

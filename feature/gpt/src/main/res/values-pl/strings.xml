@@ -34,5 +34,6 @@
   <string name="upgrade_now">Rozpocznij 7-dniowy darmowy okres próbny</string>
   <string name="no_thanks">Może później</string>
   <string name="trial_conditions">• Anuluj w dowolnym momencie\n• Brak opłat podczas bezpłatnego okresu próbnego\n• Ekskluzywne funkcje podczas okresu próbnego</string>
+  <string name="message_input_hint">Wpisz wiadomość</string>
 
 </resources>

@@ -36,5 +36,6 @@
   <string name="upgrade_now">Commencez l\'essai gratuit de 7 jours</string>
   <string name="no_thanks">Peut-être plus tard</string>
   <string name="trial_conditions">• Annulez à tout moment\n• Aucun frais pendant la période d\'essai gratuite\n• Fonctionnalités exclusives pendant l\'essai</string>
+  <string name="message_input_hint">Écrivez votre message</string>
 
 </resources>

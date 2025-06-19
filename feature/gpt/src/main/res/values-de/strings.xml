@@ -35,5 +35,6 @@
   <string name="upgrade_now">Starten Sie die 7-tägige kostenlose Testversion</string>
   <string name="no_thanks">Vielleicht später</string>
   <string name="trial_conditions">• Jederzeit kündbar\n• Keine Kosten während der Testphase\n• Exklusive Funktionen während des Tests</string>
+  <string name="message_input_hint">Nachricht eingeben</string>
 
 </resources>

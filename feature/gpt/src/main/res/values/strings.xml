@@ -39,4 +39,5 @@ You\'ve reached your daily limit. Start your 3-day free trial for unlimited acce
   <string name="upgrade_now">Start 7 day free trial</string>
   <string name="no_thanks">Maybe later</string>
   <string name="trial_conditions">• Cancel anytime\n• No charges during free trial\n• Exclusive features during trial</string>
+  <string name="message_input_hint">Type your message</string>
 </resources>

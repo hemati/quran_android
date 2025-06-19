@@ -36,5 +36,6 @@
   <string name="upgrade_now">Kezdje el a 7 napos ingyenes próbát</string>
   <string name="no_thanks">Lehet, hogy később</string>
   <string name="trial_conditions">• Bármikor lemondható\n• Ingyenes próbaidőszak alatt nincs díj\n• Exkluzív funkciók a próbaidőszak alatt</string>
+  <string name="message_input_hint">Írja be üzenetét</string>
 
 </resources>

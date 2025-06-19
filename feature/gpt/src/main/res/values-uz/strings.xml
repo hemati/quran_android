@@ -34,5 +34,6 @@
   <string name="upgrade_now">7 kunlik bepul sinovni boshlang</string>
   <string name="no_thanks">Ehtimol, keyinroq</string>
   <string name="trial_conditions">• Istalgan vaqtda bekor qiling\n• Bepul sinov davrida hech qanday to‘lov yo‘q\n• Sinov davrida eksklyuziv xususiyatlar</string>
+  <string name="message_input_hint">Xabaringizni kiriting</string>
 
 </resources>

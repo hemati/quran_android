@@ -36,5 +36,6 @@
   <string name="upgrade_now">Starta 7 dagars gratis provperiod</string>
   <string name="no_thanks">Kanske senare</string>
   <string name="trial_conditions">• Avbryt när som helst\n• Inga avgifter under gratis provperiod\n• Exklusiva funktioner under provperioden</string>
+  <string name="message_input_hint">Skriv ditt meddelande</string>
 
 </resources>

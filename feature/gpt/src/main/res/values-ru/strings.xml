@@ -34,5 +34,6 @@
   <string name="upgrade_now">Начать 7-дневную бесплатную пробную версию</string>
   <string name="no_thanks">Может быть позже</string>
   <string name="trial_conditions">• Отменить в любой момент\n• Без оплаты во время бесплатного пробного периода\n• Эксклюзивные функции во время пробного периода</string>
+  <string name="message_input_hint">Введите сообщение</string>
 
 </resources>

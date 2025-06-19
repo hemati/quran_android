@@ -35,5 +35,6 @@
   <string name="upgrade_now">Comece o teste gratuito de 7 dias</string>
   <string name="no_thanks">Talvez mais tarde</string>
   <string name="trial_conditions">• Cancele a qualquer momento\n• Sem cobranças durante o período de teste gratuito\n• Recursos exclusivos durante o teste</string>
+  <string name="message_input_hint">Digite sua mensagem</string>
 
 </resources>
