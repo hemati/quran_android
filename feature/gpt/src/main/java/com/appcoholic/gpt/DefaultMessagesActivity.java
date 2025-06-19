@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +39,7 @@ import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
 import com.appcoholic.gpt.MessageQuotaManager;
+import com.quran.labs.androidquran.util.SharedPrefHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -111,11 +113,22 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
   private SubscriptionDialog subscriptionDialog;  // Add this line
 
+  private SharedPrefHelper sharedPrefHelper;
+  private long startTime;
+  private static final int RATING_THRESHOLD = 3;
+  private static final long USAGE_THRESHOLD = 5 * 60 * 1000L; // 5 minutes
+  private static final long DAYS_BETWEEN_PROMPTS = 7 * 24 * 60 * 60 * 1000L;
+
   @SuppressLint("MissingInflatedId")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
 
     super.onCreate(savedInstanceState);
+
+    sharedPrefHelper = new SharedPrefHelper(this);
+    startTime = SystemClock.elapsedRealtime();
+    int openCount = sharedPrefHelper.getOpenCount();
+    sharedPrefHelper.saveOpenCount(openCount + 1);
 
     setContentView(R.layout.activity_default_messages);
 
@@ -157,6 +170,20 @@ public class DefaultMessagesActivity extends AppCompatActivity
     setupMessagesAdapter();
     subscriptionDialog = new SubscriptionDialog(this);  // Add this line
     subscriptionDialog.setOnSubscriptionStatusChangedListener(this::setUserSubscribed);
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    startTime = SystemClock.elapsedRealtime();
+    maybePromptForRating();
+  }
+
+  @Override
+  protected void onPause() {
+    long usageTime = SystemClock.elapsedRealtime() - startTime;
+    sharedPrefHelper.saveUsageTime(sharedPrefHelper.getUsageTime() + usageTime);
+    super.onPause();
   }
 
   private void fetchAndActivateConfig() {
@@ -319,6 +346,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
         chatMessages.add(new ChatMessage(ChatMessage.MessageType.ASSISTANT, content.get()));
       }
     }
+    maybePromptForRating();
   }
 
   private List<ChatMessage> getChatContext() {
@@ -496,7 +524,21 @@ public class DefaultMessagesActivity extends AppCompatActivity
         // Handle error if needed
         Log.d(TAG, "Failed to get review flow");
       }
+      sharedPrefHelper.saveOpenCount(0);
+      sharedPrefHelper.saveUsageTime(0);
+      sharedPrefHelper.saveLastRatingTime(System.currentTimeMillis());
     });
+  }
+
+  private void maybePromptForRating() {
+    long totalUsageTime = sharedPrefHelper.getUsageTime();
+    int openCount = sharedPrefHelper.getOpenCount();
+    long lastPrompt = sharedPrefHelper.getLastRatingTime();
+    long now = System.currentTimeMillis();
+    if (openCount >= RATING_THRESHOLD && totalUsageTime >= USAGE_THRESHOLD &&
+        now - lastPrompt >= DAYS_BETWEEN_PROMPTS) {
+      showRatingDialog();
+    }
   }
 
 }
