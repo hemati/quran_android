@@ -12,11 +12,17 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import com.quran.labs.androidquran.BuildConfig
 import com.quran.labs.androidquran.R
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.quran.labs.androidquran.util.SharedPrefHelper
 
 class AboutFragment : PreferenceFragmentCompat() {
 
+  private lateinit var sharedPrefHelper: SharedPrefHelper
+
   override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
     addPreferencesFromResource(R.xml.about)
+
+    sharedPrefHelper = SharedPrefHelper(requireContext())
 
     val flavor = BuildConfig.FLAVOR + "Images"
     val parent = findPreference("aboutDataSources") as PreferenceCategory?
@@ -48,6 +54,29 @@ class AboutFragment : PreferenceFragmentCompat() {
       windowInsets
     }
     return view
+  }
+
+  override fun onPreferenceTreeClick(preference: Preference): Boolean {
+    if (preference.key == "rate_app") {
+      showRatingDialog()
+      return true
+    }
+    return super.onPreferenceTreeClick(preference)
+  }
+
+  private fun showRatingDialog() {
+    val manager = ReviewManagerFactory.create(requireContext())
+    val request = manager.requestReviewFlow()
+    request.addOnCompleteListener { task ->
+      if (task.isSuccessful) {
+        val reviewInfo = task.result
+        val flow = manager.launchReviewFlow(requireActivity(), reviewInfo)
+        flow.addOnCompleteListener { }
+      }
+      sharedPrefHelper.saveOpenCount(0)
+      sharedPrefHelper.saveUsageTime(0)
+      sharedPrefHelper.saveLastRatingTime(System.currentTimeMillis())
+    }
   }
 
   companion object {

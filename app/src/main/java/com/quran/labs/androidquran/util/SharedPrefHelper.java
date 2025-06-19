@@ -6,6 +6,7 @@ public class SharedPrefHelper {
     private static final String PREF_NAME = "AppUsagePref";
     private static final String KEY_USAGE_TIME = "usageTime";
     private static final String KEY_OPEN_COUNT = "openCount";
+    private static final String KEY_LAST_RATING_TIME = "lastRatingTime";
     private static final String IS_ONBOARDING_COMPLETED = "isOnboardingCompleted";
 
     private SharedPreferences sharedPreferences;
@@ -32,6 +33,16 @@ public class SharedPrefHelper {
 
     public int getOpenCount() {
         return sharedPreferences.getInt(KEY_OPEN_COUNT, 0);
+    }
+
+    public void saveLastRatingTime(long time) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(KEY_LAST_RATING_TIME, time);
+        editor.apply();
+    }
+
+    public long getLastRatingTime() {
+        return sharedPreferences.getLong(KEY_LAST_RATING_TIME, 0);
     }
 
     public void setOnboardingCompleted(boolean isCompleted) {

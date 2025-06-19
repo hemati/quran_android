@@ -221,6 +221,11 @@
       android:title="@string/about_others"
       app:iconSpaceReserved="false">
     <Preference
+        android:key="rate_app"
+        android:title="@string/menu_rate_app"
+        android:summary="@string/please_rate_app"
+        app:iconSpaceReserved="false" />
+    <Preference
         android:summary="@string/about_contributors_summary"
         android:title="@string/about_contributors"
         app:iconSpaceReserved="false">

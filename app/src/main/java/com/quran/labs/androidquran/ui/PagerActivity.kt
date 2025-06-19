@@ -47,6 +47,7 @@ import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
 import androidx.window.layout.FoldingFeature
 import androidx.window.layout.WindowInfoTracker
 import com.appcoholic.gpt.DefaultMessagesActivity
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.quran.data.core.QuranInfo
 import com.quran.data.dao.BookmarksDao
@@ -112,6 +113,7 @@ import com.quran.labs.androidquran.util.QuranFileUtils
 import com.quran.labs.androidquran.util.QuranScreenInfo
 import com.quran.labs.androidquran.util.QuranSettings
 import com.quran.labs.androidquran.util.QuranUtils
+import com.quran.labs.androidquran.util.SharedPrefHelper
 import com.quran.labs.androidquran.util.ShareUtil
 import com.quran.labs.androidquran.view.IconPageIndicator
 import com.quran.labs.androidquran.view.QuranSpinner
@@ -237,6 +239,11 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   @Inject lateinit var qariManager: CurrentQariManager
   @Inject lateinit var downloadBridge: DownloadBridge
 
+  private lateinit var sharedPrefHelper: SharedPrefHelper
+  private val RATING_THRESHOLD = 3
+  private val USAGE_THRESHOLD = 5 * 60 * 1000L // 5 minutes
+  private val DAYS_BETWEEN_PROMPTS = 7 * 24 * 60 * 60 * 1000L
+
   private lateinit var audioStatusRepositoryBridge: AudioStatusRepositoryBridge
   private lateinit var readingEventPresenterBridge: ReadingEventPresenterBridge
   private lateinit var windowInsetsController: WindowInsetsControllerCompat
@@ -279,6 +286,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
 
     // field injection
     pagerActivityComponent.inject(this)
+    sharedPrefHelper = SharedPrefHelper(this)
 
     isFoldableDeviceOpenAndVertical =
       savedInstanceState?.getBoolean(LAST_FOLDING_STATE, isFoldableDeviceOpenAndVertical)
@@ -1928,6 +1936,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
             com.quran.labs.androidquran.common.toolbar.R.string.share_ayah_text
           )
         }
+        maybePromptForRating()
       }
 
       return
@@ -1944,6 +1953,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
           } else {
             shareUtil.shareVerses(this@PagerActivity, quranAyahs)
           }
+          maybePromptForRating()
         })
   }
 
@@ -1960,6 +1970,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
               com.quran.labs.androidquran.common.toolbar.R.string.share_ayah
             )
             dismissProgressDialog()
+            maybePromptForRating()
           }
 
           override fun onError(e: Throwable) {
@@ -2003,6 +2014,32 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     val start = selectionStart
     if (start != null && start == suraAyah) {
       ayahToolBar.setBookmarked(bookmarked)
+    }
+  }
+
+  private fun showRatingDialog() {
+    val manager = ReviewManagerFactory.create(this)
+    val request = manager.requestReviewFlow()
+    request.addOnCompleteListener { task ->
+      if (task.isSuccessful) {
+        val reviewInfo = task.result
+        val flow = manager.launchReviewFlow(this, reviewInfo)
+        flow.addOnCompleteListener { }
+      }
+      sharedPrefHelper.saveOpenCount(0)
+      sharedPrefHelper.saveUsageTime(0)
+      sharedPrefHelper.saveLastRatingTime(System.currentTimeMillis())
+    }
+  }
+
+  private fun maybePromptForRating() {
+    val totalUsageTime = sharedPrefHelper.usageTime
+    val openCount = sharedPrefHelper.openCount
+    val lastPrompt = sharedPrefHelper.lastRatingTime
+    val now = System.currentTimeMillis()
+    if (openCount >= RATING_THRESHOLD && totalUsageTime >= USAGE_THRESHOLD &&
+        now - lastPrompt >= DAYS_BETWEEN_PROMPTS) {
+      showRatingDialog()
     }
   }
 

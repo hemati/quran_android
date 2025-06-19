@@ -133,6 +133,7 @@ class QuranActivity : AppCompatActivity(),
   private var startTime: Long = 0
   private val RATING_THRESHOLD = 3
   private val USAGE_THRESHOLD = 5 * 60 * 1000L // 5 minutes in milliseconds
+  private val DAYS_BETWEEN_PROMPTS = 7 * 24 * 60 * 60 * 1000L
 
   private lateinit var remoteConfig: FirebaseRemoteConfig
 
@@ -286,6 +287,18 @@ class QuranActivity : AppCompatActivity(),
 
       sharedPrefHelper.saveOpenCount(0)
       sharedPrefHelper.saveUsageTime(0)
+      sharedPrefHelper.saveLastRatingTime(System.currentTimeMillis())
+    }
+  }
+
+  fun maybePromptForRating() {
+    val totalUsageTime = sharedPrefHelper.usageTime
+    val openCount = sharedPrefHelper.openCount
+    val lastPrompt = sharedPrefHelper.lastRatingTime
+    val now = System.currentTimeMillis()
+    if (openCount >= RATING_THRESHOLD && totalUsageTime >= USAGE_THRESHOLD &&
+        now - lastPrompt >= DAYS_BETWEEN_PROMPTS) {
+      showRatingDialog()
     }
   }
 
@@ -429,7 +442,10 @@ class QuranActivity : AppCompatActivity(),
     startTime = SystemClock.elapsedRealtime()
     val totalUsageTime = sharedPrefHelper.usageTime
     val openCount = sharedPrefHelper.openCount
-    if (openCount >= RATING_THRESHOLD && totalUsageTime >= USAGE_THRESHOLD) {
+    val lastPrompt = sharedPrefHelper.lastRatingTime
+    val now = System.currentTimeMillis()
+    if (openCount >= RATING_THRESHOLD && totalUsageTime >= USAGE_THRESHOLD &&
+        now - lastPrompt >= DAYS_BETWEEN_PROMPTS) {
       showRatingDialog()
     }
   }
