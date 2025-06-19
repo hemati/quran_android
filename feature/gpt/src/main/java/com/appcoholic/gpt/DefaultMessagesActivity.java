@@ -12,16 +12,15 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -137,6 +136,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
       lp.topMargin = insets.top;
       lp.leftMargin = insets.left;
       lp.rightMargin = insets.right;
+      lp.bottomMargin = insets.bottom;
       v.setLayoutParams(lp);
 
       messagesList.setPadding(0, 0, 0, insets.bottom);
