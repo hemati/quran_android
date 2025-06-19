@@ -242,7 +242,9 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   private lateinit var sharedPrefHelper: SharedPrefHelper
   private val RATING_THRESHOLD = 3
   private val USAGE_THRESHOLD = 5 * 60 * 1000L // 5 minutes
-  private val DAYS_BETWEEN_PROMPTS = 7 * 24 * 60 * 60 * 1000L
+  private val DAYS_BETWEEN_PROMPTS = 3 * 24 * 60 * 60 * 1000L
+
+  private var lastSuraOnPage: Int = -1
 
   private lateinit var audioStatusRepositoryBridge: AudioStatusRepositoryBridge
   private lateinit var readingEventPresenterBridge: ReadingEventPresenterBridge
@@ -448,6 +450,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
         }
       }
     }
+    lastSuraOnPage = if (page > 0) quranInfo.getSuraOnPage(page) else -1
     onShowingTranslationBackCallback.isEnabled = showingTranslation
 
     compositeDisposable = CompositeDisposable()
@@ -561,6 +564,12 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       override fun onPageSelected(position: Int) {
         Timber.d("onPageSelected(): %d", position)
         val page = quranInfo.getPageFromPosition(position, isDualPageVisible)
+
+        val suraOnPage = quranInfo.getSuraOnPage(page)
+        if (lastSuraOnPage != -1 && suraOnPage != lastSuraOnPage) {
+          maybePromptForRating()
+        }
+        lastSuraOnPage = suraOnPage
 
         if (quranSettings.shouldDisplayMarkerPopup()) {
           lastPopupTime = QuranDisplayHelper.displayMarkerPopup(
