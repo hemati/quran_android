@@ -12,6 +12,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.activity.EdgeToEdge;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.appcoholic.gpt.data.model.Message;
 import com.appcoholic.gpt.data.model.User;
@@ -114,11 +120,28 @@ public class DefaultMessagesActivity extends AppCompatActivity
   @SuppressLint("MissingInflatedId")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    EdgeToEdge.enable(this);
     super.onCreate(savedInstanceState);
 //        final int themeId = PCommon.GetPrefThemeId(getApplicationContext());
 //        setTheme(themeId);
 
     setContentView(R.layout.activity_default_messages);
+
+    messagesList = findViewById(R.id.messagesList);
+
+    ViewGroup root = findViewById(R.id.linearLayout);
+    ViewCompat.setOnApplyWindowInsetsListener(root, (v, windowInsets) -> {
+      Insets insets = windowInsets.getInsets(
+          WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+      ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+      lp.topMargin = insets.top;
+      lp.leftMargin = insets.left;
+      lp.rightMargin = insets.right;
+      v.setLayoutParams(lp);
+
+      messagesList.setPadding(0, 0, 0, insets.bottom);
+      return windowInsets;
+    });
 
     // Get the intent that started this activity
     Intent intent = getIntent();
@@ -138,8 +161,6 @@ public class DefaultMessagesActivity extends AppCompatActivity
         .setMinimumFetchIntervalInSeconds(86400)  // Adjust based on your needs
         .build();
     mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
-
-    messagesList = findViewById(R.id.messagesList);
 
     toolbar = findViewById(R.id.toolbar);
     if (toolbar != null) {
