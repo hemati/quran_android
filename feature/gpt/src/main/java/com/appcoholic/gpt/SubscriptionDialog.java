@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -54,7 +53,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
     super(activity);
 
     requestWindowFeature(Window.FEATURE_NO_TITLE);
-    firebaseAnalytics = FirebaseAnalytics.getInstance(activity);
+    firebaseAnalytics = FirebaseAnalytics.getInstance(activity.getApplicationContext());
 
     if (getWindow() != null) {
       getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -67,7 +66,6 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
 
     setCancelable(false);
     billingHelper = BillingHelper.getInstance(activity, this);
-    billingHelper.queryPurchases();
   }
 
 
@@ -81,8 +79,11 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   }
 
   @Override
-  protected void onStart() {
-    super.onStart();
+  protected void onStop() {
+    super.onStop();
+    if (billingHelper != null) {
+      billingHelper.release();
+    }
   }
 
   private void setupViews() {
@@ -192,7 +193,6 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   @Override
   public void onPurchaseAcknowledged(Purchase purchase) {
     // Handle acknowledgment if necessary
-    Log.d("SubscriptionDialog", "Purchase acknowledged: " + purchase.getOrderId());
     isGPTPro = true;
   }
 
@@ -213,5 +213,8 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   @Override
   public void dismiss() {
     super.dismiss();
+    if (billingHelper != null) {
+      billingHelper.release();
+    }
   }
 }
