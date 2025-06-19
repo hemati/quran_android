@@ -36,5 +36,6 @@
   <string name="upgrade_now">Inizia la prova gratuita di 7 giorni</string>
   <string name="no_thanks">Forse più tardi</string>
   <string name="trial_conditions">• Annulla in qualsiasi momento\n• Nessun addebito durante il periodo di prova gratuito\n• Funzionalità esclusive durante la prova</string>
+  <string name="message_input_hint">Scrivi il tuo messaggio</string>
 
 </resources>

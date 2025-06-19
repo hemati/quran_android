@@ -35,5 +35,6 @@
   <string name="upgrade_now">Bắt đầu dùng thử miễn phí 7 ngày</string>
   <string name="no_thanks">Có thể sau</string>
   <string name="trial_conditions">• Hủy bất kỳ lúc nào\n• Không có phí trong thời gian dùng thử miễn phí\n• Tính năng độc quyền trong thời gian dùng thử</string>
+  <string name="message_input_hint">Nhập tin nhắn của bạn</string>
 
 </resources>

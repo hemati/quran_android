@@ -35,5 +35,6 @@
   <string name="upgrade_now">Start de gratis proefperiode van 7 dagen</string>
   <string name="no_thanks">Misschien later</string>
   <string name="trial_conditions">• Annuleer op elk moment\n• Geen kosten tijdens de gratis proefperiode\n• Exclusieve functies tijdens de proefperiode</string>
+  <string name="message_input_hint">Typ je bericht</string>
 
 </resources>

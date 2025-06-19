@@ -35,5 +35,6 @@
   <string name="upgrade_now">7 күндік тегін сынақты бастаңыз</string>
   <string name="no_thanks">Мүмкін кейінірек</string>
   <string name="trial_conditions">• Кез келген уақытта бас тартуға болады\n• Тегін сынақ кезеңінде ешқандай төлем болмайды\n• Сынақ кезеңінде эксклюзивті мүмкіндіктер</string>
+  <string name="message_input_hint">Хабарламаңызды жазыңыз</string>
 
 </resources>

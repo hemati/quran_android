@@ -36,5 +36,6 @@
   <string name="upgrade_now">سەرەتا 7 رۆژ بە بێتاکەوە دەست پێ بکە</string>
   <string name="no_thanks">لە کاتی تر</string>
   <string name="trial_conditions">• هەر کاتیش لەماوەدا ڕەت کردنەوە دەکرێت\n• هیچ تەرخانێکی نییە لە ماوەی تاقیکردنەوەی بێتاکەوە\n• تایبەتمەندیە تایبەتییەکان لە ماوەی تاقیکردنەوەدا</string>
+  <string name="message_input_hint">پەیامەکەت بنووسە</string>
 
 </resources>

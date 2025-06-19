@@ -51,7 +51,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_alignParentBottom="true"
-      app:inputHint="send"
+      app:inputHint="@string/message_input_hint"
       app:inputButtonHeight="48dp"
       app:inputButtonWidth="48dp"
       app:inputButtonDefaultBgColor="@color/accent_color_dark"

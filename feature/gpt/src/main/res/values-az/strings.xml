@@ -35,5 +35,6 @@
   <string name="upgrade_now">7 günlük pulsuz sınağa başlayın</string>
   <string name="no_thanks">Bəlkə sonra</string>
   <string name="trial_conditions">• İstənilən vaxt ləğv edin\n• Pulsuz sınaq dövründə heç bir ödəniş olmayacaq\n• Sınaq müddətində eksklüziv funksiyalar</string>
+  <string name="message_input_hint">Mesajınızı yazın</string>
 
 </resources>

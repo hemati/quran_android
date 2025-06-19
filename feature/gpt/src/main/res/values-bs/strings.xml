@@ -36,5 +36,6 @@
   <string name="upgrade_now">Započnite 7-dnevno besplatno probno razdoblje</string>
   <string name="no_thanks">Možda kasnije</string>
   <string name="trial_conditions">• Možete otkazati u bilo kojem trenutku\n• Nema troškova tokom besplatnog probnog perioda\n• Ekskluzivne funkcije tokom probnog perioda</string>
+  <string name="message_input_hint">Unesite poruku</string>
 
 </resources>

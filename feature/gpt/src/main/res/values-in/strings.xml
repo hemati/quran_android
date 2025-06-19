@@ -35,5 +35,6 @@
   <string name="upgrade_now">Mulai uji coba gratis 7 hari</string>
   <string name="no_thanks">Mungkin nanti</string>
   <string name="trial_conditions">• Batalkan kapan saja\n• Tidak ada biaya selama masa uji coba gratis\n• Fitur eksklusif selama masa uji coba</string>
+  <string name="message_input_hint">Ketik pesan Anda</string>
 
 </resources>

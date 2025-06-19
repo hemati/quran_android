@@ -35,5 +35,6 @@
   <string name="upgrade_now">ابدأ فترة تجريبية مجانية لمدة 7 أيام</string>
   <string name="no_thanks">ربما لاحقًا</string>
   <string name="trial_conditions">• يمكنك الإلغاء في أي وقت\n• لا رسوم أثناء الفترة التجريبية المجانية\n• ميزات حصرية أثناء التجربة</string>
+  <string name="message_input_hint">اكتب رسالتك</string>
 
 </resources>

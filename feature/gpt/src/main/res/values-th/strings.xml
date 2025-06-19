@@ -36,5 +36,6 @@
   <string name="upgrade_now">เริ่มทดลองใช้ฟรี 7 วัน</string>
   <string name="no_thanks">อาจจะครั้งหน้า</string>
   <string name="trial_conditions">• ยกเลิกได้ทุกเมื่อ\n• ไม่มีค่าใช้จ่ายในช่วงทดลองใช้ฟรี\n• คุณสมบัติพิเศษระหว่างช่วงทดลอง</string>
+  <string name="message_input_hint">พิมพ์ข้อความของคุณ</string>
 
 </resources>

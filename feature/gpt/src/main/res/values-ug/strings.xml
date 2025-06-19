@@ -35,5 +35,6 @@
   <string name="upgrade_now">7 كۈنلۈك ھەقسىز سىناشنى باشلاڭ</string>
   <string name="no_thanks">بەلكى كېيىنچە</string>
   <string name="trial_conditions">• ھەر قانداق ۋاقىتتا بىكار قىلىش\n• ھەقسىز سىناش مەزگىلىدە ھەچقانداق ھەق تولانمايدۇ\n• سىناش مەزگىلىدە ئالاھىدە ئىقتىدارلار</string>
+  <string name="message_input_hint">ئۇچۇرىڭىزنى يېزىڭ</string>
 
 </resources>

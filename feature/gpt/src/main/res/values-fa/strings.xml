@@ -36,5 +36,6 @@
   <string name="upgrade_now">آغاز آزمایش رایگان 7 روزه</string>
   <string name="no_thanks">شاید بعداً</string>
   <string name="trial_conditions">• امکان لغو در هر زمان\n• بدون هزینه در طول دوره آزمایشی رایگان\n• ویژگی‌های انحصاری در طول دوره آزمایشی</string>
+  <string name="message_input_hint">پیام خود را بنویسید</string>
 
 </resources>

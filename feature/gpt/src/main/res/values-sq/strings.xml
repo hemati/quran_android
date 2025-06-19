@@ -36,5 +36,6 @@
   <string name="upgrade_now">Fillo provën falas 7 ditore</string>
   <string name="no_thanks">Ndoshta më vonë</string>
   <string name="trial_conditions">• Anulo në çdo kohë\n• Pa pagesa gjatë periudhës së provës falas\n• Veçori ekskluzive gjatë provës</string>
+  <string name="message_input_hint">Shkruani mesazhin tuaj</string>
 
 </resources>

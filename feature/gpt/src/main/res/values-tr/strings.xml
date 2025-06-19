@@ -34,5 +34,6 @@
   <string name="upgrade_now">7 günlük ücretsiz denemeye başlayın</string>
   <string name="no_thanks">Belki daha sonra</string>
   <string name="trial_conditions">• İstediğiniz zaman iptal edin\n• Ücretsiz deneme süresi boyunca hiçbir ücret yok\n• Deneme sırasında özel özellikler</string>
+  <string name="message_input_hint">Mesajınızı yazın</string>
 
 </resources>
