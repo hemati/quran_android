@@ -6,8 +6,6 @@
   <color name="toolbar_secondary_text">#ff44464e</color>
 
   <color name="surface">#fffaf8f7</color>
-  <color name="accent_color">#ff00838f</color>
-  <color name="accent_color_dark">@color/color_control_normal</color>
   <color name="page_background">#FFF4CB</color>
   <color name="secondary_dark_background">#ffffffff</color>
   <color name="header_background">#dee2e6</color>

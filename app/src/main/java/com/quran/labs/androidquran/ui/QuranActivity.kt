@@ -137,6 +137,7 @@ class QuranActivity : AppCompatActivity(),
   private lateinit var remoteConfig: FirebaseRemoteConfig
 
   private var showProDialog: Boolean = false
+  private val KEY_TAP_TARGET_SHOWN = "tap_target_shown"
 
   public override fun onCreate(savedInstanceState: Bundle?) {
     enableEdgeToEdge()
@@ -162,6 +163,7 @@ class QuranActivity : AppCompatActivity(),
         topMargin = insets.top
         leftMargin = insets.left
         rightMargin = insets.right
+        bottomMargin = insets.bottom
       }
 
       // if we return WindowInsetsCompat.CONSUMED, the SnackBar won't
@@ -573,7 +575,7 @@ class QuranActivity : AppCompatActivity(),
                 val message = "Hello, I need support with Holy Word - QuranGPT." // Customize your message
                 val url = "https://wa.me/${whatsappNumber.removePrefix("+")}?text=${URLEncoder.encode(message, "UTF-8")}"
                 val whatsappIntent = Intent(Intent.ACTION_VIEW).apply {
-                  data = Uri.parse(url)
+                  data = url.toUri()
                 }
                 try {
                   startActivity(whatsappIntent)
