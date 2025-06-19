@@ -64,6 +64,8 @@ dependencies {
     implementation("com.github.stfalcon-studio:Chatkit:0.4.1")
     implementation("com.openai:openai-java:0.33.0")
 
+    implementation("io.noties.markwon:core:4.6.2")
+
     implementation("com.android.billingclient:billing:7.0.0")
 
 

@@ -20,6 +20,8 @@ import androidx.core.content.ContextCompat;
 
 import com.appcoholic.gpt.data.model.Message;
 import com.appcoholic.gpt.data.model.User;
+import com.appcoholic.gpt.markdown.MarkdownIncomingTextMessageViewHolder;
+import com.appcoholic.gpt.markdown.MarkdownOutcomingTextMessageViewHolder;
 import com.google.android.gms.tasks.Task;
 import com.google.android.play.core.review.ReviewInfo;
 import com.google.android.play.core.review.ReviewManager;
@@ -34,10 +36,10 @@ import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.models.ChatCompletion;
 import com.openai.models.ChatCompletionAssistantMessageParam;
 import com.openai.models.ChatCompletionCreateParams;
+import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
-import com.appcoholic.gpt.MessageQuotaManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -93,7 +95,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
       "You are QuranGPT, a helpful assistant built by Muslims to focus on religious queries, especially Islam and the Quran. " +
           "You will not break character. You will only answer questions related to Islam or religion; for any other topic, politely refuse. " +
           "You will respond using generally accepted interpretations from different Islamic schools of thought, without favoring a specific theology. " +
-          "Your responses must be concise, written in the user's language, and avoid any text styling besides line breaks."
+          "Your responses must be concise, written in the user's language, and avoid any text styling besides line breaks or markdown formatting. "
   );
 
   private Message welcomeMessage;
@@ -217,7 +219,15 @@ public class DefaultMessagesActivity extends AppCompatActivity
   }
 
   private void setupMessagesAdapter() {
-    messagesAdapter = new MessagesListAdapter<>(SENDER_ID, null);
+    MessageHolders holders = new MessageHolders()
+        .setOutcomingTextConfig(
+            MarkdownOutcomingTextMessageViewHolder.class,
+            com.stfalcon.chatkit.R.layout.item_outcoming_text_message)
+        .setIncomingTextConfig(
+            MarkdownIncomingTextMessageViewHolder.class,
+            com.stfalcon.chatkit.R.layout.item_incoming_text_message);
+
+    messagesAdapter = new MessagesListAdapter<>(SENDER_ID, holders, null);
     messagesAdapter.enableSelectionMode(this);
     messagesAdapter.setLoadMoreListener(this);
     messagesList.setAdapter(messagesAdapter);
@@ -393,7 +403,6 @@ public class DefaultMessagesActivity extends AppCompatActivity
         || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
         || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH);
   }
-
 
 
   private boolean isUserSubscribed() {
