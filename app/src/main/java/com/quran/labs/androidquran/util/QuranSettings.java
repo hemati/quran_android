@@ -53,10 +53,6 @@ public class QuranSettings {
     prefs.unregisterOnSharedPreferenceChangeListener(listener);
   }
 
-  public boolean isArabicNames() {
-    return prefs.getBoolean(Constants.PREF_USE_ARABIC_NAMES, false);
-  }
-
   public boolean isLockOrientation() {
     return prefs.getBoolean(Constants.PREF_LOCK_ORIENTATION, false);
   }
@@ -228,6 +224,22 @@ public class QuranSettings {
   public boolean isShowSuraTranslatedName() {
     return prefs.getBoolean(Constants.PREF_SURA_TRANSLATED_NAME,
         appContext.getResources().getBoolean(R.bool.show_sura_names_translation));
+  }
+
+  public String currentTheme() {
+    final String theme = prefs.getString(Constants.PREF_APP_THEME, null);
+    if (theme == null) {
+      final int version = getVersion();
+      final String defaultTheme;
+      if (version == 0) {
+        defaultTheme = Constants.THEME_DEFAULT;
+      } else {
+        defaultTheme = Constants.THEME_DARK;
+      }
+      prefs.edit().putString(Constants.PREF_APP_THEME, defaultTheme).apply();
+      return defaultTheme;
+    }
+    return theme;
   }
 
   // probably should eventually move this to Application.onCreate..

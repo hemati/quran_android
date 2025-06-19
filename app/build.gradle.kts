@@ -34,9 +34,20 @@ android {
   namespace = "com.quran.labs.androidquran"
 
   defaultConfig {
-    versionCode = 250309
-    versionName = "1.7.1"
+    versionCode = 250619
+    versionName = "1.8.0"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
+  }
+
+  androidResources {
+    // Indonesian is still in instead of id due to https://issuetracker.google.com/issues/36911507
+    @Suppress("UnstableApiUsage")
+    localeFilters += listOf(
+      "ar", "az", "bg", "bn", "bs", "cs", "da", "de", "el", "es", "et", "fa",
+      "fi", "fr", "hi", "hr", "hu", "in", "it", "ja", "kk", "ko", "ku", "lt",
+      "lv", "ms", "nl", "pl", "ps", "pt", "ro", "ru", "sk", "sl", "sq", "sr",
+      "sv", "th", "tr", "ug", "uk", "ur", "uz", "vi", "zh"
+    )
   }
 
   dependenciesInfo {
@@ -108,7 +119,6 @@ android {
     }
   }
 
-  @Suppress("UnstableApiUsage")
   testOptions {
     unitTests {
       isIncludeAndroidResources = true
@@ -191,6 +201,8 @@ dependencies {
 
   implementation(libs.androidx.appcompat)
   implementation(libs.androidx.media)
+  implementation(libs.androidx.media3.exoplayer)
+  implementation(libs.androidx.media3.session)
   implementation(libs.androidx.localbroadcastmanager)
   implementation(libs.androidx.preference.ktx)
   implementation(libs.androidx.recyclerview)

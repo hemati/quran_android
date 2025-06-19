@@ -39,6 +39,7 @@ jobs:
         with:
           name: lint_report
           path: app/build/reports/lint-results-madaniDebug.html
+          retention-days: 3
 
       - name: Run SqlDelight migration tests
         run: ./gradlew verifySqlDelightMigration
@@ -52,9 +53,10 @@ jobs:
         with:
           name: unit_test_report
           path: app/build/reports/tests/testMadaniDebugUnitTest/
+          retention-days: 3
 
       - name: Download Previous Debug APK
-        uses: dawidd6/action-download-artifact@v9
+        uses: dawidd6/action-download-artifact@v10
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: post_merge.yml
@@ -74,12 +76,13 @@ jobs:
         with:
           name: apk_differences
           path: apk_differences_summary.txt
+          retention-days: 1
 
       - name: Get dependencies list
         run: ./gradlew :app:dependencies --configuration madaniReleaseRuntimeClasspath > current_dependencies.txt
 
       - name: Download Previous Dependencies List
-        uses: dawidd6/action-download-artifact@v9
+        uses: dawidd6/action-download-artifact@v10
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: post_merge.yml
@@ -99,6 +102,7 @@ jobs:
         with:
           name: dependency_differences
           path: difference.txt
+          retention-days: 1
 
       - name: Write the PR Number
         run: |
@@ -109,6 +113,7 @@ jobs:
         with:
           name: pr
           path: pr.txt
+          retention-days: 1
 
 env:
   GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx8G -XX:MaxMetaspaceSize=512m -XX:+HeapDumpOnOutOfMemoryError -XX:+UseParallelGC -Dfile.encoding=UTF-8"

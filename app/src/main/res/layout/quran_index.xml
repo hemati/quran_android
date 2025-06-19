@@ -10,14 +10,13 @@
   <!-- Toolbar at the top -->
   <androidx.appcompat.widget.Toolbar
       android:id="@+id/toolbar"
-      android:layout_width="0dp"
-      android:layout_height="?attr/actionBarSize"
-      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-      app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-      app:logo="@mipmap/ic_launcher_removebg"
       style="@style/ToolBarArea"
-      app:title="@string/app_name"
-      android:background="@color/toolbar_color"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:theme="@style/ToolbarStyle"
+      app:popupTheme="@style/ThemeOverlay.AppCompat"
+      app:subtitleTextAppearance="@style/ToolbarSubtitleText"
+      app:titleTextAppearance="@style/ToolbarTitleText" />
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"/>

@@ -24,6 +24,7 @@
   <string name="menu_get_translations">حمل التفاسير/التراجم</string>
   <string name="menu_jump">انتقال سريع</string>
   <string name="gotoPage">أدخل رقم الصفحة</string>
+  <string name="sura_and_ayah">السورة والآية</string>
 
   <string name="help_title">الأسئلة المتداولة</string>
   <string name="help">
@@ -67,6 +68,7 @@
   <string name="get_arabic_search_db">حمل قاعدة البيانات</string>
 
   <!-- Quran Preference Activity -->
+  <string name="appearance">المظهر</string>
   <string name="prefs_volume_key_navigation_title">تصفح بمفاتيح الصوت</string>
   <string name="prefs_volume_key_navigation_summary">استخدم مفاتيح الصوت للتصفح بين الصفحات</string>
   <string name="prefs_category_reading">إعدادات القراءة</string>

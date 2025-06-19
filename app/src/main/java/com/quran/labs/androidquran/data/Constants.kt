@@ -44,7 +44,6 @@ object Constants {
 
   // Settings Key (some of these have corresponding values in preference_keys.xml)
   const val PREF_APP_LOCATION = "appLocation"
-  const val PREF_USE_ARABIC_NAMES = "useArabicNames"
   const val PREF_LAST_PAGE = "lastPage"
   const val PREF_LOCK_ORIENTATION = "lockOrientation"
   const val PREF_LANDSCAPE_ORIENTATION = "landscapeOrientation"
@@ -55,7 +54,6 @@ object Constants {
   const val PREF_NIGHT_MODE = "nightMode"
   const val PREF_NIGHT_MODE_TEXT_BRIGHTNESS = "nightModeTextBrightness"
   const val PREF_NIGHT_MODE_BACKGROUND_BRIGHTNESS = "nightModeBackgroundBrightness"
-  const val PREF_DEFAULT_QARI = "defaultQari"
   const val PREF_SHOULD_FETCH_PAGES = "shouldFetchPages"
   const val PREF_OVERLAY_PAGE_INFO = "overlayPageInfo"
   const val PREF_DISPLAY_MARKER_POPUP = "displayMarkerPopup"
@@ -93,4 +91,10 @@ object Constants {
   const val PREF_SHOW_SIDELINES = "showSidelines"
   const val PREF_SHOW_LINE_DIVIDERS = "showLineDividers"
   const val PREFS_PREFER_DNS_OVER_HTTPS = "preferDnsOverHttps"
+  const val PREF_APP_THEME = "appTheme"
+
+  // Themes
+  const val THEME_LIGHT = "light"
+  const val THEME_DARK = "dark"
+  const val THEME_DEFAULT = "default"
 }

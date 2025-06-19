@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,11 +24,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.quran.labs.androidquran.QuranApplication;
 import com.quran.labs.androidquran.R;
+import com.quran.labs.androidquran.dao.bookmark.BookmarkRawResult;
 import com.quran.labs.androidquran.dao.bookmark.BookmarkResult;
 import com.quran.labs.androidquran.database.BookmarksDBAdapter;
 import com.quran.labs.androidquran.presenter.bookmark.BookmarkPresenter;
 import com.quran.labs.androidquran.presenter.bookmark.BookmarksContextualModePresenter;
 import com.quran.labs.androidquran.ui.QuranActivity;
+import com.quran.labs.androidquran.ui.helpers.BookmarkUIConverter;
 import com.quran.labs.androidquran.ui.helpers.QuranListAdapter;
 import com.quran.labs.androidquran.ui.helpers.QuranRow;
 
@@ -41,6 +45,7 @@ public class BookmarksFragment extends Fragment implements QuranListAdapter.Qura
 
   @Inject BookmarkPresenter bookmarkPresenter;
   @Inject BookmarksContextualModePresenter bookmarksContextualModePresenter;
+  @Inject BookmarkUIConverter bookmarkUIConverter;
 
   public static BookmarksFragment newInstance(){
     return new BookmarksFragment();
@@ -68,6 +73,24 @@ public class BookmarksFragment extends Fragment implements QuranListAdapter.Qura
     bookmarksAdapter = new QuranListAdapter(context, recyclerView, new QuranRow[0], true);
     bookmarksAdapter.setQuranTouchListener(this);
     recyclerView.setAdapter(bookmarksAdapter);
+
+    ViewCompat.setOnApplyWindowInsetsListener(
+        recyclerView,
+        (v, insets) -> {
+          Insets innerPadding = insets.getInsets(
+              WindowInsetsCompat.Type.systemBars() |
+                  WindowInsetsCompat.Type.displayCutout()
+          );
+          // top, left, right are handled by QuranActivity
+          v.setPadding(
+              0,
+              0,
+              0,
+              innerPadding.bottom
+          );
+          return insets;
+        }
+    );
     return view;
   }
 
@@ -142,7 +165,8 @@ public class BookmarksFragment extends Fragment implements QuranListAdapter.Qura
     return super.onOptionsItemSelected(item);
   }
 
-  public void onNewData(BookmarkResult items) {
+  public void onNewRawData(BookmarkRawResult rawItems) {
+    BookmarkResult items = bookmarkUIConverter.convertToUIResult(requireContext(), rawItems);
     bookmarksAdapter.setShowTags(bookmarkPresenter.shouldShowInlineTags());
     bookmarksAdapter.setShowDate(bookmarkPresenter.isDateShowing());
     bookmarksAdapter.setElements(
@@ -211,8 +235,8 @@ public class BookmarksFragment extends Fragment implements QuranListAdapter.Qura
             res.getQuantityString(R.plurals.bookmark_tag_deleted, size, size),
             BookmarkPresenter.DELAY_DELETION_DURATION_IN_MS);
         snackbar.setAction(R.string.undo, mOnUndoClickListener);
-        snackbar.getView().setBackgroundColor(ContextCompat.getColor(activity,
-            R.color.snackbar_background_color));
+        snackbar.setTextColor(res.getColor(R.color.default_text));
+        snackbar.getView().setBackgroundColor(res.getColor(R.color.snackbar_background_color));
         snackbar.show();
         return true;
       } else if (itemId == R.id.cab_new_tag) {

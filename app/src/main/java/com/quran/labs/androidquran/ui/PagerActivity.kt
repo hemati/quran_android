@@ -274,9 +274,6 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   }
 
   public override fun onCreate(savedInstanceState: Bundle?) {
-    val quranApp = application as QuranApplication
-    quranApp.refreshLocale(this, false)
-
     WindowCompat.setDecorFitsSystemWindows(window, false)
     super.onCreate(savedInstanceState)
 
@@ -710,7 +707,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     // Create and set fragment pager adapter
     slidingPagerAdapter = SlidingPagerAdapter(
       supportFragmentManager,
-      quranSettings.isArabicNames || QuranUtils.isRtl(),
+      QuranUtils.isRtl(),
       additionalAyahPanels
     )
     slidingPager.setAdapter(slidingPagerAdapter)
