@@ -87,7 +87,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
   private OpenAIClientAsync client;
 
 
-  private String modelKey = "gpt-4o-mini";
+  private String modelKey = "gpt-4.1-mini";
   private final ChatMessage systemMessage = new ChatMessage(
       ChatMessage.MessageType.SYSTEM,
       "You are QuranGPT, a helpful assistant built by Muslims to focus on religious queries, especially Islam and the Quran. " +
@@ -185,7 +185,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
           });
     } else {
       Log.d(TAG, "No internet connection");
-      FirebaseCrashlytics.getInstance().recordException(new Exception("No internet connection"));
+      //FirebaseCrashlytics.getInstance().recordException(new Exception("No internet connection"));
       Toast.makeText(this, "No internet connection", Toast.LENGTH_LONG).show();
     }
   }
