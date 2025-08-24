@@ -1,30 +1,30 @@
 [versions]
-agp = "8.10.1"
-junit = "1.2.1"
-kotlin = "2.1.21"
-ksp = "2.1.21-2.0.2"
+agp = "8.12.1"
+junit = "1.3.0"
+kotlin = "2.2.10"
+ksp = "2.2.10-2.0.2"
 
 # required within the Gradle convention plugins - not unused
-composeBomVersion = "2025.06.00"
-media3ExoplayerVersion = "1.7.1"
-okhttpBomVersion = "4.12.0"
+composeBomVersion = "2025.08.00"
+media3ExoplayerVersion = "1.8.0"
+okhttpBomVersion = "5.1.0"
 
 # dependencies
 anvil = "0.4.1"
 coroutinesVersion = "1.10.2"
-crashlytics = "3.0.4"
-daggerVersion = "2.56.2"
+crashlytics = "3.0.6"
+daggerVersion = "2.57.1"
 dnsjavaVersion = "2.1.9"
-errorprone = "4.2.0"
-errorproneCoreVersion = "2.38.0"
-googleServices = "4.4.2"
+errorprone = "4.3.0"
+errorproneCoreVersion = "2.41.0"
+googleServices = "4.4.3"
 immutableCollectionsVersion = "0.4.0"
 leakcanaryAndroidVersion = "2.14"
 moshiVersion = "1.15.2"
-okioVersion = "3.13.0"
+okioVersion = "3.16.0"
 retrofitVersion = "3.0.0"
 rxandroidVersion = "3.0.2"
-rxjavaVersion = "3.1.10"
+rxjavaVersion = "3.1.11"
 sqldelight = "2.1.0"
 timberVersion = "5.0.1"
 
@@ -32,28 +32,28 @@ timberVersion = "5.0.1"
 androidxAppcompatVersion = "1.7.1"
 androidxActivityComposeVersion = "1.10.1"
 androidxAnnotationVersion = "1.9.1"
-androidxCoreVersion = "1.16.0"
-androidxNavigationVersion = "2.9.0"
+androidxCoreVersion = "1.17.0"
+androidxNavigationVersion = "2.9.3"
 androidxDynamicAnimationVersion = "1.1.0"
-androidxFragmentVersion = "1.8.8"
-androidxJunitExtVersion = "1.2.1"
+androidxFragmentVersion = "1.8.9"
+androidxJunitExtVersion = "1.3.0"
 androidxLocalBroadcastVersion = "1.1.0"
-androidxMediaVersion = "1.7.0"
+androidxMediaVersion = "1.7.1"
 androidxPreferencesVersion = "1.2.1"
 androidxRecyclerViewVersion = "1.4.0"
 androidxSwipeRefreshVersion = "1.1.0"
 androidxPagingVersion = "3.3.6"
 androidxPagingComposeVersion = "3.3.6"
-androidxWorkManagerVersion = "2.10.1"
+androidxWorkManagerVersion = "2.10.3"
 androidxWindowManager = "1.4.0"
 
 # firebase
-firebaseAnalyticsVersion = "22.4.0"
-firebaseCrashlyticsVersion = "19.4.4"
+firebaseAnalyticsVersion = "23.0.0"
+firebaseCrashlyticsVersion = "20.0.0"
 
 # ui libraries
 accompanistVersion = "0.36.0"
-balloonVersion = "1.6.12"
+balloonVersion = "1.6.13"
 tooltipComposeVersion = "0.2.0"
 insetterVersion = "0.6.1"
 materialComponentsVersion = "1.12.0"
@@ -62,16 +62,16 @@ reorderableComposeVersion = "0.9.6"
 molecule = "2.1.0"
 
 # recitations
-grpcOkhttpVersion = "1.73.0"
-googleAuthVersion = "1.37.0"
-googleCloudSpeechVersion = "4.59.0"
+grpcOkhttpVersion = "1.75.0"
+googleAuthVersion = "1.38.0"
+googleCloudSpeechVersion = "4.67.0"
 
 # testing
 junitVersion = "4.13.2"
-espressoVersion = "3.6.1"
+espressoVersion = "3.7.0"
 truthVersion = "1.4.4"
-mockitoVersion = "5.18.0"
-robolectricVersion = "4.14.1"
+mockitoVersion = "5.19.0"
+robolectricVersion = "4.15.1"
 turbineVersion = "1.2.1"
 
 [libraries]
@@ -173,7 +173,7 @@ dnsjava = { module = "dnsjava:dnsjava", version.ref = "dnsjavaVersion" }
 
 # tools
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorproneCoreVersion" }
-firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx", version.ref = "firebaseAnalyticsVersion" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics", version.ref = "firebaseAnalyticsVersion" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebaseCrashlyticsVersion" }
 
 # testing
