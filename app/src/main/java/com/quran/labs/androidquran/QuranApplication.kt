@@ -10,6 +10,7 @@ import com.quran.labs.androidquran.util.QuranSettings
 import com.quran.labs.androidquran.util.RecordingLogTree
 import com.quran.labs.androidquran.util.ThemeUtil
 import com.quran.labs.androidquran.widget.BookmarksWidgetSubscriber
+import com.google.android.gms.ads.MobileAds
 import com.quran.mobile.di.QuranApplicationComponent
 import com.quran.mobile.di.QuranApplicationComponentProvider
 import timber.log.Timber
@@ -33,6 +34,8 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider {
     applicationComponent.inject(this)
     initializeWorkManager()
     bookmarksWidgetSubscriber.subscribeBookmarksWidgetIfNecessary()
+
+    MobileAds.initialize(this)
 
     // theme setup
     val theme = quranSettings.currentTheme()

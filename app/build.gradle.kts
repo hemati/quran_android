@@ -34,8 +34,8 @@ android {
   namespace = "com.quran.labs.androidquran"
 
   defaultConfig {
-    versionCode = 250620
-    versionName = "1.9.0"
+    versionCode = 250828
+    versionName = "2.1.3"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
   }
 
@@ -266,6 +266,7 @@ dependencies {
   implementation("com.getkeepsafe.taptargetview:taptargetview:1.14.0")
   implementation("com.google.android.play:review:2.0.1")
   implementation("com.android.billingclient:billing:7.0.0")
+  implementation("com.google.android.gms:play-services-ads:22.6.0")
 
 
   implementation(platform("com.google.firebase:firebase-bom:33.4.0"))

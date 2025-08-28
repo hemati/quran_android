@@ -8,6 +8,7 @@ public class SharedPrefHelper {
     private static final String KEY_OPEN_COUNT = "openCount";
     private static final String KEY_LAST_RATING_TIME = "lastRatingTime";
     private static final String IS_ONBOARDING_COMPLETED = "isOnboardingCompleted";
+    private static final String KEY_IS_PRO_USER = "isProUser";
 
     private SharedPreferences sharedPreferences;
 
@@ -53,5 +54,15 @@ public class SharedPrefHelper {
 
     public boolean isOnboardingCompleted() {
         return sharedPreferences.getBoolean(IS_ONBOARDING_COMPLETED, false);
+    }
+
+    public void setProUser(boolean isPro) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_IS_PRO_USER, isPro);
+        editor.apply();
+    }
+
+    public boolean isProUser() {
+        return sharedPreferences.getBoolean(KEY_IS_PRO_USER, false);
     }
 }

@@ -134,6 +134,10 @@ import com.quran.page.common.factory.PageViewFactoryProvider
 import com.quran.page.common.toolbar.AyahToolBar
 import com.quran.page.common.toolbar.di.AyahToolBarInjector
 import com.quran.reading.common.ReadingEventPresenter
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.appcoholic.gpt.BillingHelper
+import com.android.billingclient.api.Purchase
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -171,7 +175,7 @@ import kotlin.math.abs
  * the display of the Quran.
  */
 class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdateListener,
-  AyahSelectedListener, JumpDestination, QuranReadingActivityComponentProvider,
+  BillingHelper.BillingUpdatesListener, AyahSelectedListener, JumpDestination, QuranReadingActivityComponentProvider,
   QuranReadingPageComponentProvider, AyahToolBarInjector, QariListWrapperInjector,
   AudioBarInjector, ActivityCompat.OnRequestPermissionsResultCallback {
   private var lastPopupTime: Long = 0
@@ -198,6 +202,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   private lateinit var ayahToolBar: AyahToolBar
   private lateinit var slidingPanel: SlidingUpPanelLayout
   private lateinit var slidingPager: ViewPager
+  private lateinit var adView: AdView
   private lateinit var slidingPagerAdapter: SlidingPagerAdapter
   private lateinit var translationsSpinner: QuranSpinner
   private lateinit var overlay: FrameLayout
@@ -240,6 +245,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   @Inject lateinit var downloadBridge: DownloadBridge
 
   private lateinit var sharedPrefHelper: SharedPrefHelper
+  private var billingHelper: BillingHelper? = null
   private val RATING_THRESHOLD = 3
   private val USAGE_THRESHOLD = 5 * 60 * 1000L // 5 minutes
   private val DAYS_BETWEEN_PROMPTS = 3 * 24 * 60 * 60 * 1000L
@@ -289,6 +295,8 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     // field injection
     pagerActivityComponent.inject(this)
     sharedPrefHelper = SharedPrefHelper(this)
+    billingHelper = BillingHelper.getInstance(this, this)
+    billingHelper?.queryPurchases()
 
     isFoldableDeviceOpenAndVertical =
       savedInstanceState?.getBoolean(LAST_FOLDING_STATE, isFoldableDeviceOpenAndVertical)
@@ -319,6 +327,13 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     }
 
     setContentView(R.layout.quran_page_activity_slider)
+    adView = findViewById(R.id.adView)
+    if (sharedPrefHelper.isProUser()) {
+      adView.visibility = View.GONE
+    } else {
+      val adRequest = AdRequest.Builder().build()
+      adView.loadAd(adRequest)
+    }
 
     val lightStatusBar = resources.getBoolean(R.bool.light_navigation_bar)
     windowInsetsController = WindowInsetsControllerCompat(
@@ -1140,7 +1155,37 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     handler.removeCallbacksAndMessages(null)
     scope.cancel()
     dismissProgressDialog()
+    billingHelper?.endConnection()
     super.onDestroy()
+  }
+
+  override fun onBillingClientSetupFinished() {
+    billingHelper?.queryPurchases()
+  }
+
+  override fun onPurchasesUpdated(purchases: List<Purchase>) {
+    val hasPro = purchases.any { purchase ->
+      purchase.products.any { it in PRO_SKUS }
+    }
+    sharedPrefHelper.setProUser(hasPro)
+    if (hasPro) {
+      purchases.filter { purchase ->
+        purchase.products.any { it in PRO_SKUS }
+      }.forEach { billingHelper?.acknowledgePurchase(it) }
+      adView.visibility = View.GONE
+    } else if (adView.visibility != View.VISIBLE) {
+      adView.visibility = View.VISIBLE
+      val adRequest = AdRequest.Builder().build()
+      adView.loadAd(adRequest)
+    }
+  }
+
+  override fun onPurchaseAcknowledged(purchase: Purchase) {
+    // no-op
+  }
+
+  override fun onPurchaseError(error: String) {
+    Timber.e("Billing error: %s", error)
   }
 
   private fun onSessionEnd() {
@@ -2108,6 +2153,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     private const val LAST_READING_MODE_IS_TRANSLATION = "LAST_READING_MODE_IS_TRANSLATION"
     private const val LAST_ACTIONBAR_STATE = "LAST_ACTIONBAR_STATE"
     private const val LAST_FOLDING_STATE = "LAST_FOLDING_STATE"
+    private val PRO_SKUS = setOf("qurangpt_subscription", "qurangpt_subscription_yearly")
 
     const val EXTRA_JUMP_TO_TRANSLATION: String = "jumpToTranslation"
     const val EXTRA_HIGHLIGHT_SURA: String = "highlightSura"
