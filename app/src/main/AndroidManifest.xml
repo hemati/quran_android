@@ -22,7 +22,7 @@
 
   <!-- support chromebooks without touch screen -->
   <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
-  <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
+  <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
 
   <!-- support android tv -->
@@ -43,6 +43,10 @@
       android:enableOnBackInvokedCallback="true"
       android:localeConfig="@xml/locales_config"
       tools:targetApi="tiramisu">
+
+    <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="@string/ads_app_id"/>
 
     <activity
         android:name=".QuranDataActivity"
