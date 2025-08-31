@@ -36,4 +36,6 @@
   <string name="trial_conditions">• İstediğiniz zaman iptal edin\n• Ücretsiz deneme süresi boyunca hiçbir ücret yok\n• Deneme sırasında özel özellikler</string>
   <string name="message_input_hint">Mesajınızı yazın</string>
 
+  <string name="watch_ad_and_reset_limit">Sınırı sıfırlamak için tam reklamı izleyin (atlanırsa ödül yok)</string>
+  <string name="ad_not_available">Reklam mevcut değil. Lütfen daha sonra tekrar deneyin.</string>
 </resources>

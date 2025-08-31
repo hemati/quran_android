@@ -37,4 +37,6 @@
   <string name="trial_conditions">• يمكنك الإلغاء في أي وقت\n• لا رسوم أثناء الفترة التجريبية المجانية\n• ميزات حصرية أثناء التجربة</string>
   <string name="message_input_hint">اكتب رسالتك</string>
 
+  <string name="watch_ad_and_reset_limit">شاهد الإعلان الكامل لإعادة ضبط الحد الأقصى (بدون مكافأة إذا تم تخطيه)</string>
+  <string name="ad_not_available">الإعلان غير متوفر. يرجى المحاولة مرة أخرى لاحقًا.</string>
 </resources>

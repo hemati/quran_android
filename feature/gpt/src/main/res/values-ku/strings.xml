@@ -38,4 +38,6 @@
   <string name="trial_conditions">• هەر کاتیش لەماوەدا ڕەت کردنەوە دەکرێت\n• هیچ تەرخانێکی نییە لە ماوەی تاقیکردنەوەی بێتاکەوە\n• تایبەتمەندیە تایبەتییەکان لە ماوەی تاقیکردنەوەدا</string>
   <string name="message_input_hint">پەیامەکەت بنووسە</string>
 
+  <string name="watch_ad_and_reset_limit">Reklama tevahî bibîne bo vegerandina sînorê (xelet nabe heke derbas bibe)</string>
+  <string name="ad_not_available">Reklam nabe. Ji kerema xwe paşê paşê biceribînin.</string>
 </resources>

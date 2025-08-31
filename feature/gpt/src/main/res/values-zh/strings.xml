@@ -36,4 +36,6 @@
   <string name="trial_conditions">• 随时取消\n• 免费试用期间无费用\n• 试用期间专属功能</string>
   <string name="message_input_hint">输入您的消息</string>
 
+  <string name="watch_ad_and_reset_limit">观看完整的广告以重置限制（如果跳过，则没有奖励）</string>
+  <string name="ad_not_available">广告不可用。请稍后再试。</string>
 </resources>

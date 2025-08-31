@@ -36,4 +36,6 @@
   <string name="trial_conditions">• Anuluj w dowolnym momencie\n• Brak opłat podczas bezpłatnego okresu próbnego\n• Ekskluzywne funkcje podczas okresu próbnego</string>
   <string name="message_input_hint">Wpisz wiadomość</string>
 
+  <string name="watch_ad_and_reset_limit">Obejrzyj pełną reklamę, aby zresetować limit (bez nagrody, jeśli zostanie pominięta)</string>
+  <string name="ad_not_available">Reklama niedostępna. Spróbuj ponownie później.</string>
 </resources>

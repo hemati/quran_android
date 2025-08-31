@@ -38,4 +38,6 @@
   <string name="trial_conditions">• امکان لغو در هر زمان\n• بدون هزینه در طول دوره آزمایشی رایگان\n• ویژگی‌های انحصاری در طول دوره آزمایشی</string>
   <string name="message_input_hint">پیام خود را بنویسید</string>
 
+  <string name="watch_ad_and_reset_limit">تبلیغات کامل را برای تنظیم مجدد حد مشاهده کنید (در صورت پرش، پاداشی نیست)</string>
+  <string name="ad_not_available">تبلیغ در دسترس نیست. لطفا بعداً دوباره امتحان کنید.</string>
 </resources>

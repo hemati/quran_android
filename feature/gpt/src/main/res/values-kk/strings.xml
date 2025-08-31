@@ -37,4 +37,6 @@
   <string name="trial_conditions">• Кез келген уақытта бас тартуға болады\n• Тегін сынақ кезеңінде ешқандай төлем болмайды\n• Сынақ кезеңінде эксклюзивті мүмкіндіктер</string>
   <string name="message_input_hint">Хабарламаңызды жазыңыз</string>
 
+  <string name="watch_ad_and_reset_limit">Шекті қалпына келтіру үшін толық жарнаманы қараңыз (өткізіп жіберілсе, сыйақы жоқ)</string>
+  <string name="ad_not_available">Жарнама қолжетімді емес. Кейінірек қайтадан байқап көріңіз.</string>
 </resources>

@@ -36,4 +36,6 @@
   <string name="trial_conditions">• Boleh dibatalkan bila-bila masa\n• Tiada caj semasa percubaan percuma\n• Ciri eksklusif semasa percubaan</string>
   <string name="message_input_hint">Taip mesej anda</string>
 
+  <string name="watch_ad_and_reset_limit">Tonton iklan penuh untuk menetapkan semula had (tiada ganjaran jika dilangkau)</string>
+  <string name="ad_not_available">Iklan tidak tersedia. Sila cuba lagi kemudian.</string>
 </resources>

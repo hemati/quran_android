@@ -37,4 +37,6 @@
   <string name="trial_conditions">• Annuleer op elk moment\n• Geen kosten tijdens de gratis proefperiode\n• Exclusieve functies tijdens de proefperiode</string>
   <string name="message_input_hint">Typ je bericht</string>
 
+  <string name="watch_ad_and_reset_limit">Bekijk de volledige advertentie om de limiet te resetten (geen beloning als deze wordt overgeslagen)</string>
+  <string name="ad_not_available">Advertentie niet beschikbaar. Probeer het later opnieuw.</string>
 </resources>

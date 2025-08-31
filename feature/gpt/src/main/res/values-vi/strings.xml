@@ -37,4 +37,6 @@
   <string name="trial_conditions">• Hủy bất kỳ lúc nào\n• Không có phí trong thời gian dùng thử miễn phí\n• Tính năng độc quyền trong thời gian dùng thử</string>
   <string name="message_input_hint">Nhập tin nhắn của bạn</string>
 
+  <string name="watch_ad_and_reset_limit">Xem toàn bộ quảng cáo để đặt lại giới hạn (không có phần thưởng nếu bỏ qua)</string>
+  <string name="ad_not_available">Quảng cáo không có sẵn. Vui lòng thử lại sau.</string>
 </resources>

@@ -38,4 +38,6 @@
   <string name="trial_conditions">• Avbryt när som helst\n• Inga avgifter under gratis provperiod\n• Exklusiva funktioner under provperioden</string>
   <string name="message_input_hint">Skriv ditt meddelande</string>
 
+  <string name="watch_ad_and_reset_limit">Titta på hela annonsen för att återställa gränsen (ingen belöning om den hoppas över)</string>
+  <string name="ad_not_available">Annons inte tillgänglig. Försök igen senare.</string>
 </resources>

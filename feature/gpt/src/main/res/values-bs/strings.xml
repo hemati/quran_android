@@ -38,4 +38,6 @@
   <string name="trial_conditions">• Možete otkazati u bilo kojem trenutku\n• Nema troškova tokom besplatnog probnog perioda\n• Ekskluzivne funkcije tokom probnog perioda</string>
   <string name="message_input_hint">Unesite poruku</string>
 
+  <string name="watch_ad_and_reset_limit">Pogledajte potpunu reklamu za resetiranje granice (bez nagrade ako preskočite)</string>
+  <string name="ad_not_available">Oglas nije dostupan. Pokušajte ponovo kasnije.</string>
 </resources>

@@ -37,4 +37,6 @@
   <string name="trial_conditions">• Скасуйте в будь-який час\n• Немає платежів під час безкоштовного пробного періоду\n• Ексклюзивні функції під час пробного періоду</string>
   <string name="message_input_hint">Введіть повідомлення</string>
 
+  <string name="watch_ad_and_reset_limit">Перегляньте повну рекламу, щоб скинути ліміт (без винагороди, якщо пропустите)</string>
+  <string name="ad_not_available">Реклама недоступна. Будь ласка, спробуйте пізніше.</string>
 </resources>

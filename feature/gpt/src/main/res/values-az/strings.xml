@@ -37,4 +37,6 @@
   <string name="trial_conditions">• İstənilən vaxt ləğv edin\n• Pulsuz sınaq dövründə heç bir ödəniş olmayacaq\n• Sınaq müddətində eksklüziv funksiyalar</string>
   <string name="message_input_hint">Mesajınızı yazın</string>
 
+  <string name="watch_ad_and_reset_limit">Limiti yenidən qurmaq üçün tam reklamı izləyin (atlandısa mükafat yoxdur)</string>
+  <string name="ad_not_available">Reklam mövcud deyil. Xahiş edirəm daha sonra yenidən cəhd edin.</string>
 </resources>

@@ -38,4 +38,6 @@
   <string name="trial_conditions">• Annulla in qualsiasi momento\n• Nessun addebito durante il periodo di prova gratuito\n• Funzionalità esclusive durante la prova</string>
   <string name="message_input_hint">Scrivi il tuo messaggio</string>
 
+  <string name="watch_ad_and_reset_limit">Guarda la pubblicità completa per ripristinare il limite (nessuna ricompensa se saltata)</string>
+  <string name="ad_not_available">Pubblicità non disponibile. Per favore riprova più tardi.</string>
 </resources>

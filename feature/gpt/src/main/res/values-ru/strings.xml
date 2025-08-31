@@ -36,4 +36,6 @@
   <string name="trial_conditions">• Отменить в любой момент\n• Без оплаты во время бесплатного пробного периода\n• Эксклюзивные функции во время пробного периода</string>
   <string name="message_input_hint">Введите сообщение</string>
 
+  <string name="watch_ad_and_reset_limit">Посмотрите полную рекламу, чтобы сбросить лимит (без вознаграждения, если пропущено)</string>
+  <string name="ad_not_available">Реклама недоступна. Пожалуйста, попробуйте еще раз позже.</string>
 </resources>
