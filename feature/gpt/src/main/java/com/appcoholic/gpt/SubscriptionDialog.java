@@ -18,6 +18,12 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Arrays;
@@ -41,6 +47,9 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   private FirebaseAnalytics firebaseAnalytics;
 
   private OnSubscriptionStatusChangedListener subscriptionStatusChangedListener;
+
+  private RewardedAd rewardedAd;
+  private static final String REWARDED_AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917";
 
   public interface OnSubscriptionStatusChangedListener {
     void onSubscriptionStatusChanged(boolean subscribed);
@@ -90,6 +99,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
     final LinearLayout yearlyPlanLayout = findViewById(R.id.yearly_plan_card);
 
     AppCompatButton upgradeButton = findViewById(R.id.upgrade_button);
+    AppCompatButton watchAdButton = findViewById(R.id.watch_ad_button);
     TextView closeOverlay = findViewById(R.id.close_overlay);
 
     highlightSelectedPlan(yearlyPlanLayout, monthlyPlanLayout);
@@ -108,11 +118,58 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
         selectedPlan == SubscriptionPlan.MONTHLY ? "qurangpt_subscription" : "qurangpt_subscription_yearly"));
 
     closeOverlay.setOnClickListener(view -> dismiss());
+
+    watchAdButton.setOnClickListener(v -> loadRewardedAd());
   }
 
   private void highlightSelectedPlan(LinearLayout selectedLayout, LinearLayout unselectedLayout) {
     selectedLayout.setBackgroundResource(R.drawable.selected_plan_background);
     unselectedLayout.setBackgroundResource(R.drawable.unselected_plan_background);
+  }
+
+  private void loadRewardedAd() {
+    AdRequest adRequest = new AdRequest.Builder().build();
+    RewardedAd.load(getContext(), REWARDED_AD_UNIT_ID, adRequest, new RewardedAdLoadCallback() {
+      @Override
+      public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+        rewardedAd = null;
+        Log.e("SubscriptionDialog", "Ad failed to load: " + loadAdError.getMessage());
+        Toast.makeText(getContext(), "Ad failed to load", Toast.LENGTH_SHORT).show();
+      }
+
+      @Override
+      public void onAdLoaded(@NonNull RewardedAd ad) {
+        rewardedAd = ad;
+        showRewardedAd();
+      }
+    });
+  }
+
+  private void showRewardedAd() {
+    final Activity activity = (Activity) getContext();
+    if (rewardedAd == null) {
+      Log.d("SubscriptionDialog", "The rewarded ad wasn't ready yet.");
+      return;
+    }
+
+    rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+      @Override
+      public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+        rewardedAd = null;
+        Log.e("SubscriptionDialog", "Ad failed to show: " + adError.getMessage());
+      }
+
+      @Override
+      public void onAdDismissedFullScreenContent() {
+        rewardedAd = null;
+      }
+    });
+
+    rewardedAd.show(activity, rewardItem -> {
+      if (activity instanceof DefaultMessagesActivity) {
+        ((DefaultMessagesActivity) activity).resetDailyChatLimit();
+      }
+    });
   }
 
   @Override

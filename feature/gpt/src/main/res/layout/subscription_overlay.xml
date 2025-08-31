@@ -150,6 +150,14 @@
         android:text="@string/upgrade_now"
         android:textAllCaps="false" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/watch_ad_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/watch_ad_and_reset_limit"
+        android:textAllCaps="false" />
+
 
     <!-- Bullet Point Texts -->
     <TextView
