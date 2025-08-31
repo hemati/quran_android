@@ -71,7 +71,10 @@ public class BillingHelper {
   }
 
   private void startConnection() {
-    if (billingClient != null && !billingClient.isReady()) {
+    if (billingClient == null) {
+      setupBillingClient();
+    }
+    if (!billingClient.isReady()) {
       billingClient.startConnection(billingClientStateListener);
     }
   }
@@ -208,6 +211,7 @@ public class BillingHelper {
   public void endConnection() {
     if (billingClient != null) {
       billingClient.endConnection();
+      billingClient = null;
     }
   }
 }
