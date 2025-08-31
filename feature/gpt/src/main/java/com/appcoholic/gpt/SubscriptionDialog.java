@@ -190,6 +190,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
         ((DefaultMessagesActivity) activity).resetDailyChatLimit();
       }
       dismiss();
+      Toast.makeText(activity, "Limit reset! You can now send more messages.", Toast.LENGTH_SHORT).show();
     });
   }
 
