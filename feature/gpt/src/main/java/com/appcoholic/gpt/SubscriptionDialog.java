@@ -171,6 +171,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
       if (activity instanceof DefaultMessagesActivity) {
         ((DefaultMessagesActivity) activity).resetDailyChatLimit();
       }
+      dismiss();
     });
   }
 
