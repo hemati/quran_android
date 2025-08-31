@@ -52,7 +52,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   private OnSubscriptionStatusChangedListener subscriptionStatusChangedListener;
 
   private RewardedAd rewardedAd;
-  private static final String REWARDED_AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917";
+  private static final String REWARDED_AD_UNIT_ID = "ca-app-pub-8655759847032068/3445692813";
 
   private AppCompatButton watchAdButton;
   private ProgressBar watchAdProgress;
