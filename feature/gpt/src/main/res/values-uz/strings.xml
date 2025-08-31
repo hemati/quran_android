@@ -36,7 +36,7 @@
   <string name="trial_conditions">• Istalgan vaqtda bekor qiling\n• Bepul sinov davrida hech qanday to‘lov yo‘q\n• Sinov davrida eksklyuziv xususiyatlar</string>
   <string name="message_input_hint">Xabaringizni kiriting</string>
 
-  <string name="watch_ad_and_reset_limit">Cheklovni tiklash uchun to\'liq reklamani tomosha qiling (o\'tkazib yuborilsa mukofot yo\'q)</string>
+  <string name="watch_ad_and_reset_limit">Cheklovni tiklash uchun to\'liq reklamani tomosha qiling</string>
   <string name="ad_not_available">Reklama mavjud emas. Keyinroq qayta urinib ko\'ring.</string>
   <string name="or_label">yoki</string>
 </resources>

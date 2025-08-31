@@ -37,7 +37,7 @@
   <string name="trial_conditions">• Batalkan kapan saja\n• Tidak ada biaya selama masa uji coba gratis\n• Fitur eksklusif selama masa uji coba</string>
   <string name="message_input_hint">Ketik pesan Anda</string>
 
-  <string name="watch_ad_and_reset_limit">Tonton iklan lengkap untuk mengatur ulang batas (tidak ada hadiah jika dilewati)</string>
+  <string name="watch_ad_and_reset_limit">Tonton iklan lengkap untuk mengatur ulang batas</string>
   <string name="ad_not_available">Iklan tidak tersedia. Silakan coba lagi nanti.</string>
   <string name="or_label">atau</string>
 </resources>

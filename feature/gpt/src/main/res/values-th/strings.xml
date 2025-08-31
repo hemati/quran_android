@@ -38,7 +38,7 @@
   <string name="trial_conditions">• ยกเลิกได้ทุกเมื่อ\n• ไม่มีค่าใช้จ่ายในช่วงทดลองใช้ฟรี\n• คุณสมบัติพิเศษระหว่างช่วงทดลอง</string>
   <string name="message_input_hint">พิมพ์ข้อความของคุณ</string>
 
-  <string name="watch_ad_and_reset_limit">ดูโฆษณาเต็มรูปแบบเพื่อรีเซ็ตขีดจำกัด (ไม่มีรางวัลหากข้าม)</string>
+  <string name="watch_ad_and_reset_limit">ดูโฆษณาเต็มรูปแบบเพื่อรีเซ็ตขีดจำกัด</string>
   <string name="ad_not_available">โฆษณาไม่พร้อมใช้งาน โปรดลองอีกครั้งในภายหลัง</string>
   <string name="or_label">หรือ</string>
 </resources>

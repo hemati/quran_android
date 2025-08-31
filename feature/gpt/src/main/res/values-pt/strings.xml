@@ -37,7 +37,7 @@
   <string name="trial_conditions">• Cancele a qualquer momento\n• Sem cobranças durante o período de teste gratuito\n• Recursos exclusivos durante o teste</string>
   <string name="message_input_hint">Digite sua mensagem</string>
 
-  <string name="watch_ad_and_reset_limit">Assista ao anúncio completo para redefinir o limite (sem recompensa se ignorado)</string>
+  <string name="watch_ad_and_reset_limit">Assista ao anúncio completo para redefinir o limite</string>
   <string name="ad_not_available">Anúncio não disponível. Por favor, tente novamente mais tarde.</string>
   <string name="or_label">ou</string>
 </resources>

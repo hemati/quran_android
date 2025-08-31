@@ -37,7 +37,7 @@
   <string name="trial_conditions">• ھەر قانداق ۋاقىتتا بىكار قىلىش\n• ھەقسىز سىناش مەزگىلىدە ھەچقانداق ھەق تولانمايدۇ\n• سىناش مەزگىلىدە ئالاھىدە ئىقتىدارلار</string>
   <string name="message_input_hint">ئۇچۇرىڭىزنى يېزىڭ</string>
 
-  <string name="watch_ad_and_reset_limit">چەكنى ئەسلىگە كەلتۈرۈش ئۈچۈن تولۇق ئېلاننى كۆرۈڭ (ئاتلاپ ئۆتۈلسە ھېچقانداق مۇكاپات يوق)</string>
+  <string name="watch_ad_and_reset_limit">چېكلەشنى ئەسلىگە كەلتۈرۈش ئۈچۈن تولۇق ئېلاننى كۆرۈڭ</string>
   <string name="ad_not_available">ئېلاننى ئىشلەتكىلى بولمايدۇ. كېيىن قايتا سىناڭ.</string>
   <string name="or_label">ياكى</string>
 </resources>

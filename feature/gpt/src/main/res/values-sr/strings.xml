@@ -38,7 +38,7 @@
   <string name="trial_conditions">• Откажите у било ком тренутку\n• Нема трошкова током бесплатног пробног периода\n• Ексклузивне функције током пробног периода</string>
   <string name="message_input_hint">Унесите поруку</string>
 
-  <string name="watch_ad_and_reset_limit">Гледајте комплетну рекламу да бисте ресетовали границу (без награде ако је прескочено)</string>
+  <string name="watch_ad_and_reset_limit">Гледајте комплетну рекламу да бисте ресетовали границу</string>
   <string name="ad_not_available">Реклама није доступна. Покушајте поново касније.</string>
   <string name="or_label">или</string>
 </resources>

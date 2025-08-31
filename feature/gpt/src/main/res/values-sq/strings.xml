@@ -38,7 +38,7 @@
   <string name="trial_conditions">• Anulo në çdo kohë\n• Pa pagesa gjatë periudhës së provës falas\n• Veçori ekskluzive gjatë provës</string>
   <string name="message_input_hint">Shkruani mesazhin tuaj</string>
 
-  <string name="watch_ad_and_reset_limit">Shikoni reklamën e plotë për të rivendosur kufirin (pa shpërblim nëse anashkalohet)</string>
+  <string name="watch_ad_and_reset_limit">Shikoni reklamën e plotë për të rivendosur kufirin</string>
   <string name="ad_not_available">Reklama nuk është e disponueshme. Ju lutemi provoni përsëri më vonë.</string>
   <string name="or_label">ose</string>
 </resources>

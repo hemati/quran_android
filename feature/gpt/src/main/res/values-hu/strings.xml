@@ -38,7 +38,7 @@
   <string name="trial_conditions">• Bármikor lemondható\n• Ingyenes próbaidőszak alatt nincs díj\n• Exkluzív funkciók a próbaidőszak alatt</string>
   <string name="message_input_hint">Írja be üzenetét</string>
 
-  <string name="watch_ad_and_reset_limit">Nézze meg a teljes hirdetést, hogy visszaállítsa a korlátot (nincs jutalom, ha kihagyja)</string>
+  <string name="watch_ad_and_reset_limit">Nézze meg a teljes hirdetést a korlát visszaállításához</string>
   <string name="ad_not_available">A hirdetés nem érhető el. Kérjük, próbálkozzon újra később.</string>
   <string name="or_label">vagy</string>
 </resources>
