@@ -50,6 +50,16 @@ public class MessageQuotaManager {
         this.maxMessagesPerDay = maxMessagesPerDay;
     }
 
+    /**
+     * Resets the message counter for the current day.
+     */
+    public void resetQuota() {
+        preferences.edit()
+                .putString(KEY_DATE, getCurrentDate())
+                .putInt(KEY_MESSAGE_COUNT, 0)
+                .apply();
+    }
+
     private String getCurrentDate() {
         return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }

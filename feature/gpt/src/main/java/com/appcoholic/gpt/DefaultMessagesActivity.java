@@ -443,6 +443,12 @@ public class DefaultMessagesActivity extends AppCompatActivity
     }
   }
 
+  public void resetDailyChatLimit() {
+    if (quotaManager != null) {
+      quotaManager.resetQuota();
+    }
+  }
+
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
