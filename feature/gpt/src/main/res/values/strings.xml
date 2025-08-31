@@ -40,4 +40,5 @@ You\'ve reached your daily limit. Start your 3-day free trial for unlimited acce
   <string name="no_thanks">Maybe later</string>
   <string name="trial_conditions">• Cancel anytime\n• No charges during free trial\n• Exclusive features during trial</string>
   <string name="message_input_hint">Type your message</string>
+  <string name="admob_banner_id" translatable="false">ca-app-pub-8655759847032068/7379234820</string>
 </resources>
