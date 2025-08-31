@@ -10,14 +10,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import android.content.Context;
+import android.content.ContextWrapper;
 
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Arrays;
@@ -41,6 +50,12 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   private FirebaseAnalytics firebaseAnalytics;
 
   private OnSubscriptionStatusChangedListener subscriptionStatusChangedListener;
+
+  private RewardedAd rewardedAd;
+  private static final String REWARDED_AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917";
+
+  private AppCompatButton watchAdButton;
+  private ProgressBar watchAdProgress;
 
   public interface OnSubscriptionStatusChangedListener {
     void onSubscriptionStatusChanged(boolean subscribed);
@@ -90,6 +105,8 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
     final LinearLayout yearlyPlanLayout = findViewById(R.id.yearly_plan_card);
 
     AppCompatButton upgradeButton = findViewById(R.id.upgrade_button);
+    watchAdButton = findViewById(R.id.watch_ad_button);
+    watchAdProgress = findViewById(R.id.watch_ad_progress);
     TextView closeOverlay = findViewById(R.id.close_overlay);
 
     highlightSelectedPlan(yearlyPlanLayout, monthlyPlanLayout);
@@ -108,11 +125,92 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
         selectedPlan == SubscriptionPlan.MONTHLY ? "qurangpt_subscription" : "qurangpt_subscription_yearly"));
 
     closeOverlay.setOnClickListener(view -> dismiss());
+
+    watchAdButton.setOnClickListener(v -> {
+      watchAdButton.setEnabled(false);
+      watchAdButton.setVisibility(View.GONE);
+      if (watchAdProgress != null) {
+        watchAdProgress.setVisibility(View.VISIBLE);
+      }
+      loadRewardedAd();
+    });
   }
 
   private void highlightSelectedPlan(LinearLayout selectedLayout, LinearLayout unselectedLayout) {
     selectedLayout.setBackgroundResource(R.drawable.selected_plan_background);
     unselectedLayout.setBackgroundResource(R.drawable.unselected_plan_background);
+  }
+
+  private void loadRewardedAd() {
+    AdRequest adRequest = new AdRequest.Builder().build();
+    RewardedAd.load(getContext(), REWARDED_AD_UNIT_ID, adRequest, new RewardedAdLoadCallback() {
+      @Override
+      public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+        rewardedAd = null;
+        Log.e("SubscriptionDialog", "Ad failed to load: " + loadAdError.getMessage());
+        Toast.makeText(getContext(), R.string.ad_not_available, Toast.LENGTH_SHORT).show();
+        resetWatchAdUi();
+      }
+
+      @Override
+      public void onAdLoaded(@NonNull RewardedAd ad) {
+        rewardedAd = ad;
+        showRewardedAd();
+      }
+    });
+  }
+
+  private void showRewardedAd() {
+    final Activity activity = getActivityFromContext(getContext());
+    if (activity == null || rewardedAd == null) {
+      Log.d("SubscriptionDialog", "Unable to show rewarded ad - missing activity or ad not ready.");
+      Toast.makeText(getContext(), R.string.ad_not_available, Toast.LENGTH_SHORT).show();
+      resetWatchAdUi();
+      return;
+    }
+
+    rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+      @Override
+      public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+        rewardedAd = null;
+        Log.e("SubscriptionDialog", "Ad failed to show: " + adError.getMessage());
+        Toast.makeText(getContext(), R.string.ad_not_available, Toast.LENGTH_SHORT).show();
+        resetWatchAdUi();
+      }
+
+      @Override
+      public void onAdDismissedFullScreenContent() {
+        rewardedAd = null;
+        resetWatchAdUi();
+      }
+    });
+
+    rewardedAd.show(activity, rewardItem -> {
+      if (activity instanceof DefaultMessagesActivity) {
+        ((DefaultMessagesActivity) activity).resetDailyChatLimit();
+      }
+      dismiss();
+    });
+  }
+
+  private void resetWatchAdUi() {
+    if (watchAdProgress != null) {
+      watchAdProgress.setVisibility(View.GONE);
+    }
+    if (watchAdButton != null) {
+      watchAdButton.setEnabled(true);
+      watchAdButton.setVisibility(View.VISIBLE);
+    }
+  }
+
+  private Activity getActivityFromContext(Context context) {
+    while (context instanceof ContextWrapper) {
+      if (context instanceof Activity) {
+        return (Activity) context;
+      }
+      context = ((ContextWrapper) context).getBaseContext();
+    }
+    return null;
   }
 
   @Override

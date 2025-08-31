@@ -37,6 +37,8 @@ You\'ve reached your daily limit. Start your 3-day free trial for unlimited acce
   <string name="yearly_plan_text">Yearly</string>
   <string name="discount_badge_text">Save 30%</string>
   <string name="upgrade_now">Start 7 day free trial</string>
+  <string name="watch_ad_and_reset_limit">Watch ad and reset limit</string>
+  <string name="ad_not_available">Ad not available. Please try again later.</string>
   <string name="no_thanks">Maybe later</string>
   <string name="trial_conditions">• Cancel anytime\n• No charges during free trial\n• Exclusive features during trial</string>
   <string name="message_input_hint">Type your message</string>

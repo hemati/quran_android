@@ -33,6 +33,8 @@
   <string name="yearly_plan_text">Jährlich</string>
   <string name="discount_badge_text">30% Rabatt</string>
   <string name="upgrade_now">Starten Sie die 7-tägige kostenlose Testversion</string>
+  <string name="watch_ad_and_reset_limit">Werbung ansehen und Limit zurücksetzen</string>
+  <string name="ad_not_available">Anzeige derzeit nicht verfügbar. Bitte später erneut versuchen.</string>
   <string name="no_thanks">Vielleicht später</string>
   <string name="trial_conditions">• Jederzeit kündbar\n• Keine Kosten während der Testphase\n• Exklusive Funktionen während des Tests</string>
   <string name="message_input_hint">Nachricht eingeben</string>
