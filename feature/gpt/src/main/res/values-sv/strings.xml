@@ -23,9 +23,9 @@
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
 
-  <string name="upgrade_to_premium">Uppgradera till \nQuranGPT Pro</string>
+  <string name="upgrade_to_premium">Uppgradera till Pro</string>
   <string name="premium_features_description">
-    Njut av exklusiva premiumfunktioner:\n\n
+    Njut av exklusiva premiumfunktioner:\n
     &#8226; Obegränsade svar från QuranGPT.\n
     &#8226; Snabbare svarstider.\n
     &#8226; Avancerad AI för djupare insikter.\n
@@ -40,4 +40,5 @@
 
   <string name="watch_ad_and_reset_limit">Titta på hela annonsen för att återställa gränsen (ingen belöning om den hoppas över)</string>
   <string name="ad_not_available">Annons inte tillgänglig. Försök igen senare.</string>
+  <string name="or_label">eller</string>
 </resources>

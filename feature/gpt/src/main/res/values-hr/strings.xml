@@ -23,9 +23,9 @@
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
 
-  <string name="upgrade_to_premium">Nadogradi na \nQuranGPT Pro</string>
+  <string name="upgrade_to_premium">Nadogradi na Pro</string>
   <string name="premium_features_description">
-    Uživajte u ekskluzivnim premium značajkama:\n\n
+    Uživajte u ekskluzivnim premium značajkama:\n
     &#8226; Neograničeni odgovori od QuranGPT-a.\n
     &#8226; Brži vremenski odgovori.\n
     &#8226; Napredna AI za dublje uvide.\n
@@ -40,4 +40,5 @@
 
   <string name="watch_ad_and_reset_limit">Pogledajte cijeli oglas kako biste resetirali ograničenje (bez nagrade ako je preskočen)</string>
   <string name="ad_not_available">Oglas nije dostupan. Molimo pokušajte ponovo kasnije.</string>
+  <string name="or_label">ili</string>
 </resources>

@@ -26,9 +26,9 @@ You\'ve reached your daily limit. Start your 3-day free trial for unlimited acce
   <string name="qurangpt_pro">QuranGPT Pro</string>
 
   <!-- res/values/strings.xml -->
-  <string name="upgrade_to_premium">Upgrade to \nQuranGPT Pro</string>
+  <string name="upgrade_to_premium">Upgrade to Pro</string>
   <string name="premium_features_description">
-    Enjoy exclusive premium features:\n\n
+    Enjoy exclusive premium features:\n
     &#8226; Unlimited QuranGPT answers.\n
     &#8226; Faster response times.\n
     &#8226; Advanced AI for deeper insights.\n
@@ -43,4 +43,5 @@ You\'ve reached your daily limit. Start your 3-day free trial for unlimited acce
   <string name="trial_conditions">• Cancel anytime\n• No charges during free trial\n• Exclusive features during trial</string>
   <string name="message_input_hint">Type your message</string>
   <string name="admob_banner_id" translatable="false">ca-app-pub-8655759847032068/7379234820</string>
+  <string name="or_label">or</string>
 </resources>

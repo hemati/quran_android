@@ -11,33 +11,34 @@
   <string name="taptargetview_fap_biblegpt_title">Ћаскајте са QuranGPT</string>
   <string name="taptargetview_fap_biblegpt_desc">Ваш лични асистент за Куран. Постављајте питања, истражујте стихове или затражите молитве.</string>
   <string name="taptargetview_fap_biblegpt_sura">Poglavlja</string>
-  <string name="taptargetview_fap_biblegpt_sura_desc">Istražite Kur\'an prema poglavljima i ajetima.</string>
-  <string name="taptargetview_fap_biblegpt_juz">Deo (Džuz)</string>
-  <string name="taptargetview_fap_biblegpt_juz_desc">Navigirajte kroz Kur\'an podeljen u 30 delova.</string>
-  <string name="taptargetview_fap_biblegpt_bookmark">Obeležja</string>
-  <string name="taptargetview_fap_biblegpt_bookmark_desc">Sačuvajte omiljene ajete za brz pristup.</string>
+  <string name="taptargetview_fap_biblegpt_sura_desc">Istražite Kur\'an према поглављима и ајетима.</string>
+  <string name="taptargetview_fap_biblegpt_juz">Deо (Džuz)</string>
+  <string name="taptargetview_fap_biblegpt_juz_desc">Navigirajte kroz Kur\'an подељен у 30 делова.</string>
+  <string name="taptargetview_fap_biblegpt_bookmark">Obeležја</string>
+  <string name="taptargetview_fap_biblegpt_bookmark_desc">Сачувајте омилjene ајете за брз приступ.</string>
   <string name="taptargetview_fap_biblegpt_search">Pretraga</string>
-  <string name="taptargetview_fap_biblegpt_search_desc">Brzo pronađite ajete ili teme u Kur\'anu.</string>
+  <string name="taptargetview_fap_biblegpt_search_desc">Брзо пронађите ајете или теме у Кур\'ану.</string>
 
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
 
-  <string name="upgrade_to_premium">Nadogradite na \nQuranGPT Pro</string>
+  <string name="upgrade_to_premium">Nadоградите на Pro</string>
   <string name="premium_features_description">
-    Uživajte u ekskluzivnim premium funkcijama:\n\n
-    &#8226; Neograničeni odgovori od QuranGPT.\n
-    &#8226; Brže vreme odgovora.\n
-    &#8226; Napredna AI za dublje uvide.\n
+    Уживајте у ексклузивним премиум функцијама:\n
+    &#8226; Неограничени одговори од QuranGPT.\n
+    &#8226; Брже време одговора.\n
+    &#8226; Напредна AI за дубље увиде.\n
 </string>
-  <string name="monthly_plan_text">Mesečno</string>
-  <string name="yearly_plan_text">Godišnje</string>
-  <string name="discount_badge_text">Uštedite 30%</string>
-  <string name="upgrade_now">Započnite 7-dnevno besplatno probno razdoblje</string>
-  <string name="no_thanks">Možda kasnije</string>
-  <string name="trial_conditions">• Otkažite u bilo kom trenutku\n• Nema troškova tokom besplatnog probnog perioda\n• Ekskluzivne funkcije tokom probnog perioda</string>
-  <string name="message_input_hint">Unesite poruku</string>
+  <string name="monthly_plan_text">Месечно</string>
+  <string name="yearly_plan_text">Годишње</string>
+  <string name="discount_badge_text">Уштедите 30%</string>
+  <string name="upgrade_now">Започните 7-дневно бесплатно пробно раздобље</string>
+  <string name="no_thanks">Можда касније</string>
+  <string name="trial_conditions">• Откажите у било ком тренутку\n• Нема трошкова током бесплатног пробног периода\n• Ексклузивне функције током пробног периода</string>
+  <string name="message_input_hint">Унесите поруку</string>
 
   <string name="watch_ad_and_reset_limit">Гледајте комплетну рекламу да бисте ресетовали границу (без награде ако је прескочено)</string>
   <string name="ad_not_available">Реклама није доступна. Покушајте поново касније.</string>
+  <string name="or_label">или</string>
 </resources>

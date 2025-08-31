@@ -22,9 +22,9 @@
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
 
-  <string name="upgrade_to_premium">Оновіть до \nQuranGPT Pro</string>
+  <string name="upgrade_to_premium">Оновіть до Pro</string>
   <string name="premium_features_description">
-    Насолоджуйтесь ексклюзивними преміум-функціями:\n\n
+    Насолоджуйтесь ексклюзивними преміум-функціями:\n
     &#8226; Необмежені відповіді QuranGPT.\n
     &#8226; Швидший час відповіді.\n
     &#8226; Розширений ШІ для глибших інсайтів.\n
@@ -39,4 +39,5 @@
 
   <string name="watch_ad_and_reset_limit">Перегляньте повну рекламу, щоб скинути ліміт (без винагороди, якщо пропустите)</string>
   <string name="ad_not_available">Реклама недоступна. Будь ласка, спробуйте пізніше.</string>
+  <string name="or_label">або</string>
 </resources>

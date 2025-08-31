@@ -23,9 +23,9 @@
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
 
-  <string name="upgrade_to_premium">Frissítés \nQuranGPT Pro-ra</string>
+  <string name="upgrade_to_premium">Frissítés Pro-ra</string>
   <string name="premium_features_description">
-    Élvezze a prémium funkciókat:\n\n
+    Élvezze a prémium funkciókat:\n
     &#8226; Korlátlan válaszok a QuranGPT-től.\n
     &#8226; Gyorsabb válaszidők.\n
     &#8226; Fejlett mesterséges intelligencia mélyebb betekintéshez.\n
@@ -40,4 +40,5 @@
 
   <string name="watch_ad_and_reset_limit">Nézze meg a teljes hirdetést, hogy visszaállítsa a korlátot (nincs jutalom, ha kihagyja)</string>
   <string name="ad_not_available">A hirdetés nem érhető el. Kérjük, próbálkozzon újra később.</string>
+  <string name="or_label">vagy</string>
 </resources>

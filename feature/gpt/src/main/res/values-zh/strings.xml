@@ -21,9 +21,9 @@
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
-  <string name="upgrade_to_premium">升级到 \nQuranGPT Pro</string>
+  <string name="upgrade_to_premium">升级到 Pro</string>
   <string name="premium_features_description">
-    享受独家高级功能：\n\n
+    享受独家高级功能：\n
     &#8226; 无限制的 QuranGPT 答复。\n
     &#8226; 更快的响应时间。\n
     &#8226; 先进的 AI 提供更深入的见解。\n
@@ -38,4 +38,5 @@
 
   <string name="watch_ad_and_reset_limit">观看完整的广告以重置限制（如果跳过，则没有奖励）</string>
   <string name="ad_not_available">广告不可用。请稍后再试。</string>
+  <string name="or_label">或</string>
 </resources>

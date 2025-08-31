@@ -22,9 +22,9 @@
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
-  <string name="upgrade_to_premium">Nâng cấp lên \nQuranGPT Pro</string>
+  <string name="upgrade_to_premium">Nâng cấp lên Pro</string>
   <string name="premium_features_description">
-    Tận hưởng các tính năng cao cấp độc quyền:\n\n
+    Tận hưởng các tính năng cao cấp độc quyền:\n
     &#8226; Trả lời không giới hạn từ QuranGPT.\n
     &#8226; Thời gian phản hồi nhanh hơn.\n
     &#8226; AI tiên tiến để hiểu sâu hơn.\n
@@ -39,4 +39,5 @@
 
   <string name="watch_ad_and_reset_limit">Xem toàn bộ quảng cáo để đặt lại giới hạn (không có phần thưởng nếu bỏ qua)</string>
   <string name="ad_not_available">Quảng cáo không có sẵn. Vui lòng thử lại sau.</string>
+  <string name="or_label">hoặc</string>
 </resources>

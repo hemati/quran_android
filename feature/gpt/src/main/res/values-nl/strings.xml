@@ -22,9 +22,9 @@
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
-  <string name="upgrade_to_premium">Upgrade naar \nQuranGPT Pro</string>
+  <string name="upgrade_to_premium">Upgrade naar Pro</string>
   <string name="premium_features_description">
-    Geniet van exclusieve premium functies:\n\n
+    Geniet van exclusieve premium functies:\n
     &#8226; Onbeperkte antwoorden van QuranGPT.\n
     &#8226; Snellere reactietijden.\n
     &#8226; Geavanceerde AI voor diepgaandere inzichten.\n
@@ -39,4 +39,5 @@
 
   <string name="watch_ad_and_reset_limit">Bekijk de volledige advertentie om de limiet te resetten (geen beloning als deze wordt overgeslagen)</string>
   <string name="ad_not_available">Advertentie niet beschikbaar. Probeer het later opnieuw.</string>
+  <string name="or_label">of</string>
 </resources>

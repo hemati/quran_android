@@ -21,9 +21,9 @@
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
-  <string name="upgrade_to_premium">QuranGPT Pro ga \nYangilang</string>
+  <string name="upgrade_to_premium">Pro ga Yangilang</string>
   <string name="premium_features_description">
-    Eksklyuziv premium xususiyatlardan bahramand bo‘ling:\n\n
+    Eksklyuziv premium xususiyatlardan bahramand bo‘ling:\n
     &#8226; Cheksiz QuranGPT javoblari.\n
     &#8226; Tezroq javob vaqti.\n
     &#8226; Chuqurroq tushunchalar uchun ilg‘or AI.\n
@@ -38,4 +38,5 @@
 
   <string name="watch_ad_and_reset_limit">Cheklovni tiklash uchun to\'liq reklamani tomosha qiling (o\'tkazib yuborilsa mukofot yo\'q)</string>
   <string name="ad_not_available">Reklama mavjud emas. Keyinroq qayta urinib ko\'ring.</string>
+  <string name="or_label">yoki</string>
 </resources>

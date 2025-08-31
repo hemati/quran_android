@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/subscription_overlay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -43,7 +42,7 @@
         android:text="@string/premium_features_description"
         android:textAlignment="textStart"
         android:textColor="@color/gray"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
 
     <!-- Subscription Options Container -->
@@ -51,8 +50,9 @@
         android:id="@+id/subscription_options"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="4dp"
         android:orientation="horizontal"
+        android:baselineAligned="false"
         android:padding="4dp">
 
       <!-- Monthly Plan Layout -->
@@ -64,7 +64,7 @@
           android:layout_marginEnd="8dp"
           android:orientation="vertical"
           android:background="@drawable/unselected_plan_background"
-          android:padding="16dp">
+          android:padding="8dp">
 
         <TextView
             android:id="@+id/monthly_plan_text"
@@ -100,7 +100,7 @@
           android:layout_marginStart="8dp"
           android:orientation="vertical"
           android:background="@drawable/selected_plan_background"
-          android:padding="16dp">
+          android:padding="8dp">
 
         <TextView
             android:id="@+id/yearly_plan_text"
@@ -146,9 +146,51 @@
         android:id="@+id/upgrade_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/upgrade_now"
         android:textAllCaps="false" />
+
+    <!-- Bullet Point Texts -->
+    <TextView
+        android:id="@+id/trial_conditions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/trial_conditions"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        android:layout_marginEnd="8dp" />
+
+    <!-- divider with centered OR label -->
+    <LinearLayout
+        android:id="@+id/or_divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+      <View
+          android:layout_width="0dp"
+          android:layout_height="1dp"
+          android:layout_weight="1"
+          android:background="@color/primary_color_dark" />
+
+      <TextView
+          android:id="@+id/or_text_label"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="8dp"
+          android:layout_marginEnd="8dp"
+          android:text="@string/or_label"
+          android:textColor="@color/primary_color_dark"
+          android:textStyle="bold" />
+
+      <View
+          android:layout_width="0dp"
+          android:layout_height="1dp"
+          android:layout_weight="1"
+          android:background="@color/primary_color_dark" />
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/watch_ad_button"
@@ -165,17 +207,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
         android:visibility="gone" />
-
-
-    <!-- Bullet Point Texts -->
-    <TextView
-        android:id="@+id/trial_conditions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/trial_conditions"
-        android:textColor="@color/gray"
-        android:textSize="14sp"
-        android:layout_marginEnd="8dp" />
 
     <!-- divider -->
     <View

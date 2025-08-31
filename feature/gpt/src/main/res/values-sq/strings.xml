@@ -23,9 +23,9 @@
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
 
-  <string name="upgrade_to_premium">Kaloni në \nQuranGPT Pro</string>
+  <string name="upgrade_to_premium">Kaloni në Pro</string>
   <string name="premium_features_description">
-    Shijoni veçoritë ekskluzive premium:\n\n
+    Shijoni veçoritë ekskluzive premium:\n
     &#8226; Përgjigje të pakufizuara nga QuranGPT.\n
     &#8226; Koha më e shpejtë e përgjigjes.\n
     &#8226; AI e avancuar për njohuri më të thella.\n
@@ -40,4 +40,5 @@
 
   <string name="watch_ad_and_reset_limit">Shikoni reklamën e plotë për të rivendosur kufirin (pa shpërblim nëse anashkalohet)</string>
   <string name="ad_not_available">Reklama nuk është e disponueshme. Ju lutemi provoni përsëri më vonë.</string>
+  <string name="or_label">ose</string>
 </resources>

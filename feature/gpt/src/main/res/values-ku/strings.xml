@@ -23,9 +23,9 @@
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
 
-  <string name="upgrade_to_premium">نوێکردنەوە بۆ\nQuranGPT Pro</string>
+  <string name="upgrade_to_premium">نوێکردنەوە بۆ Pro</string>
   <string name="premium_features_description">
-    سوود بەرهەم بگەرە لە تایبەتمەندیە تایبەتیەکان:\n\n
+    سوود بەرهەم بگەرە لە تایبەتمەندیە تایبەتیەکان:\n
     &#8226; وەڵامەکانی قورئان GPT بێ سنوور.\n
     &#8226; کاتی وەڵامی خێراتر.\n
     &#8226; AI پێشکەوتوو بۆ بینینی هەستیارتر.\n
@@ -40,4 +40,5 @@
 
   <string name="watch_ad_and_reset_limit">Reklama tevahî bibîne bo vegerandina sînorê (xelet nabe heke derbas bibe)</string>
   <string name="ad_not_available">Reklam nabe. Ji kerema xwe paşê paşê biceribînin.</string>
+  <string name="or_label">یان</string>
 </resources>

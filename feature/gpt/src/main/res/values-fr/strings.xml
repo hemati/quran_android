@@ -23,9 +23,9 @@
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
 
-  <string name="upgrade_to_premium">Passer à \nQuranGPT Pro</string>
+  <string name="upgrade_to_premium">Passer à Pro</string>
   <string name="premium_features_description">
-    Profitez des fonctionnalités exclusives premium :\n\n
+    Profitez des fonctionnalités exclusives premium :\n
     &#8226; Réponses illimitées de QuranGPT.\n
     &#8226; Temps de réponse plus rapides.\n
     &#8226; IA avancée pour des analyses plus approfondies.\n
@@ -40,4 +40,5 @@
 
   <string name="watch_ad_and_reset_limit">Regardez la publicité complète pour réinitialiser la limite (pas de récompense si elle est ignorée)</string>
   <string name="ad_not_available">Publicité non disponible. Veuillez réessayer plus tard.</string>
+  <string name="or_label">ou</string>
 </resources>

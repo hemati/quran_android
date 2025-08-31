@@ -21,9 +21,9 @@
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
-  <string name="upgrade_to_premium">Tingkatkan ke \nQuranGPT Pro</string>
+  <string name="upgrade_to_premium">Tingkatkan ke Pro</string>
   <string name="premium_features_description">
-    Nikmati ciri premium eksklusif:\n\n
+    Nikmati ciri premium eksklusif:\n
     &#8226; Jawapan QuranGPT tanpa had.\n
     &#8226; Masa respons lebih pantas.\n
     &#8226; AI maju untuk pandangan yang lebih mendalam.\n
@@ -38,4 +38,5 @@
 
   <string name="watch_ad_and_reset_limit">Tonton iklan penuh untuk menetapkan semula had (tiada ganjaran jika dilangkau)</string>
   <string name="ad_not_available">Iklan tidak tersedia. Sila cuba lagi kemudian.</string>
+  <string name="or_label">atau</string>
 </resources>
