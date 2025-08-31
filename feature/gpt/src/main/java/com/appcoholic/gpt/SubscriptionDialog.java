@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
+import android.content.Context;
+import android.content.ContextWrapper;
 
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
@@ -146,9 +148,9 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   }
 
   private void showRewardedAd() {
-    final Activity activity = (Activity) getContext();
-    if (rewardedAd == null) {
-      Log.d("SubscriptionDialog", "The rewarded ad wasn't ready yet.");
+    final Activity activity = getActivityFromContext(getContext());
+    if (activity == null || rewardedAd == null) {
+      Log.d("SubscriptionDialog", "Unable to show rewarded ad - missing activity or ad not ready.");
       return;
     }
 
@@ -170,6 +172,16 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
         ((DefaultMessagesActivity) activity).resetDailyChatLimit();
       }
     });
+  }
+
+  private Activity getActivityFromContext(Context context) {
+    while (context instanceof ContextWrapper) {
+      if (context instanceof Activity) {
+        return (Activity) context;
+      }
+      context = ((ContextWrapper) context).getBaseContext();
+    }
+    return null;
   }
 
   @Override
