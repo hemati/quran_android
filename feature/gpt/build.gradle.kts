@@ -68,6 +68,8 @@ dependencies {
 
     implementation("com.android.billingclient:billing:7.0.0")
 
+    implementation("com.google.android.gms:play-services-ads:22.6.0")
+
 
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-analytics")

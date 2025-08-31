@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +42,8 @@ import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -110,6 +114,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
   private Toolbar toolbar;
 
   private MessageInput messageInput;  // Add this line
+  private AdView adView;
+  private SharedPreferences sharedPreferences;
 
   private SubscriptionDialog subscriptionDialog;  // Add this line
 
@@ -122,6 +128,16 @@ public class DefaultMessagesActivity extends AppCompatActivity
     setContentView(R.layout.activity_default_messages);
 
     messagesList = findViewById(R.id.messagesList);
+
+    sharedPreferences = getSharedPreferences("AppUsagePref", Context.MODE_PRIVATE);
+    adView = findViewById(R.id.adView);
+    boolean proUser = sharedPreferences.getBoolean("isProUser", false);
+    if (proUser) {
+      adView.setVisibility(View.GONE);
+    } else {
+      AdRequest adRequest = new AdRequest.Builder().build();
+      adView.loadAd(adRequest);
+    }
 
     // Get the intent that started this activity
     Intent intent = getIntent();
@@ -150,7 +166,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
       getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.accent_color_darker));
     }
 
-    setUserSubscribed(false);
+    setUserSubscribed(proUser);
     quotaManager = new MessageQuotaManager(this, MAX_MESSAGES_PER_DAY);
     fetchAndActivateConfig();
 
@@ -411,6 +427,20 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
   private void setUserSubscribed(boolean subscribed) {
     isSubscribed = subscribed;
+    if (sharedPreferences != null) {
+      sharedPreferences.edit().putBoolean("isProUser", subscribed).apply();
+    }
+    if (adView != null) {
+      if (subscribed) {
+        adView.setVisibility(View.GONE);
+      } else {
+        if (adView.getVisibility() != View.VISIBLE) {
+          adView.setVisibility(View.VISIBLE);
+        }
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+      }
+    }
   }
 
 
