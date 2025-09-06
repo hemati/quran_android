@@ -826,13 +826,11 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   private fun setUiVisibilityR(isVisible: Boolean) {
     if (isVisible) {
       windowInsetsController.show(
-        WindowInsetsCompat.Type.statusBars() or
-            WindowInsetsCompat.Type.navigationBars()
+        WindowInsetsCompat.Type.statusBars()
       )
     } else {
       windowInsetsController.hide(
-        WindowInsetsCompat.Type.statusBars() or
-            WindowInsetsCompat.Type.navigationBars()
+        WindowInsetsCompat.Type.statusBars()
       )
       windowInsetsController.systemBarsBehavior =
         WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
@@ -845,12 +843,10 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
 
   private fun setUiVisibilityKitKat(isVisible: Boolean) {
     var flags = (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
     if (!isVisible) {
       flags = flags or (View.SYSTEM_UI_FLAG_LOW_PROFILE
           or View.SYSTEM_UI_FLAG_FULLSCREEN
-          or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
           or View.SYSTEM_UI_FLAG_IMMERSIVE)
     }
     viewPager.systemUiVisibility = flags
@@ -864,15 +860,8 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
       ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { _, insets ->
         val isStatusBarVisible = insets.isVisible(WindowInsetsCompat.Type.statusBars())
-        // on devices with "hide full screen indicator" or "hide the bottom bar,"
-        // this always returns false, which causes the touches to not work.
-        val isNavigationBarVisible = insets.isVisible(WindowInsetsCompat.Type.navigationBars())
 
-        // as a fix for the aforementioned point, make either one's visibility suggest
-        // visibility (instead of requiring both to agree).
-        val isVisible = isStatusBarVisible || isNavigationBarVisible
-
-        animateToolBar(isVisible)
+        animateToolBar(isStatusBarVisible)
         insets
       }
     } else {
