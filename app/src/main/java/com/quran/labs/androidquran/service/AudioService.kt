@@ -728,6 +728,10 @@ class AudioService : Service(), Player.Listener {
     state = State.Playing
     updateAudioPlaybackStatus()
 
+    audioRequest?.playbackSpeed?.let { speed ->
+      processUpdatePlaybackSpeed(speed)
+    }
+
     if (audioRequest?.isGapless() == true) {
       serviceHandler.sendEmptyMessageDelayed(MSG_UPDATE_AUDIO_POS, 200)
     }
@@ -946,10 +950,6 @@ class AudioService : Service(), Player.Listener {
     val player = player ?: return
     Timber.d("seek complete! position: %d", player.currentPosition)
 
-    audioRequest?.playbackSpeed?.let { speed ->
-      processUpdatePlaybackSpeed(speed)
-    }
-
     state = State.Playing
     if (!player.isPlaying) {
       player.play()
@@ -964,8 +964,8 @@ class AudioService : Service(), Player.Listener {
     state = State.Preparing
 
     val audioRequest = audioRequest
-    // only actually update the status if we are streaming or if we are not stopped
-    if (previousState != State.Stopped || (audioRequest == null || audioRequest.audioPathInfo.urlFormat.startsWith("http"))) {
+    // only actually update the status if we are streaming
+    if (audioRequest == null || audioRequest.audioPathInfo.urlFormat.startsWith("http")) {
       updateAudioPlaybackStatus()
     }
   }
