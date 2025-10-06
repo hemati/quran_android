@@ -29,6 +29,10 @@ import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+// UMP imports
+import com.google.android.ump.ConsentRequestParameters;
+import com.google.android.ump.UserMessagingPlatform;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -132,13 +136,50 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
       if (watchAdProgress != null) {
         watchAdProgress.setVisibility(View.VISIBLE);
       }
-      loadRewardedAd();
+      // Wrap rewarded ad flow with UMP consent like PagerActivity
+      requestConsentThenLoadRewarded();
     });
   }
 
   private void highlightSelectedPlan(LinearLayout selectedLayout, LinearLayout unselectedLayout) {
     selectedLayout.setBackgroundResource(R.drawable.selected_plan_background);
     unselectedLayout.setBackgroundResource(R.drawable.unselected_plan_background);
+  }
+
+  private void requestConsentThenLoadRewarded() {
+    final Activity activity = getActivityFromContext(getContext());
+    if (activity == null) {
+      Log.w("SubscriptionDialog", "No activity available for consent flow.");
+      loadRewardedAd();
+      return;
+    }
+
+    // (b) Request-Parameter
+    ConsentRequestParameters params = new ConsentRequestParameters.Builder()
+        .setTagForUnderAgeOfConsent(false)
+        .build();
+
+    // (c) Info abrufen
+    UserMessagingPlatform.getConsentInformation(activity)
+        .requestConsentInfoUpdate(
+            activity,
+            params,
+            () -> {
+              // (d) Falls nötig, Consent-Form automatisch laden & zeigen
+              UserMessagingPlatform.loadAndShowConsentFormIfRequired(
+                  activity,
+                  formError -> {
+                    // formError != null ist kein Blocker; Ads dürfen (non-personalized) geladen werden
+                    loadRewardedAd();
+                  }
+              );
+            },
+            requestError -> {
+              // Fallback: bei Fehler unpersonalisiert laden
+              Log.w("UMP", "Consent request failed: " + requestError.getMessage());
+              loadRewardedAd();
+            }
+        );
   }
 
   private void loadRewardedAd() {

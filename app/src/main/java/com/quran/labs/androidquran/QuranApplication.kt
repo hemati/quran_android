@@ -11,6 +11,7 @@ import com.quran.labs.androidquran.util.RecordingLogTree
 import com.quran.labs.androidquran.util.ThemeUtil
 import com.quran.labs.androidquran.widget.BookmarksWidgetSubscriber
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import com.quran.mobile.di.QuranApplicationComponent
 import com.quran.mobile.di.QuranApplicationComponentProvider
 import timber.log.Timber
@@ -34,8 +35,16 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider {
     applicationComponent.inject(this)
     initializeWorkManager()
     bookmarksWidgetSubscriber.subscribeBookmarksWidgetIfNecessary()
+    val requestConfiguration = RequestConfiguration.Builder()
+      .setTestDeviceIds(listOf("1A433D1C8B6C98FF184A4694E09AC80F"))
+      .build()
+    MobileAds.setRequestConfiguration(requestConfiguration)
+    MobileAds.initialize(this) { status ->
+      status.adapterStatusMap.forEach { (adapter, st) ->
+        Timber.d("GMA-Init: Adapter=$adapter, ${st.description}, ${st.initializationState}, ${st.latency}ms")
+      }
+    }
 
-    MobileAds.initialize(this)
 
     // theme setup
     val theme = quranSettings.currentTheme()

@@ -1,4 +1,3 @@
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -68,8 +67,9 @@ dependencies {
 
     implementation("com.android.billingclient:billing:7.0.0")
 
-    implementation("com.google.android.gms:play-services-ads:22.6.0")
-
+    implementation("com.google.android.gms:play-services-ads:24.6.0")
+    implementation("com.unity3d.ads:unity-ads:4.16.1")
+    implementation("com.google.ads.mediation:unity:+")
 
     implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
     implementation("com.google.firebase:firebase-analytics")
@@ -79,4 +79,6 @@ dependencies {
 
     implementation("com.google.android.play:review:2.0.1")
 
+    // UMP for consent management
+    implementation("com.google.android.ump:user-messaging-platform:2.+")
 }

@@ -165,6 +165,7 @@ import java.util.concurrent.CancellationException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.abs
+import com.google.android.ump.*
 
 /**
  * Activity that displays the Quran (in Arabic or translation mode).
@@ -328,14 +329,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
 
     setContentView(R.layout.quran_page_activity_slider)
     adView = findViewById(R.id.adView)
-    // if in landscape mode, we don't show ads
-    if (sharedPrefHelper.isProUser() || resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-      adView.visibility = View.GONE
-      adView.setBackgroundColor(0)
-    } else {
-      val adRequest = AdRequest.Builder().build()
-      adView.loadAd(adRequest)
-    }
+
 
     val lightStatusBar = resources.getBoolean(R.bool.light_navigation_bar)
     windowInsetsController = WindowInsetsControllerCompat(
@@ -360,6 +354,30 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       onDownloadSuccess()
     }
 
+    // (b) Request-Parameter
+    val params = ConsentRequestParameters.Builder()
+      .setTagForUnderAgeOfConsent(false) // ggf. true, wenn „unter 16“
+      .build()
+
+    // (c) Info abrufen
+    val ci = UserMessagingPlatform.getConsentInformation(this)
+    ci.requestConsentInfoUpdate(
+      this, params,
+      {
+        // (d) Falls nötig, Consent-Form automatisch laden & zeigen
+        UserMessagingPlatform.loadAndShowConsentFormIfRequired(
+          this
+        ) { formError ->
+          // formError != null ist kein Blocker; Ads dürfen (non-personalized) geladen werden
+          startAds() // --> hier erst deine Banner/Rewarded laden
+        }
+      },
+      { requestError ->
+        // Fallback: bei Fehler unpersonalisiert laden
+        startAds()
+      }
+    )
+
     bookmarksDao.pageBookmarksWithoutTags().combine(currentPageFlow) { bookmarks, currentPage ->
       bookmarks to currentPage
     }.onEach { (bookmarks, page) ->
@@ -372,6 +390,18 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       }
       refreshBookmarksMenu(isBookmarked)
     }.launchIn(scope)
+  }
+
+  private fun startAds() {
+    // Jetzt Banner/Rewarded laden – TCF-Signale sind (falls erforderlich) gesetzt.
+    // if in landscape mode, we don't show ads
+    if (sharedPrefHelper.isProUser() || resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+      adView.visibility = View.GONE
+      adView.setBackgroundColor(0)
+    } else {
+      val adRequest = AdRequest.Builder().build()
+      adView.loadAd(adRequest)
+    }
   }
 
   private fun updateDualPageMode() {
