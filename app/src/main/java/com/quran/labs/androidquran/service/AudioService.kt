@@ -381,7 +381,10 @@ class AudioService : Service(), Player.Listener {
   }
 
   private fun updateAudioPlayPosition() {
-    Timber.d("updateAudioPlayPosition")
+    if (DEBUG_TIMINGS) {
+      Timber.d("updateAudioPlayPosition")
+    }
+
     val localAudioQueue = audioQueue
     val localPlayer = player
 
@@ -393,10 +396,14 @@ class AudioService : Service(), Player.Listener {
       setState(PlaybackStateCompat.STATE_PLAYING)
       val pos = localPlayer.currentPosition
       val currentAyahTime = gaplessSuraData[ayah]
-      Timber.d(
-        "updateAudioPlayPosition: %d:%d, currently at %d vs expected at %d",
-        sura, ayah, pos, currentAyahTime
-      )
+
+      if (DEBUG_TIMINGS) {
+        Timber.d(
+          "updateAudioPlayPosition: %d:%d, currently at %d vs expected at %d",
+          sura, ayah, pos, currentAyahTime
+        )
+      }
+
       val updatedAyah = if (currentAyahTime > pos) {
         // the ayah is ahead of the current playback time, so search backwards
         (1 until ayah).findLast { gaplessSuraData[it] <= pos } ?: 1
@@ -404,10 +411,14 @@ class AudioService : Service(), Player.Listener {
         // the audio position is after this ayah, find out which ayah we're at
         ((ayah + 1)..maxAyahs).find { gaplessSuraData[it] > pos }?.minus(1) ?: maxAyahs
       }
-      Timber.d(
-        "updateAudioPlayPosition: %d:%d, decided ayah should be: %d",
-        sura, ayah, updatedAyah
-      )
+
+      if (DEBUG_TIMINGS) {
+        Timber.d(
+          "updateAudioPlayPosition: %d:%d, decided ayah should be: %d",
+          sura, ayah, updatedAyah
+        )
+      }
+
       if (updatedAyah != ayah) {
         val ayahTime = gaplessSuraData[ayah]
         if (abs(pos - ayahTime) < 150) {
@@ -470,12 +481,12 @@ class AudioService : Service(), Player.Listener {
         val timeDelta = gaplessSuraData[updatedAyah + 1] - localPlayer.currentPosition
         val t = clamp(timeDelta, 100, 10000)
         val tAccountingForSpeed = t / (audioRequest?.playbackSpeed ?: 1f)
-        Timber.d(
-          "updateAudioPlayPosition before: %d, after %f, speed: %f",
-          t,
-          tAccountingForSpeed,
-          audioRequest?.playbackSpeed
-        )
+        if (DEBUG_TIMINGS) {
+          Timber.d(
+            "updateAudioPlayPosition before: %d, after %f, speed: %f",
+            t, tAccountingForSpeed, audioRequest?.playbackSpeed
+          )
+        }
         serviceHandler.sendEmptyMessageDelayed(MSG_UPDATE_AUDIO_POS, tAccountingForSpeed.toLong())
       } else if (maxAyahs == updatedAyah) {
         serviceHandler.sendEmptyMessageDelayed(MSG_UPDATE_AUDIO_POS, 150)
@@ -732,7 +743,8 @@ class AudioService : Service(), Player.Listener {
       processUpdatePlaybackSpeed(speed)
     }
 
-    if (audioRequest?.isGapless() == true) {
+    if (audioRequest?.isGapless() == true && !playerOverride) {
+      Timber.d("configAndStartExoPlayer: restarting position updates")
       serviceHandler.sendEmptyMessageDelayed(MSG_UPDATE_AUDIO_POS, 200)
     }
   }
@@ -825,8 +837,12 @@ class AudioService : Service(), Player.Listener {
           MediaItem.fromUri(url)
         }
 
-        val potentialTiming = timings?.get(localAudioQueue.getCurrentAyah(), -1) ?: -1
-        if (potentialTiming > -1 && overrideResource == 0) {
+        val potentialTiming = if (timings != null && overrideResource == 0) {
+          getSeekPosition(false)
+        } else {
+          -1
+        }
+        if (potentialTiming > -1) {
           localPlayer.setMediaItem(mediaItem, potentialTiming)
         } else {
           localPlayer.setMediaItem(mediaItem)
@@ -901,14 +917,17 @@ class AudioService : Service(), Player.Listener {
   override fun onPlaybackStateChanged(playbackState: Int) {
     when (playbackState) {
       Player.STATE_READY -> {
+        Timber.d("Player ready to play - will prepare: ${state == State.Preparing}")
         if (state == State.Preparing) {
           onPlayerReady()
         }
       }
       Player.STATE_ENDED -> {
+        Timber.d("Player ended")
         onPlayerCompleted()
       }
       Player.STATE_BUFFERING -> {
+        Timber.d("Player buffering")
         onPlayerBuffering()
       }
       Player.STATE_IDLE -> {
@@ -927,6 +946,7 @@ class AudioService : Service(), Player.Listener {
     newPosition: Player.PositionInfo,
     reason: Int
   ) {
+    Timber.d("Player onPositionDiscontinuity: reason=%d", reason)
     if (reason == Player.DISCONTINUITY_REASON_SEEK) {
       onSeekCompleted()
     }
@@ -955,6 +975,7 @@ class AudioService : Service(), Player.Listener {
       player.play()
     }
     updateAudioPlaybackStatus()
+    Timber.d("onSeekComplete: restarting position updates")
     serviceHandler.sendEmptyMessageDelayed(MSG_UPDATE_AUDIO_POS, 200)
   }
 
@@ -971,6 +992,7 @@ class AudioService : Service(), Player.Listener {
   }
 
   private fun onPlayerCompleted() {
+    Timber.d("onPlayerCompleted")
     // The exo player finished playing the current file, so
     // we go ahead and start the next.
     if (playerOverride) {
@@ -1253,5 +1275,6 @@ class AudioService : Service(), Player.Listener {
     private const val NOTIFICATION_CHANNEL_ID = Constants.AUDIO_CHANNEL
     private const val MSG_INCOMING = 1
     private const val MSG_UPDATE_AUDIO_POS = 2
+    private const val DEBUG_TIMINGS = false
   }
 }

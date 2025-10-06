@@ -1,22 +1,23 @@
 [versions]
-agp = "8.12.2"
+agp = "8.13.0"
 junit = "1.3.0"
-kotlin = "2.2.10"
-ksp = "2.2.10-2.0.2"
+kotlin = "2.2.20"
+ksp = "2.2.20-2.0.3"
 
 # required within the Gradle convention plugins - not unused
-composeBomVersion = "2025.08.01"
+composeBomVersion = "2025.09.01"
 media3ExoplayerVersion = "1.8.0"
 okhttpBomVersion = "5.1.0"
+firebaseBomVersion = "33.16.0"
 
 # dependencies
 anvil = "0.4.1"
 coroutinesVersion = "1.10.2"
 crashlytics = "3.0.6"
-daggerVersion = "2.57.1"
+daggerVersion = "2.57.2"
 dnsjavaVersion = "2.1.9"
 errorprone = "4.3.0"
-errorproneCoreVersion = "2.41.0"
+errorproneCoreVersion = "2.42.0"
 googleServices = "4.4.3"
 immutableCollectionsVersion = "0.4.0"
 leakcanaryAndroidVersion = "2.14"
@@ -24,16 +25,16 @@ moshiVersion = "1.15.2"
 okioVersion = "3.16.0"
 retrofitVersion = "3.0.0"
 rxandroidVersion = "3.0.2"
-rxjavaVersion = "3.1.11"
+rxjavaVersion = "3.1.12"
 sqldelight = "2.1.0"
 timberVersion = "5.0.1"
 
 # androidx library versions
 androidxAppcompatVersion = "1.7.1"
-androidxActivityComposeVersion = "1.10.1"
+androidxActivityComposeVersion = "1.11.0"
 androidxAnnotationVersion = "1.9.1"
 androidxCoreVersion = "1.17.0"
-androidxNavigationVersion = "2.9.3"
+androidxNavigationVersion = "2.9.5"
 androidxDynamicAnimationVersion = "1.1.0"
 androidxFragmentVersion = "1.8.9"
 androidxJunitExtVersion = "1.3.0"
@@ -44,33 +45,29 @@ androidxRecyclerViewVersion = "1.4.0"
 androidxSwipeRefreshVersion = "1.1.0"
 androidxPagingVersion = "3.3.6"
 androidxPagingComposeVersion = "3.3.6"
-androidxWorkManagerVersion = "2.10.3"
+androidxWorkManagerVersion = "2.10.5"
 androidxWindowManager = "1.4.0"
-
-# firebase
-firebaseAnalyticsVersion = "23.0.0"
-firebaseCrashlyticsVersion = "20.0.1"
 
 # ui libraries
 accompanistVersion = "0.36.0"
 balloonVersion = "1.6.13"
 tooltipComposeVersion = "0.2.0"
 insetterVersion = "0.6.1"
-materialComponentsVersion = "1.12.0"
+materialComponentsVersion = "1.13.0"
 numberPickerVersion = "2.4.13"
 reorderableComposeVersion = "0.9.6"
 molecule = "2.1.0"
 
 # recitations
 grpcOkhttpVersion = "1.75.0"
-googleAuthVersion = "1.38.0"
-googleCloudSpeechVersion = "4.68.0"
+googleAuthVersion = "1.39.1"
+googleCloudSpeechVersion = "4.70.0"
 
 # testing
 junitVersion = "4.13.2"
 espressoVersion = "3.7.0"
-truthVersion = "1.4.4"
-mockitoVersion = "5.19.0"
+truthVersion = "1.4.5"
+mockitoVersion = "5.20.0"
 robolectricVersion = "4.16"
 turbineVersion = "1.2.1"
 
@@ -86,6 +83,7 @@ kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collec
 # required within the Gradle convention plugins - not unused
 okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttpBomVersion" }
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBomVersion" }
 
 # androidx
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidxAppcompatVersion" }
@@ -172,8 +170,8 @@ dnsjava = { module = "dnsjava:dnsjava", version.ref = "dnsjavaVersion" }
 
 # tools
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorproneCoreVersion" }
-firebase-analytics = { module = "com.google.firebase:firebase-analytics", version.ref = "firebaseAnalyticsVersion" }
-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics", version.ref = "firebaseCrashlyticsVersion" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
 # testing
 espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espressoVersion" }
