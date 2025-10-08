@@ -63,8 +63,6 @@ grpcOkhttpVersion = "1.75.0"
 googleAuthVersion = "1.39.1"
 googleCloudSpeechVersion = "4.70.0"
 
-googleAdsUnityMediationVersion = "4.12.5.0"
-
 # testing
 junitVersion = "4.13.2"
 espressoVersion = "3.7.0"
@@ -169,7 +167,6 @@ reorderable-compose = { module = "org.burnoutcrew.composereorderable:reorderable
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanaryAndroidVersion" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersion" }
 dnsjava = { module = "dnsjava:dnsjava", version.ref = "dnsjavaVersion" }
-google-ads-mediation-unity = { module = "com.google.ads.mediation:unity", version.ref = "googleAdsUnityMediationVersion" }
 
 # tools
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorproneCoreVersion" }

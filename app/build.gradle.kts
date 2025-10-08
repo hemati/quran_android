@@ -269,7 +269,8 @@ dependencies {
   implementation("com.google.android.play:review:2.0.1")
   implementation("com.android.billingclient:billing:7.0.0")
   implementation("com.google.android.gms:play-services-ads:24.6.0")
-  implementation(libs.google.ads.mediation.unity)
+  implementation("com.unity3d.ads:unity-ads:4.16.1")
+  implementation("com.google.ads.mediation:unity:4.16.1.0")
   implementation("com.google.android.ump:user-messaging-platform:2.+")
 
   implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
