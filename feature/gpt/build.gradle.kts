@@ -4,7 +4,7 @@ plugins {
 }
 android {
     namespace = "com.appcoholic.gpt"
-    compileSdk = 34
+    compileSdk = 36
 
     buildFeatures {
         buildConfig = true
