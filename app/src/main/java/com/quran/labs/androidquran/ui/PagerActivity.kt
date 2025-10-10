@@ -366,7 +366,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     ci.requestConsentInfoUpdate(
       this, params,
       {
-        updatePangleConsent(ci.consentStatus)
+    updatePangleConsent(ci.consentStatus)
         // (d) Falls nötig, Consent-Form automatisch laden & zeigen
         UserMessagingPlatform.loadAndShowConsentFormIfRequired(
           this
@@ -410,18 +410,19 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     }
   }
 
-  private fun updatePangleConsent(consentStatus: ConsentInformation.ConsentStatus) {
+  private fun updatePangleConsent(@ConsentInformation.ConsentStatus consentStatus: Int) {
     val pangleConsent = consentStatus.toPangleConsentType()
     PangleMediationAdapter.setGDPRConsent(pangleConsent)
     sharedPrefHelper.setPangleGdprConsent(pangleConsent)
   }
 
-  private fun ConsentInformation.ConsentStatus.toPangleConsentType(): Int {
+  private fun @receiver:ConsentInformation.ConsentStatus Int.toPangleConsentType(): Int {
     return when (this) {
       ConsentInformation.ConsentStatus.OBTAINED -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_CONSENT
       ConsentInformation.ConsentStatus.REQUIRED -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_NO_CONSENT
       ConsentInformation.ConsentStatus.NOT_REQUIRED -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT
       ConsentInformation.ConsentStatus.UNKNOWN -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT
+      else -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT
     }
   }
 
