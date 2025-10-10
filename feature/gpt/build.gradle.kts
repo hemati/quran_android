@@ -46,6 +46,7 @@ repositories {
   // Add this if it's not already present
   maven(url = "https://www.jitpack.io")  // Use parentheses and 'url =' for Kotlin DSL
   maven(url = "https://repo.grails.org/grails/core/")
+  maven(url = "https://artifact.bytedance.com/repository/pangle/")
 }
 
 dependencies {
@@ -68,6 +69,9 @@ dependencies {
     implementation("com.android.billingclient:billing:7.0.0")
 
     implementation("com.google.android.gms:play-services-ads:24.6.0")
+
+    implementation("com.google.ads.mediation:pangle:7.6.0.4.0")
+
     implementation("com.unity3d.ads:unity-ads:4.16.1")
     implementation("com.google.ads.mediation:unity:4.16.1.0")
 

@@ -28,7 +28,7 @@ import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.ads.mediation.pangle.PangleMediationAdapter;
-import com.bytedance.sdk.openadsdk.PAGConstant;
+import com.bytedance.sdk.openadsdk.api.PAGConstant;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 // UMP imports
