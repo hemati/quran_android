@@ -11,6 +11,7 @@ dependencyResolutionManagement {
   repositories {
     google()
     mavenCentral()
+    maven("https://artifact.bytedance.com/repository/pangle/")
     maven("https://androidx.dev/storage/compose-compiler/repository/")
   }
 }

@@ -27,15 +27,20 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.ads.mediation.pangle.PangleMediationAdapter;
+import com.bytedance.sdk.openadsdk.PAGConstant;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 // UMP imports
+import com.google.android.ump.ConsentInformation;
 import com.google.android.ump.ConsentRequestParameters;
 import com.google.android.ump.UserMessagingPlatform;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import com.quran.labs.androidquran.util.SharedPrefHelper;
 
 public class SubscriptionDialog extends Dialog implements BillingHelper.BillingUpdatesListener{
 
@@ -60,6 +65,8 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
 
   private AppCompatButton watchAdButton;
   private ProgressBar watchAdProgress;
+
+  private final SharedPrefHelper sharedPrefHelper;
 
   public interface OnSubscriptionStatusChangedListener {
     void onSubscriptionStatusChanged(boolean subscribed);
@@ -87,6 +94,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
     setCancelable(false);
     billingHelper = BillingHelper.getInstance(activity, this);
     billingHelper.queryPurchases();
+    sharedPrefHelper = new SharedPrefHelper(activity);
   }
 
 
@@ -160,16 +168,21 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
         .build();
 
     // (c) Info abrufen
-    UserMessagingPlatform.getConsentInformation(activity)
+    ConsentInformation consentInformation = UserMessagingPlatform.getConsentInformation(activity);
+    consentInformation
         .requestConsentInfoUpdate(
             activity,
             params,
             () -> {
+              syncPangleConsent(consentInformation.getConsentStatus());
               // (d) Falls nötig, Consent-Form automatisch laden & zeigen
               UserMessagingPlatform.loadAndShowConsentFormIfRequired(
                   activity,
                   formError -> {
                     // formError != null ist kein Blocker; Ads dürfen (non-personalized) geladen werden
+                    ConsentInformation updatedConsentInformation =
+                        UserMessagingPlatform.getConsentInformation(activity);
+                    syncPangleConsent(updatedConsentInformation.getConsentStatus());
                     loadRewardedAd();
                   }
               );
@@ -177,9 +190,29 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
             requestError -> {
               // Fallback: bei Fehler unpersonalisiert laden
               Log.w("UMP", "Consent request failed: " + requestError.getMessage());
+              syncPangleConsent(consentInformation.getConsentStatus());
               loadRewardedAd();
             }
         );
+  }
+
+  private void syncPangleConsent(ConsentInformation.ConsentStatus consentStatus) {
+    int pangleConsent = mapToPangleConsent(consentStatus);
+    PangleMediationAdapter.setGDPRConsent(pangleConsent);
+    sharedPrefHelper.setPangleGdprConsent(pangleConsent);
+  }
+
+  private int mapToPangleConsent(ConsentInformation.ConsentStatus consentStatus) {
+    switch (consentStatus) {
+      case OBTAINED:
+        return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_CONSENT;
+      case REQUIRED:
+        return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_NO_CONSENT;
+      case NOT_REQUIRED:
+      case UNKNOWN:
+      default:
+        return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT;
+    }
   }
 
   private void loadRewardedAd() {

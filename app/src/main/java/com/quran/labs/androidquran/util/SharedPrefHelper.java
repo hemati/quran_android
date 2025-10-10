@@ -10,7 +10,11 @@ public class SharedPrefHelper {
     private static final String IS_ONBOARDING_COMPLETED = "isOnboardingCompleted";
     private static final String KEY_IS_PRO_USER = "isProUser";
 
-    private SharedPreferences sharedPreferences;
+    public static final int CONSENT_UNSET = Integer.MIN_VALUE;
+
+    private static final String KEY_PANGLE_GDPR_CONSENT = "pangleGdprConsent";
+
+    private final SharedPreferences sharedPreferences;
 
     public SharedPrefHelper(Context context) {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
@@ -64,5 +68,15 @@ public class SharedPrefHelper {
 
     public boolean isProUser() {
         return sharedPreferences.getBoolean(KEY_IS_PRO_USER, false);
+    }
+
+    public void setPangleGdprConsent(int consentValue) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(KEY_PANGLE_GDPR_CONSENT, consentValue);
+        editor.apply();
+    }
+
+    public int getPangleGdprConsent() {
+        return sharedPreferences.getInt(KEY_PANGLE_GDPR_CONSENT, CONSENT_UNSET);
     }
 }
