@@ -138,6 +138,8 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.appcoholic.gpt.BillingHelper
 import com.android.billingclient.api.Purchase
+import com.bytedance.sdk.openadsdk.PAGConstant
+import com.google.ads.mediation.pangle.PangleMediationAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -364,16 +366,20 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     ci.requestConsentInfoUpdate(
       this, params,
       {
+        updatePangleConsent(ci.consentStatus)
         // (d) Falls nötig, Consent-Form automatisch laden & zeigen
         UserMessagingPlatform.loadAndShowConsentFormIfRequired(
           this
         ) { formError ->
           // formError != null ist kein Blocker; Ads dürfen (non-personalized) geladen werden
+          val latestConsentStatus = UserMessagingPlatform.getConsentInformation(this).consentStatus
+          updatePangleConsent(latestConsentStatus)
           startAds() // --> hier erst deine Banner/Rewarded laden
         }
       },
       { requestError ->
         // Fallback: bei Fehler unpersonalisiert laden
+        updatePangleConsent(ci.consentStatus)
         startAds()
       }
     )
@@ -401,6 +407,21 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     } else {
       val adRequest = AdRequest.Builder().build()
       adView.loadAd(adRequest)
+    }
+  }
+
+  private fun updatePangleConsent(consentStatus: ConsentInformation.ConsentStatus) {
+    val pangleConsent = consentStatus.toPangleConsentType()
+    PangleMediationAdapter.setGDPRConsent(pangleConsent)
+    sharedPrefHelper.setPangleGdprConsent(pangleConsent)
+  }
+
+  private fun ConsentInformation.ConsentStatus.toPangleConsentType(): Int {
+    return when (this) {
+      ConsentInformation.ConsentStatus.OBTAINED -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_CONSENT
+      ConsentInformation.ConsentStatus.REQUIRED -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_NO_CONSENT
+      ConsentInformation.ConsentStatus.NOT_REQUIRED -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT
+      ConsentInformation.ConsentStatus.UNKNOWN -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT
     }
   }
 
