@@ -3,6 +3,7 @@ package com.quran.labs.androidquran
 import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkManager
+import com.bytedance.sdk.openadsdk.api.PAGConstant
 import com.quran.labs.androidquran.core.worker.QuranWorkerFactory
 import com.quran.labs.androidquran.di.component.application.ApplicationComponent
 import com.quran.labs.androidquran.di.component.application.DaggerApplicationComponent
@@ -14,7 +15,7 @@ import com.quran.labs.androidquran.widget.BookmarksWidgetSubscriber
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 import com.google.ads.mediation.pangle.PangleMediationAdapter
-import com.bytedance.sdk.openadsdk.PAGConstant
+
 import com.quran.mobile.di.QuranApplicationComponent
 import com.quran.mobile.di.QuranApplicationComponentProvider
 import timber.log.Timber

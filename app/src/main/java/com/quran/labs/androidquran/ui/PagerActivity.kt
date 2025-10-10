@@ -138,7 +138,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.appcoholic.gpt.BillingHelper
 import com.android.billingclient.api.Purchase
-import com.bytedance.sdk.openadsdk.PAGConstant
+import com.bytedance.sdk.openadsdk.api.PAGConstant
 import com.google.ads.mediation.pangle.PangleMediationAdapter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
