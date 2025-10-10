@@ -40,7 +40,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import com.quran.labs.androidquran.util.SharedPrefHelper;
 
 public class SubscriptionDialog extends Dialog implements BillingHelper.BillingUpdatesListener{
 
@@ -66,7 +65,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   private AppCompatButton watchAdButton;
   private ProgressBar watchAdProgress;
 
-  private final SharedPrefHelper sharedPrefHelper;
+  private final GptPreferenceHelper sharedPrefHelper;
 
   public interface OnSubscriptionStatusChangedListener {
     void onSubscriptionStatusChanged(boolean subscribed);
@@ -94,7 +93,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
     setCancelable(false);
     billingHelper = BillingHelper.getInstance(activity, this);
     billingHelper.queryPurchases();
-    sharedPrefHelper = new SharedPrefHelper(activity);
+    sharedPrefHelper = new GptPreferenceHelper(activity);
   }
 
 
