@@ -195,20 +195,20 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
         );
   }
 
-  private void syncPangleConsent(ConsentInformation.ConsentStatus consentStatus) {
+  private void syncPangleConsent(@ConsentInformation.ConsentStatus int consentStatus) {
     int pangleConsent = mapToPangleConsent(consentStatus);
     PangleMediationAdapter.setGDPRConsent(pangleConsent);
     sharedPrefHelper.setPangleGdprConsent(pangleConsent);
   }
 
-  private int mapToPangleConsent(ConsentInformation.ConsentStatus consentStatus) {
+  private int mapToPangleConsent(@ConsentInformation.ConsentStatus int consentStatus) {
     switch (consentStatus) {
-      case OBTAINED:
+      case ConsentInformation.ConsentStatus.OBTAINED:
         return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_CONSENT;
-      case REQUIRED:
+      case ConsentInformation.ConsentStatus.REQUIRED:
         return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_NO_CONSENT;
-      case NOT_REQUIRED:
-      case UNKNOWN:
+      case ConsentInformation.ConsentStatus.NOT_REQUIRED:
+      case ConsentInformation.ConsentStatus.UNKNOWN:
       default:
         return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT;
     }
