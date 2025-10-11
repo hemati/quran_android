@@ -84,5 +84,5 @@ dependencies {
     implementation("com.google.android.play:review:2.0.1")
 
     // UMP for consent management
-    implementation("com.google.android.ump:user-messaging-platform:2.+")
+    implementation("com.google.android.ump:user-messaging-platform:3.2.0")
 }
