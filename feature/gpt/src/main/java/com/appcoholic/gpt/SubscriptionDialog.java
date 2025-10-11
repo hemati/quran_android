@@ -208,7 +208,9 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
       case ConsentInformation.ConsentStatus.REQUIRED:
         return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_NO_CONSENT;
       case ConsentInformation.ConsentStatus.NOT_REQUIRED:
+        return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT;
       case ConsentInformation.ConsentStatus.UNKNOWN:
+        return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_NO_CONSENT;
       default:
         return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT;
     }

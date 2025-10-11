@@ -277,7 +277,7 @@ dependencies {
   implementation("com.unity3d.ads:unity-ads:4.16.1")
   implementation("com.google.ads.mediation:unity:4.16.1.0")
 
-  implementation("com.google.android.ump:user-messaging-platform:2.+")
+  implementation("com.google.android.ump:user-messaging-platform:3.2.0")
 
   implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
   implementation("com.google.firebase:firebase-config")
