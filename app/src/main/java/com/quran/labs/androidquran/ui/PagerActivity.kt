@@ -421,7 +421,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       ConsentInformation.ConsentStatus.OBTAINED -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_CONSENT
       ConsentInformation.ConsentStatus.REQUIRED -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_NO_CONSENT
       ConsentInformation.ConsentStatus.NOT_REQUIRED -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT
-      ConsentInformation.ConsentStatus.UNKNOWN -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT
+      ConsentInformation.ConsentStatus.UNKNOWN -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_NO_CONSENT
       else -> PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT
     }
   }

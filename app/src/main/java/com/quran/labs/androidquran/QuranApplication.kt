@@ -45,7 +45,9 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider {
       if (storedPangleConsent != SharedPrefHelper.CONSENT_UNSET) {
         storedPangleConsent
       } else {
-        PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT
+        // Default to an explicit "no consent" flag so the mediation adapter can serve
+        // non-personalized ads in regions where GDPR compliance is required.
+        PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_NO_CONSENT
       }
     PangleMediationAdapter.setGDPRConsent(consentToApply)
     val requestConfiguration = RequestConfiguration.Builder()
