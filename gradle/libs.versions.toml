@@ -2,12 +2,12 @@
 agp = "8.13.0"
 junit = "1.3.0"
 kotlin = "2.2.20"
-ksp = "2.2.20-2.0.3"
+ksp = "2.2.20-2.0.4"
 
 # required within the Gradle convention plugins - not unused
-composeBomVersion = "2025.09.01"
+composeBomVersion = "2025.10.00"
 media3ExoplayerVersion = "1.8.0"
-okhttpBomVersion = "5.1.0"
+okhttpBomVersion = "5.2.1"
 firebaseBomVersion = "33.16.0"
 
 # dependencies
@@ -18,11 +18,11 @@ daggerVersion = "2.57.2"
 dnsjavaVersion = "2.1.9"
 errorprone = "4.3.0"
 errorproneCoreVersion = "2.42.0"
-googleServices = "4.4.3"
+googleServices = "4.4.4"
 immutableCollectionsVersion = "0.4.0"
 leakcanaryAndroidVersion = "2.14"
 moshiVersion = "1.15.2"
-okioVersion = "3.16.0"
+okioVersion = "3.16.1"
 retrofitVersion = "3.0.0"
 rxandroidVersion = "3.0.2"
 rxjavaVersion = "3.1.12"
@@ -59,9 +59,9 @@ reorderableComposeVersion = "0.9.6"
 molecule = "2.1.0"
 
 # recitations
-grpcOkhttpVersion = "1.75.0"
+grpcOkhttpVersion = "1.76.0"
 googleAuthVersion = "1.39.1"
-googleCloudSpeechVersion = "4.70.0"
+googleCloudSpeechVersion = "4.71.0"
 
 # testing
 junitVersion = "4.13.2"
