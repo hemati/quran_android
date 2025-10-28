@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:keepScreenOn="true">
 
   <androidx.viewpager.widget.NonRestoringViewPager
@@ -12,31 +11,23 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent" />
 
-  <LinearLayout
-      android:id="@+id/top_bar"
-      android:layout_width="match_parent"
+  <com.quran.page.common.toolbar.AyahToolBar
+      android:id="@+id/ayah_toolbar"
+      android:layout_width="wrap_content"
+      android:layout_height="@dimen/toolbar_total_height"
+      android:visibility="gone" />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id="@+id/fab_chat"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="top"
-      android:orientation="vertical">
-
-    <com.quran.page.common.toolbar.AyahToolBar
-        android:id="@+id/ayah_toolbar"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/toolbar_total_height"
-        android:visibility="gone" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_chat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="@dimen/toolbar_total_height_with_margin"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/accent_color_dark"
-        android:contentDescription="QuranGPT"
-        android:src="@drawable/diversity_2" />
-  </LinearLayout>
+      android:layout_gravity="top|end"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="@dimen/toolbar_total_height_with_margin"
+      android:layout_marginEnd="16dp"
+      android:backgroundTint="@color/accent_color_dark"
+      android:contentDescription="@string/qurangpt"
+      android:src="@drawable/diversity_2" />
 
   <FrameLayout
       android:id="@+id/toolbar_area"
@@ -50,6 +41,7 @@
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ToolbarStyle"
+        android:elevation="4dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.DayNight"
         app:subtitleTextAppearance="@style/ToolbarSubtitleText"
         app:titleTextAppearance="@style/ToolbarTitleText">
@@ -66,7 +58,8 @@
       android:id="@+id/audio_area"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="bottom" />
+      android:layout_gravity="bottom"
+      android:visibility="gone" />
 
   <com.google.android.gms.ads.AdView
       android:id="@+id/adView"
@@ -74,6 +67,5 @@
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
       ads:adSize="BANNER"
-      android:background="@color/panel_background_color"
       ads:adUnitId="@string/admob_banner_id" />
 </FrameLayout>

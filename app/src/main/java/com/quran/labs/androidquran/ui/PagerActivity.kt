@@ -329,6 +329,18 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     setContentView(R.layout.quran_page_activity_slider)
     adView = findViewById(R.id.adView)
 
+    // Handle window insets for the AdView and audioStatusBar so they appear above navigation bars
+    val rootView = findViewById<ViewGroup>(R.id.sliding_panel)
+    ViewCompat.setOnApplyWindowInsetsListener(rootView) { _, windowInsets ->
+      val insets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+
+      // Apply bottom margin to adView
+      val adViewLayoutParams = adView.layoutParams as FrameLayout.LayoutParams
+      adViewLayoutParams.bottomMargin = insets.bottom
+      adView.layoutParams = adViewLayoutParams
+
+      windowInsets
+    }
 
     val lightStatusBar = resources.getBoolean(R.bool.light_navigation_bar)
     windowInsetsController = WindowInsetsControllerCompat(
