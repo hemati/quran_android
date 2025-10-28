@@ -6,6 +6,7 @@ import android.app.SearchManager
 import android.content.ComponentName
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
