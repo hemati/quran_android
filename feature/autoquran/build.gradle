@@ -1,12 +1,6 @@
 plugins {
   id 'quran.android.library.android'
-  alias libs.plugins.anvil
-  alias libs.plugins.ksp
-}
-
-anvil {
-  useKsp(true)
-  generateDaggerFactories.set(false)
+  alias libs.plugins.metro
 }
 
 android.namespace = "com.quran.labs.feature.autoquran"
@@ -25,9 +19,4 @@ dependencies {
   implementation project(":common:ui:core")
   implementation project(":common:pages")
   implementation project(':common:upgrade')
-
-  ksp libs.dagger.compiler
-  kspTest libs.dagger.compiler
-
-  implementation libs.dagger.runtime
 }

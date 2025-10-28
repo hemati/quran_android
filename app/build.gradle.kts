@@ -7,7 +7,7 @@ plugins {
   alias(libs.plugins.kotlin.parcelize)
   alias(libs.plugins.ksp)
   alias(libs.plugins.errorprone)
-  alias(libs.plugins.anvil)
+  alias(libs.plugins.metro)
 }
 
 // whether or not to use Firebase - Firebase is enabled by default, and is only disabled for
@@ -21,13 +21,6 @@ val useFirebase = true
 if (true || (getGradle().startParameter.taskRequests.toString().contains("Release") && useFirebase)) {
   apply(plugin = "com.google.gms.google-services")
   apply(plugin = "com.google.firebase.crashlytics")
-}
-
-anvil {
-  useKsp(
-    contributesAndFactoryGeneration = true,
-    componentMerging = true
-  )
 }
 
 android {
@@ -222,11 +215,6 @@ dependencies {
   implementation(libs.rxjava)
   implementation(libs.rxandroid)
 
-  // dagger
-  ksp(libs.dagger.compiler)
-  kspTest(libs.dagger.compiler)
-  implementation(libs.dagger.runtime)
-
   // analytics
   debugImplementation(project(":feature:analytics-noop"))
   add("betaImplementation", project(":feature:analytics-noop"))
@@ -258,7 +246,6 @@ dependencies {
   testImplementation(libs.espresso.intents)
   testImplementation(libs.turbine)
   testImplementation(libs.kotlinx.coroutines.test)
-  testImplementation(project(":pages:data:madani"))
 
   errorprone(libs.errorprone.core)
 

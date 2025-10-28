@@ -4,8 +4,8 @@ import com.quran.data.di.AppScope
 import com.quran.data.model.audio.Qari
 import com.quran.labs.androidquran.common.audio.model.QariItem
 import com.quran.labs.androidquran.common.audio.util.AudioExtensionDecider
-import com.squareup.anvil.annotations.ContributesBinding
-import javax.inject.Inject
+import dev.zacsweers.metro.ContributesBinding
+import dev.zacsweers.metro.Inject
 
 @ContributesBinding(AppScope::class)
 class QuranAudioExtensionDecider @Inject constructor() : AudioExtensionDecider {

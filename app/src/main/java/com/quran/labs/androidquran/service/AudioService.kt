@@ -18,13 +18,11 @@ import android.os.Process
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.util.SparseLongArray
 import androidx.annotation.OptIn
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.toDrawable
-import androidx.core.math.MathUtils.clamp
 import androidx.media.session.MediaButtonReceiver
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -49,6 +47,7 @@ import com.quran.labs.androidquran.common.audio.model.playback.AudioStatus
 import com.quran.labs.androidquran.common.audio.model.playback.PlaybackStatus
 import com.quran.labs.androidquran.common.audio.repository.AudioStatusRepository
 import com.quran.labs.androidquran.dao.audio.AudioPlaybackInfo
+import com.quran.labs.androidquran.dao.audio.SuraTimings
 import com.quran.labs.androidquran.data.Constants
 import com.quran.labs.androidquran.data.QuranDisplayData
 import com.quran.labs.androidquran.data.QuranFileConstants
@@ -59,6 +58,7 @@ import com.quran.labs.androidquran.service.util.QuranDownloadNotifier
 import com.quran.labs.androidquran.ui.PagerActivity
 import com.quran.labs.androidquran.util.AudioUtils
 import com.quran.labs.androidquran.util.NotificationChannelUtil.setupNotificationChannel
+import dev.zacsweers.metro.Inject
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -70,7 +70,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-import javax.inject.Inject
 import kotlin.math.abs
 
 /**
@@ -136,7 +135,8 @@ class AudioService : Service(), Player.Listener {
   @Volatile
   private var notificationIcon: Bitmap? = null
   private var displayIcon: Bitmap? = null
-  private var gaplessSuraData: SparseLongArray = SparseLongArray()
+  private var gaplessSuraData: SuraTimings = SuraTimings.EMPTY
+  private var currentWord: Int? = null
   private val compositeDisposable = CompositeDisposable()
   private lateinit var scope: CoroutineScope
 
@@ -355,7 +355,7 @@ class AudioService : Service(), Player.Listener {
     }
   }
 
-  private suspend fun updateGaplessData(databasePath: String, sura: Int): SparseLongArray {
+  private suspend fun updateGaplessData(databasePath: String, sura: Int): SuraTimings {
     // note - we rely on the cache from timing repository instead of checking the cache here
     // because we do not have a variable for the database path here.
     val timings = timingRepository.timings(databasePath, sura)
@@ -372,9 +372,9 @@ class AudioService : Service(), Player.Listener {
     val localAudioQueue = audioQueue ?: return -1
     if (gaplessSura == localAudioQueue.getCurrentSura()) {
       val ayah = localAudioQueue.getCurrentAyah()
-      val time = gaplessSuraData[ayah]
+      val time = gaplessSuraData.ayahTimings[ayah]
       return if (ayah == 1 && !isRepeating) {
-        gaplessSuraData[0]
+        gaplessSuraData.ayahTimings[0]
       } else time
     }
     return -1
@@ -395,7 +395,7 @@ class AudioService : Service(), Player.Listener {
 
       setState(PlaybackStateCompat.STATE_PLAYING)
       val pos = localPlayer.currentPosition
-      val currentAyahTime = gaplessSuraData[ayah]
+      val currentAyahTime = gaplessSuraData.ayahTimings[ayah]
 
       if (DEBUG_TIMINGS) {
         Timber.d(
@@ -406,10 +406,10 @@ class AudioService : Service(), Player.Listener {
 
       val updatedAyah = if (currentAyahTime > pos) {
         // the ayah is ahead of the current playback time, so search backwards
-        (1 until ayah).findLast { gaplessSuraData[it] <= pos } ?: 1
+        (1 until ayah).findLast { gaplessSuraData.ayahTimings[it] <= pos } ?: 1
       } else {
         // the audio position is after this ayah, find out which ayah we're at
-        ((ayah + 1)..maxAyahs).find { gaplessSuraData[it] > pos }?.minus(1) ?: maxAyahs
+        ((ayah + 1)..maxAyahs).find { gaplessSuraData.ayahTimings[it] > pos }?.minus(1) ?: maxAyahs
       }
 
       if (DEBUG_TIMINGS) {
@@ -420,7 +420,7 @@ class AudioService : Service(), Player.Listener {
       }
 
       if (updatedAyah != ayah) {
-        val ayahTime = gaplessSuraData[ayah]
+        val ayahTime = gaplessSuraData.ayahTimings[ayah]
         if (abs(pos - ayahTime) < 150) {
           // shouldn't change ayahs if the delta is just 150ms...
           serviceHandler.sendEmptyMessageDelayed(MSG_UPDATE_AUDIO_POS, 150)
@@ -436,6 +436,7 @@ class AudioService : Service(), Player.Listener {
         } else if (nextSura != sura || nextAyah != updatedAyah) {
           // remove any messages currently in the queue
           serviceHandler.removeMessages(MSG_UPDATE_AUDIO_POS)
+          currentWord = null
 
           // if the ayah hasn't changed, we're repeating the ayah,
           // otherwise, we're repeating a range. this variable is
@@ -458,7 +459,7 @@ class AudioService : Service(), Player.Listener {
       } else {
         // if we have end of sura info and we bypassed end of sura
         // line, switch the sura.
-        val ayahTime = gaplessSuraData[999]
+        val ayahTime = gaplessSuraData.ayahTimings[999]
         if (ayahTime in 1..pos) {
           val success = localAudioQueue.playAt(sura + 1, 1, false)
           if (success && localAudioQueue.getCurrentSura() == sura) {
@@ -476,10 +477,52 @@ class AudioService : Service(), Player.Listener {
           return
         }
       }
+
+      // handle word by word tracking if enabled
+      val localAudioRequest = audioRequest
+      var nextUpdateDelay: Long? = null
+
+      if (localAudioRequest?.wordHighlighting == true) {
+        val wordTimings = gaplessSuraData.wordTimings[updatedAyah]
+        if (wordTimings != null && wordTimings.isNotEmpty()) {
+          // find the current word based on position
+          val updatedWordIndex = wordTimings.indexOfLast { it.startTime <= pos }
+          val nextWordIndex = if (updatedWordIndex >= 0) {
+            updatedWordIndex + 1
+          } else {
+            0
+          }
+
+          if (nextWordIndex < wordTimings.size) {
+            val timeDelta = wordTimings[nextWordIndex].startTime - localPlayer.currentPosition
+            val t = timeDelta.coerceIn(50, 10000)
+            val tAccountingForSpeed = t / localAudioRequest.playbackSpeed
+            nextUpdateDelay = tAccountingForSpeed.toLong()
+          }
+
+          currentWord = if (updatedWordIndex >= 0) {
+            wordTimings[updatedWordIndex].word
+          } else {
+            null
+          }
+        } else {
+          // no word timings available, clear current word
+          currentWord = null
+        }
+      } else {
+        // word highlighting disabled, clear current word
+        currentWord = null
+      }
+
+      // Notify once about the current state
       notifyAyahChanged()
-      if (maxAyahs >= updatedAyah + 1) {
-        val timeDelta = gaplessSuraData[updatedAyah + 1] - localPlayer.currentPosition
-        val t = clamp(timeDelta, 100, 10000)
+
+      // schedule next the update
+      if (nextUpdateDelay != null) {
+        serviceHandler.sendEmptyMessageDelayed(MSG_UPDATE_AUDIO_POS, nextUpdateDelay)
+      } else if (maxAyahs >= updatedAyah + 1) {
+        val timeDelta = gaplessSuraData.ayahTimings[updatedAyah + 1] - localPlayer.currentPosition
+        val t = timeDelta.coerceIn(100, 10000)
         val tAccountingForSpeed = t / (audioRequest?.playbackSpeed ?: 1f)
         if (DEBUG_TIMINGS) {
           Timber.d(
@@ -622,6 +665,7 @@ class AudioService : Service(), Player.Listener {
   private fun processStopRequest(force: Boolean = false) {
     setState(PlaybackStateCompat.STATE_STOPPED)
     serviceHandler.removeMessages(MSG_UPDATE_AUDIO_POS)
+    currentWord = null
     if (State.Preparing == state) {
       shouldStop = true
       relaxResources(releaseExoPlayer = false, stopForeground = true)
@@ -673,7 +717,8 @@ class AudioService : Service(), Player.Listener {
         AudioStatus.Playback(
           localAudioQueue.getCurrentPlaybackAyah(),
           localAudioRequest,
-          state.asPlayingPlaybackStatus()
+          state.asPlayingPlaybackStatus(),
+          currentWord
         )
       }
     }
@@ -773,6 +818,7 @@ class AudioService : Service(), Player.Listener {
     state = State.Stopped
     relaxResources(releaseExoPlayer = false, stopForeground = false)
     playerOverride = false
+    currentWord = null
 
     val localAudioQueue = audioQueue
     val localAudioRequest = audioRequest
@@ -789,7 +835,7 @@ class AudioService : Service(), Player.Listener {
     }
   }
 
-  private fun playAudio(playRepeatSeparator: Boolean, timings: SparseLongArray?) {
+  private fun playAudio(playRepeatSeparator: Boolean, timings: SuraTimings?) {
     try {
       val localAudioQueue = audioQueue
       val localAudioRequest = audioRequest
@@ -1006,7 +1052,7 @@ class AudioService : Service(), Player.Listener {
         ) {
           // we're actually repeating, but we reached the end of the file before we could
           // seek to the proper place. so let's seek anyway.
-          player?.seekTo(gaplessSuraData[localAudioQueue.getCurrentAyah()])
+          player?.seekTo(gaplessSuraData.ayahTimings[localAudioQueue.getCurrentAyah()])
         } else {
           // we actually switched to a different ayah - so if the
           // sura changed, then play the basmala if the ayah is

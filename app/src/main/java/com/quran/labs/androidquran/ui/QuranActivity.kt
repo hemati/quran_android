@@ -74,13 +74,13 @@ import com.quran.labs.androidquran.util.SharedPrefHelper
 import com.quran.labs.androidquran.view.SlidingTabLayout
 import com.quran.labs.androidquran.view.SlidingTabStrip
 import com.quran.mobile.di.ExtraScreenProvider
+import dev.zacsweers.metro.Inject
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import java.net.URLEncoder
 import java.util.concurrent.TimeUnit.MILLISECONDS
-import javax.inject.Inject
 import kotlin.math.abs
 
 /**
