@@ -3,7 +3,6 @@ package com.quran.labs.androidquran
 import android.app.Application
 import androidx.work.Configuration
 import androidx.work.WorkManager
-import com.bytedance.sdk.openadsdk.api.PAGConstant
 import com.quran.labs.androidquran.core.worker.QuranWorkerFactory
 import com.quran.labs.androidquran.di.component.application.ApplicationComponent
 import com.quran.labs.androidquran.di.component.application.DaggerApplicationComponent
@@ -14,7 +13,6 @@ import com.quran.labs.androidquran.util.ThemeUtil
 import com.quran.labs.androidquran.widget.BookmarksWidgetSubscriber
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
-import com.google.ads.mediation.pangle.PangleMediationAdapter
 
 import com.quran.mobile.di.QuranApplicationComponent
 import com.quran.mobile.di.QuranApplicationComponentProvider
@@ -40,16 +38,7 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider {
     initializeWorkManager()
     bookmarksWidgetSubscriber.subscribeBookmarksWidgetIfNecessary()
     val sharedPrefHelper = SharedPrefHelper(this)
-    val storedPangleConsent = sharedPrefHelper.pangleGdprConsent
-    val consentToApply =
-      if (storedPangleConsent != SharedPrefHelper.CONSENT_UNSET) {
-        storedPangleConsent
-      } else {
-        // Default to an explicit "no consent" flag so the mediation adapter can serve
-        // non-personalized ads in regions where GDPR compliance is required.
-        PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_NO_CONSENT
-      }
-    PangleMediationAdapter.setGDPRConsent(consentToApply)
+
     val requestConfiguration = RequestConfiguration.Builder()
       .setTestDeviceIds(listOf("1A433D1C8B6C98FF184A4694E09AC80F"))
       .build()

@@ -27,8 +27,6 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-import com.google.ads.mediation.pangle.PangleMediationAdapter;
-import com.bytedance.sdk.openadsdk.api.PAGConstant;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 // UMP imports
@@ -65,8 +63,6 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   private AppCompatButton watchAdButton;
   private ProgressBar watchAdProgress;
 
-  private final GptPreferenceHelper sharedPrefHelper;
-
   public interface OnSubscriptionStatusChangedListener {
     void onSubscriptionStatusChanged(boolean subscribed);
   }
@@ -93,7 +89,6 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
     setCancelable(false);
     billingHelper = BillingHelper.getInstance(activity, this);
     billingHelper.queryPurchases();
-    sharedPrefHelper = new GptPreferenceHelper(activity);
   }
 
 
@@ -173,7 +168,6 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
             activity,
             params,
             () -> {
-              syncPangleConsent(consentInformation.getConsentStatus());
               // (d) Falls nötig, Consent-Form automatisch laden & zeigen
               UserMessagingPlatform.loadAndShowConsentFormIfRequired(
                   activity,
@@ -181,7 +175,6 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
                     // formError != null ist kein Blocker; Ads dürfen (non-personalized) geladen werden
                     ConsentInformation updatedConsentInformation =
                         UserMessagingPlatform.getConsentInformation(activity);
-                    syncPangleConsent(updatedConsentInformation.getConsentStatus());
                     loadRewardedAd();
                   }
               );
@@ -189,32 +182,11 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
             requestError -> {
               // Fallback: bei Fehler unpersonalisiert laden
               Log.w("UMP", "Consent request failed: " + requestError.getMessage());
-              syncPangleConsent(consentInformation.getConsentStatus());
               loadRewardedAd();
             }
         );
   }
 
-  private void syncPangleConsent(@ConsentInformation.ConsentStatus int consentStatus) {
-    int pangleConsent = mapToPangleConsent(consentStatus);
-    PangleMediationAdapter.setGDPRConsent(pangleConsent);
-    sharedPrefHelper.setPangleGdprConsent(pangleConsent);
-  }
-
-  private int mapToPangleConsent(@ConsentInformation.ConsentStatus int consentStatus) {
-    switch (consentStatus) {
-      case ConsentInformation.ConsentStatus.OBTAINED:
-        return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_CONSENT;
-      case ConsentInformation.ConsentStatus.REQUIRED:
-        return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_NO_CONSENT;
-      case ConsentInformation.ConsentStatus.NOT_REQUIRED:
-        return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT;
-      case ConsentInformation.ConsentStatus.UNKNOWN:
-        return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_NO_CONSENT;
-      default:
-        return PAGConstant.PAGGDPRConsentType.PAG_GDPR_CONSENT_TYPE_DEFAULT;
-    }
-  }
 
   private void loadRewardedAd() {
     AdRequest adRequest = new AdRequest.Builder().build();

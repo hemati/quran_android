@@ -12,8 +12,6 @@ public class SharedPrefHelper {
 
     public static final int CONSENT_UNSET = Integer.MIN_VALUE;
 
-    private static final String KEY_PANGLE_GDPR_CONSENT = "pangleGdprConsent";
-
     private final SharedPreferences sharedPreferences;
 
     public SharedPrefHelper(Context context) {
@@ -68,15 +66,5 @@ public class SharedPrefHelper {
 
     public boolean isProUser() {
         return sharedPreferences.getBoolean(KEY_IS_PRO_USER, false);
-    }
-
-    public void setPangleGdprConsent(int consentValue) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(KEY_PANGLE_GDPR_CONSENT, consentValue);
-        editor.apply();
-    }
-
-    public int getPangleGdprConsent() {
-        return sharedPreferences.getInt(KEY_PANGLE_GDPR_CONSENT, CONSENT_UNSET);
     }
 }
