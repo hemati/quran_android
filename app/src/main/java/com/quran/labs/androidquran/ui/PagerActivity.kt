@@ -329,7 +329,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     setContentView(R.layout.quran_page_activity_slider)
     adView = findViewById(R.id.adView)
 
-    // Handle window insets for the AdView and audioStatusBar so they appear above navigation bars
+    // Handle window insets for the AdView so it appears above navigation bars
     val rootView = findViewById<ViewGroup>(R.id.sliding_panel)
     ViewCompat.setOnApplyWindowInsetsListener(rootView) { _, windowInsets ->
       val insets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
@@ -530,6 +530,14 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
             WindowInsetsCompat.Type.navigationBars()
       )
       view.updatePadding(insets.left, insets.top, insets.right, 0)
+
+      // Position audio bar below toolbar after insets are applied
+      view.post {
+        val layoutParams = audioStatusBar.layoutParams as FrameLayout.LayoutParams
+        layoutParams.topMargin = view.height
+        audioStatusBar.layoutParams = layoutParams
+      }
+
       windowInsets
     }
 
@@ -925,14 +933,14 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       .setDuration(250)
       .start()
 
-    // and audio bar
+    // animate audio bar to follow toolbar - it should hide along with the toolbar
     audioStatusBar.animate()
-      .translationY((if (visible) - adView.height else audioStatusBar.height).toFloat())
+      .translationY((if (visible) 0 else -(toolBarArea.height + audioStatusBar.height)).toFloat())
       .setDuration(250)
       .start()
 
     fabChat.animate()
-      .translationY((if (visible) 0 else - fabChat.height).toFloat())
+      .translationY((if (visible) 0 else - (fabChat.height + fabChat.height / 2)).toFloat())
       .setDuration(250)
       .start()
   }

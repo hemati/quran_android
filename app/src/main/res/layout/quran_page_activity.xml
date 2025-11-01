@@ -23,7 +23,7 @@
       android:layout_height="wrap_content"
       android:layout_gravity="top|end"
       android:layout_marginStart="16dp"
-      android:layout_marginTop="@dimen/toolbar_total_height_with_margin"
+      android:layout_marginTop="126dp"
       android:layout_marginEnd="16dp"
       android:backgroundTint="@color/accent_color_dark"
       android:contentDescription="@string/qurangpt"
@@ -58,7 +58,7 @@
       android:id="@+id/audio_area"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="bottom"
+      android:layout_gravity="top"
       android:visibility="gone" />
 
   <com.google.android.gms.ads.AdView
