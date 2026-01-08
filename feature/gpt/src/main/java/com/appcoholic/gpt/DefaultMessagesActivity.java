@@ -99,7 +99,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
   private String modelKey = "gpt-5.2";
   // Vector Store ID for Quran text - set via Firebase Remote Config
-  private String vectorStoreId = null; //"vs_69601adb86388191941c061e5e21a95a";
+  private String vectorStoreId = "vs_69601adb86388191941c061e5e21a95a";
 
   // System instruction for Responses API with File Search grounding
   private static final String SYSTEM_INSTRUCTION =
