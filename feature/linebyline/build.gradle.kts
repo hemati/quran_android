@@ -5,11 +5,6 @@ plugins {
 
 android.namespace = "com.quran.labs.androidquran.extra.feature.linebyline"
 
-// https://issuetracker.google.com/issues/372756067
-android.lint {
-   disable.add("SuspiciousModifierThen")
-}
-
 dependencies {
   implementation(project(":common:di"))
   implementation(project(":common:data"))
@@ -19,7 +14,8 @@ dependencies {
   implementation(project(":common:analytics"))
   implementation(project(":common:drawing"))
   implementation(project(":common:linebyline:ui"))
-  // has to be api, otherwise can't add classes to the correct components
+  // have to be api, otherwise can't add classes to the correct components
+  api(project(":common:mapper:imlaei"))
   api(project(":common:linebyline:data"))
 
   implementation(libs.androidx.fragment.ktx)
@@ -40,6 +36,4 @@ dependencies {
   // coroutines
   implementation(libs.kotlinx.coroutines.core)
   implementation(libs.kotlinx.coroutines.android)
-
-  implementation(libs.compose.ui.tooling)
 }
