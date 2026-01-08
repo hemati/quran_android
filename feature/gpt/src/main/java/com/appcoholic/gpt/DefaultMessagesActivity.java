@@ -35,9 +35,16 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
-import com.openai.models.ChatCompletion;
-import com.openai.models.ChatCompletionAssistantMessageParam;
-import com.openai.models.ChatCompletionCreateParams;
+// Responses API imports for File Search (RAG)
+import com.openai.models.responses.Response;
+import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseInputItem;
+import com.openai.models.responses.ResponseOutputItem;
+import com.openai.models.responses.ResponseOutputMessage;
+import com.openai.models.responses.ResponseOutputText;
+import com.openai.models.responses.EasyInputMessage;
+import com.openai.models.responses.Tool;
+import com.openai.models.responses.FileSearchTool;
 import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
@@ -53,7 +60,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 class ChatMessage {
@@ -89,18 +95,29 @@ public class DefaultMessagesActivity extends AppCompatActivity
   private FirebaseRemoteConfig mFirebaseRemoteConfig;
   private MessageQuotaManager quotaManager;
 
-  //    private OpenAIAsyncClient client;
   private OpenAIClientAsync client;
 
+  private String modelKey = "gpt-5.2";
+  // Vector Store ID for Quran text - set via Firebase Remote Config
+  private String vectorStoreId = null; //"vs_69601adb86388191941c061e5e21a95a";
 
-  private String modelKey = "gpt-4.1-mini";
-  private final ChatMessage systemMessage = new ChatMessage(
-      ChatMessage.MessageType.SYSTEM,
-      "You are QuranGPT, a helpful assistant built by Muslims to focus on religious queries, especially Islam and the Quran. " +
-          "You will not break character. You will only answer questions related to Islam or religion; for any other topic, politely refuse. " +
-          "You will respond using generally accepted interpretations from different Islamic schools of thought, without favoring a specific theology. " +
-          "Your responses must be concise, written in the user's language, and avoid any text styling besides line breaks or markdown formatting. "
-  );
+  // System instruction for Responses API with File Search grounding
+  private static final String SYSTEM_INSTRUCTION =
+      "You are QuranGPT, a helpful assistant built by Muslims to focus on religious queries, especially Islam and the Quran.\n\n" +
+          "CRITICAL RULES FOR QURAN VERSES (FILE SEARCH GROUNDING):\n" +
+          "1. When asked about Quran verses, ONLY cite verses that appear in your file_search retrieval context.\n" +
+          "2. If the retrieval context contains the relevant verse, quote it EXACTLY as provided with the reference (Surah:Ayah).\n" +
+          "3. If the retrieval context does NOT contain the verse the user is asking about, say: 'I could not find this specific verse in my verified sources. Please check a trusted Quran source.'\n" +
+          "4. NEVER fabricate, paraphrase, or guess Quran verses that are not in the retrieval context.\n\n" +
+          "RULES FOR HADITH AND OTHER SOURCES:\n" +
+          "5. When citing Hadith, ALWAYS mention the collection (Bukhari, Muslim, etc.) and if possible the Hadith number. If uncertain, clearly state 'The exact source should be verified.'\n" +
+          "6. Distinguish clearly between: (a) Direct Quran quotes from retrieval, (b) Hadith, (c) Scholarly opinions, (d) General Islamic teachings.\n" +
+          "7. If asked about a topic you're uncertain about, respond with 'I don't have reliable information on this specific topic. Please consult a qualified Islamic scholar.'\n\n" +
+          "GENERAL GUIDELINES:\n" +
+          "- You will not break character. You will only answer questions related to Islam or religion; for any other topic, politely refuse.\n" +
+          "- You will respond using generally accepted interpretations from different Islamic schools of thought, without favoring a specific theology.\n" +
+          "- Your responses must be concise, written in the user's language, and use markdown formatting for clarity.\n" +
+          "- When in doubt, err on the side of caution and recommend consulting authentic sources or scholars.";
 
   private Message welcomeMessage;
   private Message isTypingMessage;
@@ -194,6 +211,12 @@ public class DefaultMessagesActivity extends AppCompatActivity
                 MAX_MESSAGES_PER_DAY = (int) _max_messages_per_day;
                 quotaManager.setMaxMessagesPerDay(MAX_MESSAGES_PER_DAY);
               }
+
+              // Fetch and set the Vector Store ID for Quran text
+              String _vectorStoreId = mFirebaseRemoteConfig.getString("vector_store_id");
+              if (!_vectorStoreId.isEmpty()) {
+                vectorStoreId = _vectorStoreId;
+              }
             } else {
               // Fetch failed, handle specific reasons
               Exception exception = task.getException();
@@ -265,20 +288,51 @@ public class DefaultMessagesActivity extends AppCompatActivity
     return Long.toString(UUID.randomUUID().getLeastSignificantBits());
   }
 
-  private ChatCompletionCreateParams.Builder getChatCompletionBuilder(List<ChatMessage> chatMessages) {
+  /**
+   * Builds the ResponseCreateParams for the Responses API with File Search.
+   * If vectorStoreId is configured, enables File Search for Quran verse grounding.
+   */
+  private ResponseCreateParams buildResponseParams(List<ChatMessage> chatMessagesContext) {
+    // Build the list of input items from conversation history
+    List<ResponseInputItem> inputItems = new ArrayList<>();
 
-    ChatCompletionCreateParams.Builder builder = ChatCompletionCreateParams.builder()
-        .model(modelKey);
-    for (ChatMessage chatMessage : chatMessages) {
+    for (ChatMessage chatMessage : chatMessagesContext) {
       if (chatMessage.type == ChatMessage.MessageType.USER) {
-        builder.addUserMessage(chatMessage.message);
+        inputItems.add(ResponseInputItem.ofEasyInputMessage(
+            EasyInputMessage.builder()
+                .role(EasyInputMessage.Role.USER)
+                .content(chatMessage.message)
+                .build()
+        ));
       } else if (chatMessage.type == ChatMessage.MessageType.ASSISTANT) {
-        builder.addMessage(ChatCompletionAssistantMessageParam.builder().content(chatMessage.message).build());
-      } else if (chatMessage.type == ChatMessage.MessageType.SYSTEM) {
-        builder.addSystemMessage(chatMessage.message);
+        inputItems.add(ResponseInputItem.ofEasyInputMessage(
+            EasyInputMessage.builder()
+                .role(EasyInputMessage.Role.ASSISTANT)
+                .content(chatMessage.message)
+                .build()
+        ));
       }
     }
-    return builder;
+
+    ResponseCreateParams.Builder builder = ResponseCreateParams.builder()
+        .model(modelKey)
+        .temperature(0.3)  // Lower temperature for more deterministic responses
+        .instructions(SYSTEM_INSTRUCTION)
+        .inputOfResponse(inputItems);
+
+    // Enable File Search tool if Vector Store is configured
+    if (vectorStoreId != null && !vectorStoreId.isEmpty()) {
+      builder.addTool(Tool.ofFileSearch(
+          FileSearchTool.builder()
+              .addVectorStoreId(vectorStoreId)
+              .build()
+      ));
+      Log.d(TAG, "File Search enabled with Vector Store: " + vectorStoreId);
+    } else {
+      Log.d(TAG, "No Vector Store configured - File Search disabled");
+    }
+
+    return builder.build();
   }
 
   @Override
@@ -299,7 +353,6 @@ public class DefaultMessagesActivity extends AppCompatActivity
       chatMessages.add(new ChatMessage(ChatMessage.MessageType.USER, messageText));
       List<ChatMessage> chatMessagesContext = getChatContext();
 
-      chatMessagesContext.add(0, systemMessage);
       if (!isNetworkAvailable()) {
         runOnUiThread(() -> messagesAdapter.addToStart(noInternetMessage, true));
         return true;
@@ -308,16 +361,19 @@ public class DefaultMessagesActivity extends AppCompatActivity
       isTypingMessage.setCreatedAt(new Date());
       runOnUiThread(() -> messagesAdapter.addToStart(isTypingMessage, true));
 
-
       if (client != null) {
-        ChatCompletionCreateParams.Builder createParamsBuilder = getChatCompletionBuilder(chatMessagesContext);
-        client.chat().completions().create(createParamsBuilder.build())
-            .thenAcceptAsync(completion -> {
-              handleChatCompletion(completion.choices());
-            })
+        // Use Responses API with File Search for grounded Quran answers
+        ResponseCreateParams params = buildResponseParams(chatMessagesContext);
+
+        client.responses().create(params)
+            .thenAcceptAsync(this::handleResponse)
             .exceptionally(error -> {
-              Log.e(TAG, "Failed to get chat completions", error);
+              Log.e(TAG, "Failed to get response", error);
               FirebaseCrashlytics.getInstance().recordException(error);
+              runOnUiThread(() -> {
+                messagesAdapter.delete(isTypingMessage);
+                Toast.makeText(this, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+              });
               return null;
             })
             .thenRunAsync(() -> {
@@ -333,17 +389,35 @@ public class DefaultMessagesActivity extends AppCompatActivity
     }
   }
 
-  private void handleChatCompletion(List<ChatCompletion.Choice> choices) {
-    if (!choices.isEmpty()) {
-      Optional<String> content = choices.get(0).message().content();
-      if (content.isPresent()) {
-        Message response = createMessage(getRandomId(), "Assistant", content.get());
-        db.addMessage(response);
-        addMessageToFirestore(response);
+  /**
+   * Handles the Response from the Responses API.
+   * Extracts the text content from the response output items.
+   */
+  private void handleResponse(Response response) {
+    StringBuilder responseText = new StringBuilder();
 
-        runOnUiThread(() -> messagesAdapter.addToStart(response, true));
-        chatMessages.add(new ChatMessage(ChatMessage.MessageType.ASSISTANT, content.get()));
+    for (ResponseOutputItem item : response.output()) {
+      // Check if the output item is a message
+      if (item.isMessage()) {
+        ResponseOutputMessage outputMessage = item.asMessage();
+        for (ResponseOutputMessage.Content content : outputMessage.content()) {
+          // Check if the content is text
+          if (content.isOutputText()) {
+            ResponseOutputText textContent = content.asOutputText();
+            responseText.append(textContent.text());
+          }
+        }
       }
+    }
+
+    if (responseText.length() > 0) {
+      String text = responseText.toString();
+      Message responseMessage = createMessage(getRandomId(), "Assistant", text);
+      db.addMessage(responseMessage);
+      addMessageToFirestore(responseMessage);
+
+      runOnUiThread(() -> messagesAdapter.addToStart(responseMessage, true));
+      chatMessages.add(new ChatMessage(ChatMessage.MessageType.ASSISTANT, text));
     }
   }
 

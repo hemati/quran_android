@@ -1,7 +1,16 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
 }
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
+    }
+}
+
 android {
     namespace = "com.appcoholic.gpt"
     compileSdk = 36
@@ -29,9 +38,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+
     packaging {
         resources {
             excludes += "META-INF/io.netty.versions.properties"
@@ -61,7 +68,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
 
     implementation("com.github.stfalcon-studio:Chatkit:0.4.1")
-    implementation("com.openai:openai-java:0.33.0")
+    implementation("com.openai:openai-java:4.14.0")
 
     implementation("io.noties.markwon:core:4.6.2")
 
