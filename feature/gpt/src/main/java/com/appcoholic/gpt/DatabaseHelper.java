@@ -118,4 +118,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_MESSAGES, COLUMN_ID + " = ?", new String[]{message.getId()});
         db.close();
     }
+
+    /**
+     * Get the last N messages in chronological order (oldest to newest).
+     * This is used to build the conversation context for the API.
+     */
+    public List<Message> getLastMessages(int limit) {
+        List<Message> messages = new ArrayList<>();
+
+        // Get newest first, then reverse to get chronological order
+        String selectQuery = "SELECT * FROM " + TABLE_MESSAGES +
+            " ORDER BY " + COLUMN_CREATED_AT + " DESC LIMIT " + limit;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                User user = new User(cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getInt(5) == 1);
+                Message message = new Message(cursor.getString(0), user, cursor.getString(1),
+                        new Date(cursor.getLong(6)));
+                messages.add(message);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        // Reverse to get oldest -> newest (chronological order)
+        java.util.Collections.reverse(messages);
+        return messages;
+    }
 }

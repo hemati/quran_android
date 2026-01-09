@@ -54,7 +54,6 @@ import com.google.android.gms.ads.AdView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -89,7 +88,6 @@ public class DefaultMessagesActivity extends AppCompatActivity
   private MessagesListAdapter<Message> messagesAdapter;
   private DatabaseHelper db;
   private MessagesList messagesList;
-  private List<ChatMessage> chatMessages = new ArrayList<>();
   private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
   private FirebaseAnalytics firebaseAnalytics;
   private FirebaseRemoteConfig mFirebaseRemoteConfig;
@@ -97,26 +95,34 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
   private OpenAIClientAsync client;
 
-  private String modelKey = "gpt-5.2";
+  private String modelKey = "gpt-4.1-mini";
   // Vector Store ID for Quran text - set via Firebase Remote Config
   private String vectorStoreId = "vs_69601adb86388191941c061e5e21a95a";
 
   // System instruction for Responses API with File Search grounding
   private static final String SYSTEM_INSTRUCTION =
       "You are QuranGPT, a helpful assistant built by Muslims to focus on religious queries, especially Islam and the Quran.\n\n" +
-          "CRITICAL RULES FOR QURAN VERSES (FILE SEARCH GROUNDING):\n" +
-          "1. When asked about Quran verses, ONLY cite verses that appear in your file_search retrieval context.\n" +
-          "2. If the retrieval context contains the relevant verse, quote it EXACTLY as provided with the reference (Surah:Ayah).\n" +
-          "3. If the retrieval context does NOT contain the verse the user is asking about, say: 'I could not find this specific verse in my verified sources. Please check a trusted Quran source.'\n" +
-          "4. NEVER fabricate, paraphrase, or guess Quran verses that are not in the retrieval context.\n\n" +
+          "STYLE - VERY IMPORTANT:\n" +
+          "- Keep responses SHORT and conversational.\n" +
+          "- Max 3-5 short paragraphs. Use bullet points sparingly.\n" +
+          "- Don't write essays or long lists. Be concise but informative.\n" +
+          "- You can use Markdown.\n"+
+          "CRITICAL RULES FOR QURAN VERSES:\n" +
+          "1. You have access to verified Quran translations and texts through an internal knowledge base. When asked about Quran verses, ONLY cite verses that you can verify from this knowledge base.\n" +
+          "2. If you find the relevant verse in your knowledge base, quote it EXACTLY as provided with the reference (Surah:Ayah).\n" +
+          "3. If you cannot find the specific verse the user is asking about, say: 'I could not find this specific verse in my knowledge base. Please check a trusted Quran source like quran.com.'\n" +
+          "4. NEVER fabricate, paraphrase, or guess Quran verses. NEVER mention 'uploaded files', 'your sources', or 'your documents' - the user has not uploaded anything.\n\n" +
           "RULES FOR HADITH AND OTHER SOURCES:\n" +
           "5. When citing Hadith, ALWAYS mention the collection (Bukhari, Muslim, etc.) and if possible the Hadith number. If uncertain, clearly state 'The exact source should be verified.'\n" +
-          "6. Distinguish clearly between: (a) Direct Quran quotes from retrieval, (b) Hadith, (c) Scholarly opinions, (d) General Islamic teachings.\n" +
+          "6. Distinguish clearly between: (a) Direct Quran quotes, (b) Hadith, (c) Scholarly opinions, (d) General Islamic teachings.\n" +
           "7. If asked about a topic you're uncertain about, respond with 'I don't have reliable information on this specific topic. Please consult a qualified Islamic scholar.'\n\n" +
+          "TOPICS OUTSIDE QURAN:\n" +
+          "8. For topics or persons NOT mentioned in the Quran (like Judas/Judas Iskariot from Christian tradition), simply state that this topic is not covered in the Quran and Islamic sources, without mentioning any technical details about your knowledge base.\n\n" +
           "GENERAL GUIDELINES:\n" +
           "- You will not break character. You will only answer questions related to Islam or religion; for any other topic, politely refuse.\n" +
           "- You will respond using generally accepted interpretations from different Islamic schools of thought, without favoring a specific theology.\n" +
           "- Your responses must be concise, written in the user's language, and use markdown formatting for clarity.\n" +
+          "- NEVER reference 'files', 'documents', 'uploads', 'sources you provided', or any technical implementation details. Speak naturally as a knowledgeable assistant.\n" +
           "- When in doubt, err on the side of caution and recommend consulting authentic sources or scholars.";
 
   private Message welcomeMessage;
@@ -272,17 +278,15 @@ public class DefaultMessagesActivity extends AppCompatActivity
     messagesList.setAdapter(messagesAdapter);
 
     db = new DatabaseHelper(this);
-    loadInitialMessages();
     onLoadMore(0, 0);
   }
 
   private static Message createMessage(String id, String userName, String text) {
-    return new Message(id, new User(userName, userName, null, true), text);
+    Message m = new Message(id, new User(userName, userName, null, true), text);
+    m.setCreatedAt(new Date());
+    return m;
   }
 
-  private void loadInitialMessages() {
-    chatMessages.add(new ChatMessage(ChatMessage.MessageType.ASSISTANT, getString(R.string.chatview_empty_message)));
-  }
 
   static String getRandomId() {
     return Long.toString(UUID.randomUUID().getLeastSignificantBits());
@@ -316,9 +320,10 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
     ResponseCreateParams.Builder builder = ResponseCreateParams.builder()
         .model(modelKey)
-        .temperature(0.3)  // Lower temperature for more deterministic responses
+//        .temperature(0.3)  // Lower temperature for more deterministic responses
         .instructions(SYSTEM_INSTRUCTION)
-        .inputOfResponse(inputItems);
+        .inputOfResponse(inputItems)
+        .maxOutputTokens(350);  // Shorter responses for chat-like experience
 
     // Enable File Search tool if Vector Store is configured
     if (vectorStoreId != null && !vectorStoreId.isEmpty()) {
@@ -345,13 +350,14 @@ public class DefaultMessagesActivity extends AppCompatActivity
     } else {
       String messageText = input.toString();
       Message message = new Message(getRandomId(), new User(SENDER_ID, SENDER_ID, null, false), messageText);
+      message.setCreatedAt(new Date()); // WICHTIG: createdAt setzen für korrekte Sortierung
 
       db.addMessage(message);
       addMessageToFirestore(message);
       messagesAdapter.addToStart(message, true);
 
-      chatMessages.add(new ChatMessage(ChatMessage.MessageType.USER, messageText));
-      List<ChatMessage> chatMessagesContext = getChatContext();
+      // Get context from DB - guarantees correct chronological order (oldest -> newest)
+      List<ChatMessage> chatMessagesContext = getChatContextFromDb();
 
       if (!isNetworkAvailable()) {
         runOnUiThread(() -> messagesAdapter.addToStart(noInternetMessage, true));
@@ -417,15 +423,26 @@ public class DefaultMessagesActivity extends AppCompatActivity
       addMessageToFirestore(responseMessage);
 
       runOnUiThread(() -> messagesAdapter.addToStart(responseMessage, true));
-      chatMessages.add(new ChatMessage(ChatMessage.MessageType.ASSISTANT, text));
     }
   }
 
-  private List<ChatMessage> getChatContext() {
-    if (chatMessages.size() > MAX_CHAT_HISTORY) {
-      return chatMessages.subList(chatMessages.size() - MAX_CHAT_HISTORY, chatMessages.size());
+  /**
+   * Get the last MAX_CHAT_HISTORY messages from the database in chronological order.
+   * This guarantees the correct order (oldest -> newest) for the Responses API.
+   */
+  private List<ChatMessage> getChatContextFromDb() {
+    List<Message> lastMessages = db.getLastMessages(MAX_CHAT_HISTORY);
+    List<ChatMessage> context = new ArrayList<>();
+
+    for (Message m : lastMessages) {
+      String senderId = m.getUser() != null ? m.getUser().getId() : "";
+      if ("Assistant".equals(senderId)) {
+        context.add(new ChatMessage(ChatMessage.MessageType.ASSISTANT, m.getText()));
+      } else {
+        context.add(new ChatMessage(ChatMessage.MessageType.USER, m.getText()));
+      }
     }
-    return chatMessages;
+    return context; // guaranteed: oldest -> newest
   }
 
   private void addMessageToFirestore(Message message) {
@@ -455,15 +472,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
   public void onLoadMore(int page, int totalItemsCount) {
     List<Message> messages = db.getMessages(page);
     messagesAdapter.addToEnd(messages, false);
-    // reverse messages
-    Collections.reverse(messages);
-    for (Message message : messages) {
-      if (message.getUser().getId().equals("Assistant")) {
-        chatMessages.add(new ChatMessage(ChatMessage.MessageType.ASSISTANT, message.getText()));
-      } else if (message.getUser().getId().equals("User")) {
-        chatMessages.add(new ChatMessage(ChatMessage.MessageType.USER, message.getText()));
-      }
-    }
+
     if (messagesAdapter.isEmpty()) {
       messagesAdapter.addToStart(welcomeMessage, true);
     }
@@ -546,8 +555,6 @@ public class DefaultMessagesActivity extends AppCompatActivity
             if (messagesAdapter.getSelectedMessages().isEmpty()) {
               messagesAdapter.clear();
               db.deleteAllMessages();
-              chatMessages.clear();
-              chatMessages.add(new ChatMessage(ChatMessage.MessageType.ASSISTANT, getString(R.string.chatview_empty_message)));
             } else {
               for (Message message : messagesAdapter.getSelectedMessages()) {
                 messagesAdapter.delete(message);
