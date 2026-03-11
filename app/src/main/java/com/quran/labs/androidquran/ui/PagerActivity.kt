@@ -413,19 +413,34 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       adView = null
       adViewContainer.removeAllViews()
       adViewContainer.visibility = View.GONE
+      (viewPager.layoutParams as FrameLayout.LayoutParams).bottomMargin = 0
+      viewPager.requestLayout()
     } else {
       adViewContainer.visibility = View.VISIBLE
       adViewContainer.removeAllViews()
       val newAdView = AdView(this)
       newAdView.adUnitId = getString(R.string.admob_banner_id)
       val adWidth = (resources.displayMetrics.widthPixels / resources.displayMetrics.density).toInt()
-      newAdView.setAdSize(AdSize.getLargeAnchoredAdaptiveBannerAdSize(this, adWidth))
+      val screenHeightDp = (resources.displayMetrics.heightPixels / resources.displayMetrics.density).toInt()
+      val adSize = if (screenHeightDp >= 600) {
+        AdSize.getLargeAnchoredAdaptiveBannerAdSize(this, adWidth)
+      } else {
+        @Suppress("DEPRECATION")
+        AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth)
+      }
+      newAdView.setAdSize(adSize)
       newAdView.adListener = object : AdListener() {
         override fun onAdFailedToLoad(error: LoadAdError) {
           Timber.w("Banner ad failed to load: %s", error.message)
         }
         override fun onAdLoaded() {
           Timber.d("Banner ad loaded successfully")
+          // Adjust ViewPager bottom margin so content is not hidden behind the ad
+          adViewContainer.post {
+            val lp = viewPager.layoutParams as FrameLayout.LayoutParams
+            lp.bottomMargin = adViewContainer.height
+            viewPager.layoutParams = lp
+          }
         }
       }
       adViewContainer.addView(newAdView)
@@ -1252,6 +1267,8 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       adView = null
       adViewContainer.removeAllViews()
       adViewContainer.visibility = View.GONE
+      (viewPager.layoutParams as FrameLayout.LayoutParams).bottomMargin = 0
+      viewPager.requestLayout()
     } else if (adViewContainer.visibility != View.VISIBLE) {
       startAds()
     }

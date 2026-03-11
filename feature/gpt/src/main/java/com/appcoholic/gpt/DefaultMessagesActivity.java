@@ -616,7 +616,11 @@ public class DefaultMessagesActivity extends AppCompatActivity
     adView = new AdView(this);
     adView.setAdUnitId(getString(R.string.admob_banner_id));
     int adWidth = (int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density);
-    adView.setAdSize(AdSize.getLargeAnchoredAdaptiveBannerAdSize(this, adWidth));
+    int screenHeightDp = (int) (getResources().getDisplayMetrics().heightPixels / getResources().getDisplayMetrics().density);
+    AdSize adSize = screenHeightDp >= 600
+        ? AdSize.getLargeAnchoredAdaptiveBannerAdSize(this, adWidth)
+        : AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
+    adView.setAdSize(adSize);
     adView.setAdListener(new AdListener() {
       @Override
       public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
