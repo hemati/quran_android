@@ -170,6 +170,7 @@ import java.util.concurrent.CancellationException
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 import com.google.android.ump.*
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 
 /**
  * Activity that displays the Quran (in Arabic or translation mode).
@@ -422,7 +423,12 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       newAdView.adUnitId = getString(R.string.admob_banner_id)
       val adWidth = (resources.displayMetrics.widthPixels / resources.displayMetrics.density).toInt()
       val screenHeightDp = (resources.displayMetrics.heightPixels / resources.displayMetrics.density).toInt()
-      val adSize = if (screenHeightDp >= 600) {
+      val adSizeType = if (screenHeightDp < 600) {
+        "standard"
+      } else {
+        FirebaseRemoteConfig.getInstance().getString("ad_size_type").ifEmpty { "standard" }
+      }
+      val adSize = if (adSizeType == "large") {
         AdSize.getLargeAnchoredAdaptiveBannerAdSize(this, adWidth)
       } else {
         @Suppress("DEPRECATION")

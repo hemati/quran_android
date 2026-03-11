@@ -617,7 +617,14 @@ public class DefaultMessagesActivity extends AppCompatActivity
     adView.setAdUnitId(getString(R.string.admob_banner_id));
     int adWidth = (int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density);
     int screenHeightDp = (int) (getResources().getDisplayMetrics().heightPixels / getResources().getDisplayMetrics().density);
-    AdSize adSize = screenHeightDp >= 600
+    String adSizeType;
+    if (screenHeightDp < 600) {
+      adSizeType = "standard";
+    } else {
+      adSizeType = FirebaseRemoteConfig.getInstance().getString("ad_size_type");
+      if (adSizeType.isEmpty()) adSizeType = "standard";
+    }
+    AdSize adSize = "large".equals(adSizeType)
         ? AdSize.getLargeAnchoredAdaptiveBannerAdSize(this, adWidth)
         : AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(this, adWidth);
     adView.setAdSize(adSize);

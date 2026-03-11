@@ -242,7 +242,8 @@ class QuranActivity : AppCompatActivity(),
 
     // Set default values for Remote Config parameters
     val configDefaults = mapOf(
-      "show_pro_dialog" to false // Default value
+      "show_pro_dialog" to false,
+      "ad_size_type" to "standard"
     )
     remoteConfig.setDefaultsAsync(configDefaults)
 
