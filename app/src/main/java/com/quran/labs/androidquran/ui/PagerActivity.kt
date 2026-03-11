@@ -7,6 +7,7 @@ import android.content.ComponentName
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
+import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -107,6 +108,7 @@ import com.quran.labs.androidquran.ui.listener.AudioBarListener
 import com.quran.labs.androidquran.ui.util.ToastCompat.makeText
 import com.quran.labs.androidquran.ui.util.TranslationsSpinnerAdapter
 import com.quran.labs.androidquran.util.AudioUtils
+import com.quran.labs.androidquran.util.OrientationLockUtils
 import com.quran.labs.androidquran.util.QuranAppUtils
 import com.quran.labs.androidquran.util.QuranFileUtils
 import com.quran.labs.androidquran.util.QuranScreenInfo
@@ -302,7 +304,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       savedInstanceState?.getBoolean(LAST_FOLDING_STATE, isFoldableDeviceOpenAndVertical)
         ?: isFoldableDeviceOpenAndVertical
 
-    lifecycleScope.launch(scope.coroutineContext) {
+    lifecycleScope.launch {
       lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
         WindowInfoTracker.getOrCreate(this@PagerActivity)
           .windowLayoutInfo(this@PagerActivity)
@@ -310,8 +312,9 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
           .collectLatest {
             val foldingFeatures = it.filterIsInstance<FoldingFeature>().firstOrNull()
             if (foldingFeatures != null) {
-              val localState = foldingFeatures.state == FoldingFeature.State.FLAT &&
-                  foldingFeatures.orientation == FoldingFeature.Orientation.VERTICAL
+              val localState =
+                foldingFeatures.orientation == FoldingFeature.Orientation.VERTICAL &&
+                    (foldingFeatures.state == FoldingFeature.State.FLAT || foldingFeatures.state == FoldingFeature.State.HALF_OPENED)
               if (isFoldableDeviceOpenAndVertical != localState) {
                 isFoldableDeviceOpenAndVertical = localState
                 updateDualPageMode()
@@ -689,7 +692,22 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     // just got created, need to reconnect to service
     shouldReconnect = true
 
-    // log analytics
+    // enforce orientation lock
+    if (quranSettings.isLockOrientation &&
+      OrientationLockUtils.isOrientationLockSupported(resources.configuration)
+    ) {
+      val current = resources.configuration.orientation
+      if (quranSettings.isLandscapeOrientation) {
+        if (current == Configuration.ORIENTATION_PORTRAIT) {
+          requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+          return
+        }
+      } else if (current == Configuration.ORIENTATION_LANDSCAPE) {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        return
+      }
+    }
+
     quranEventLogger.logAnalytics(isDualPages, showingTranslation, isSplitScreen)
 
     // Setup recitation (if enabled)

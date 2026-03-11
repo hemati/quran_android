@@ -8,6 +8,7 @@ plugins {
   alias(libs.plugins.ksp)
   alias(libs.plugins.errorprone)
   alias(libs.plugins.metro)
+  alias(libs.plugins.kover)
 }
 
 // whether or not to use Firebase - Firebase is enabled by default, and is only disabled for
@@ -27,8 +28,8 @@ android {
   namespace = "com.quran.labs.androidquran"
 
   defaultConfig {
-    versionCode = 260109
-    versionName = "2.6.1"
+    versionCode = 260311
+    versionName = "2.7.0"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
   }
 
@@ -265,4 +266,46 @@ dependencies {
 
   implementation(platform("com.google.firebase:firebase-bom:33.4.0"))
   implementation("com.google.firebase:firebase-config")
+
+}
+
+// Kover coverage configuration
+kover {
+  reports {
+    filters {
+      excludes {
+        // Exclude generated code (patterns target DI-generated classes only)
+        classes(
+          "*_Factory",
+          "*_Factory\$*",
+          "*_MembersInjector",
+          "*_Module",
+          "*_Module\$*",
+          "*Module_*",
+          "*Binding*",
+          "*_Impl",
+          "*_Impl\$*",
+          "*.BuildConfig",
+          "*.databinding.*",
+          "*.R",
+          "*.R\$*",
+          "*Hilt*",
+          "*_HiltModules*",
+          "*_ComponentTreeDeps*",
+          "*_Provide*Factory*"
+        )
+        packages(
+          "*.di.*",
+          "*.generated.*",
+          "dagger.hilt.*",
+          "hilt_aggregated_deps.*"
+        )
+        annotatedBy(
+          "dagger.*",
+          "javax.inject.*",
+          "androidx.compose.ui.tooling.preview.Preview"
+        )
+      }
+    }
+  }
 }

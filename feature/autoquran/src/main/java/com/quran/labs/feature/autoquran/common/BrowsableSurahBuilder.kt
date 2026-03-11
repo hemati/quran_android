@@ -14,9 +14,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class BrowsableSurahBuilder @Inject constructor(
-  @ApplicationContext private val appContext: Context,
+  @param:ApplicationContext private val appContext: Context,
   private val pageProvider: PageProvider,
-  private val audioExtensionDecider: AudioExtensionDecider
+  private val audioExtensionDecider: AudioExtensionDecider,
+  private val qariArtworkProvider: QariArtworkProvider,
 ) {
 
   private val qariMediaItem: MediaItem by lazy {
@@ -117,6 +118,7 @@ class BrowsableSurahBuilder @Inject constructor(
    */
   private fun makeMediaItem(qari: Qari): MediaItem {
     val mediaId = "quran_${qari.id}"
+    val artworkUri = qariArtworkProvider.artworkUriFor(qari)
     return MediaItem.Builder()
       .setMediaId(mediaId)
       .setMediaMetadata(
@@ -124,6 +126,7 @@ class BrowsableSurahBuilder @Inject constructor(
           .setTitle(appContext.getString(qari.nameResource))
           .setIsBrowsable(true)
           .setMediaType(MediaMetadata.MEDIA_TYPE_ARTIST)
+          .apply { setArtworkUri(artworkUri) }
           .setIsPlayable(false)
           .build()
       )
@@ -136,6 +139,13 @@ class BrowsableSurahBuilder @Inject constructor(
   private fun makeSuraMediaItem(qari: Qari, sura: Int): MediaItem {
     val suraName = getSuraName(appContext, sura, wantPrefix = true, wantTranslation = false)
     val extension = audioExtensionDecider.audioExtensionForQari(qari)
+    val (baseUrl, mimeType) = if (extension == "opus" && qari.opusUrl != null) {
+      qari.opusUrl to MimeTypes.AUDIO_OPUS
+    } else {
+      qari.url to MimeTypes.AUDIO_MPEG
+    }
+    val artworkUri = qariArtworkProvider.suraArtworkUriFor(qari, sura)
+
     return MediaItem.Builder()
       .setMediaId("sura_${sura}_${qari.id}")
       .setMediaMetadata(
@@ -147,10 +157,11 @@ class BrowsableSurahBuilder @Inject constructor(
           .setTrackNumber(sura)
           .setTotalTrackCount(114)
           .setArtist(appContext.getString(qari.nameResource))
+          .apply { setArtworkUri(artworkUri) }
           .build()
       )
-      .setMimeType(MimeTypes.AUDIO_MPEG)
-      .setUri(qari.url + makeThreeDigit(sura) + ".$extension")
+      .setMimeType(mimeType)
+      .setUri(baseUrl + makeThreeDigit(sura) + ".$extension")
       .build()
   }
 

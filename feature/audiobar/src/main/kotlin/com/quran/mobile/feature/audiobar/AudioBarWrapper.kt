@@ -4,10 +4,12 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
@@ -15,29 +17,25 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
-import app.cash.molecule.AndroidUiDispatcher
 import app.cash.molecule.RecompositionMode
 import app.cash.molecule.launchMolecule
 import com.quran.labs.androidquran.common.ui.core.QuranTheme
 import com.quran.mobile.feature.audiobar.presenter.AudioBarPresenter
 import com.quran.mobile.feature.audiobar.ui.AudioBar
 import dev.zacsweers.metro.Inject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 
 class AudioBarWrapper @JvmOverloads constructor(
   context: Context,
   attrs: AttributeSet? = null,
   defStyleAttr: Int = 0
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
-
-  private val scope = CoroutineScope(SupervisorJob() + AndroidUiDispatcher.Main)
 
   @Inject
   lateinit var audioBarPresenter: AudioBarPresenter
@@ -49,13 +47,16 @@ class AudioBarWrapper @JvmOverloads constructor(
   @Composable
   override fun Content() {
     QuranTheme {
-      val eventListeners = audioBarPresenter.eventListeners()
-      val flow = scope.launchMolecule(mode = RecompositionMode.ContextClock) {
-        audioBarPresenter.audioBarPresenter()
+      val scope = rememberCoroutineScope()
+      val flow = remember {
+        scope.launchMolecule(mode = RecompositionMode.ContextClock) {
+          audioBarPresenter.audioBarPresenter()
+        }
       }
+      val eventListeners = remember(audioBarPresenter) { audioBarPresenter.eventListeners() }
 
       Card(
-        shape = CardDefaults.shape.bottomOnly(),
+        shape = CardDefaults.shape.topOnly(),
         modifier = Modifier.fillMaxWidth()
       ) {
         AudioBar(
@@ -63,8 +64,8 @@ class AudioBarWrapper @JvmOverloads constructor(
           eventListeners,
           modifier = Modifier
             .padding(
-              WindowInsets.displayCutout
-                  .only(WindowInsetsSides.Horizontal)
+              WindowInsets.navigationBars.add(WindowInsets.displayCutout)
+                  .only(WindowInsetsSides.Horizontal.plus(WindowInsetsSides.Bottom))
                 .asPaddingValues()
             )
             .padding(top = 8.dp)
@@ -75,16 +76,11 @@ class AudioBarWrapper @JvmOverloads constructor(
     }
   }
 
-  override fun onDetachedFromWindow() {
-    scope.cancel()
-    super.onDetachedFromWindow()
-  }
-
-  private fun Shape.bottomOnly(): Shape {
+  private fun Shape.topOnly(): Shape {
     return if (this is RoundedCornerShape) {
       this.copy(
-        topStart = CornerSize(0.dp),
-        topEnd = CornerSize(0.dp)
+        bottomStart = CornerSize(0.dp),
+        bottomEnd = CornerSize(0.dp)
       )
     } else {
       this
