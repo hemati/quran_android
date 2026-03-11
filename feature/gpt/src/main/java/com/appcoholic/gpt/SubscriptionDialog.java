@@ -58,7 +58,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   private OnSubscriptionStatusChangedListener subscriptionStatusChangedListener;
 
   private RewardedAd rewardedAd;
-  private static final String REWARDED_AD_UNIT_ID = "ca-app-pub-8655759847032068/3445692813";
+  private String rewardedAdUnitId;
 
   private AppCompatButton watchAdButton;
   private ProgressBar watchAdProgress;
@@ -75,6 +75,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
     super(activity);
 
     requestWindowFeature(Window.FEATURE_NO_TITLE);
+    rewardedAdUnitId = activity.getString(R.string.admob_rewarded_id);
     firebaseAnalytics = FirebaseAnalytics.getInstance(activity);
 
     if (getWindow() != null) {
@@ -190,7 +191,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
 
   private void loadRewardedAd() {
     AdRequest adRequest = new AdRequest.Builder().build();
-    RewardedAd.load(getContext(), REWARDED_AD_UNIT_ID, adRequest, new RewardedAdLoadCallback() {
+    RewardedAd.load(getContext(), rewardedAdUnitId, adRequest, new RewardedAdLoadCallback() {
       @Override
       public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
         rewardedAd = null;

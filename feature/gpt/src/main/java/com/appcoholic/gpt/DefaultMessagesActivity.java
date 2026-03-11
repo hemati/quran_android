@@ -49,8 +49,17 @@ import com.stfalcon.chatkit.messages.MessageHolders;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.ump.ConsentInformation;
+import com.google.android.ump.ConsentRequestParameters;
+import com.google.android.ump.UserMessagingPlatform;
+
+import android.util.DisplayMetrics;
+import android.widget.FrameLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -138,6 +147,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
   private MessageInput messageInput;  // Add this line
   private AdView adView;
+  private FrameLayout adViewContainer;
   private SharedPreferences sharedPreferences;
 
   private SubscriptionDialog subscriptionDialog;  // Add this line
@@ -153,13 +163,12 @@ public class DefaultMessagesActivity extends AppCompatActivity
     messagesList = findViewById(R.id.messagesList);
 
     sharedPreferences = getSharedPreferences("AppUsagePref", Context.MODE_PRIVATE);
-    adView = findViewById(R.id.adView);
+    adViewContainer = findViewById(R.id.adViewContainer);
     boolean proUser = sharedPreferences.getBoolean("isProUser", false);
     if (proUser) {
-      adView.setVisibility(View.GONE);
+      adViewContainer.setVisibility(View.GONE);
     } else {
-      AdRequest adRequest = new AdRequest.Builder().build();
-      adView.loadAd(adRequest);
+      requestConsentThenLoadBanner();
     }
 
     // Get the intent that started this activity
@@ -513,15 +522,16 @@ public class DefaultMessagesActivity extends AppCompatActivity
     if (sharedPreferences != null) {
       sharedPreferences.edit().putBoolean("isProUser", subscribed).apply();
     }
-    if (adView != null) {
+    if (adViewContainer != null) {
       if (subscribed) {
-        adView.setVisibility(View.GONE);
+        if (adView != null) { adView.destroy(); adView = null; }
+        adViewContainer.removeAllViews();
+        adViewContainer.setVisibility(View.GONE);
       } else {
-        if (adView.getVisibility() != View.VISIBLE) {
-          adView.setVisibility(View.VISIBLE);
+        if (adViewContainer.getVisibility() != View.VISIBLE) {
+          adViewContainer.setVisibility(View.VISIBLE);
         }
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        loadBannerAd();
       }
     }
   }
@@ -589,8 +599,54 @@ public class DefaultMessagesActivity extends AppCompatActivity
   }
 
 
+  private void requestConsentThenLoadBanner() {
+    ConsentRequestParameters params = new ConsentRequestParameters.Builder()
+        .setTagForUnderAgeOfConsent(false)
+        .build();
+
+    ConsentInformation consentInformation = UserMessagingPlatform.getConsentInformation(this);
+    consentInformation.requestConsentInfoUpdate(this, params,
+        () -> UserMessagingPlatform.loadAndShowConsentFormIfRequired(this, formError -> loadBannerAd()),
+        requestError -> loadBannerAd()
+    );
+  }
+
+  private void loadBannerAd() {
+    adViewContainer.removeAllViews();
+    adView = new AdView(this);
+    adView.setAdUnitId(getString(R.string.admob_banner_id));
+    int adWidth = (int) (getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density);
+    adView.setAdSize(AdSize.getLargeAnchoredAdaptiveBannerAdSize(this, adWidth));
+    adView.setAdListener(new AdListener() {
+      @Override
+      public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+        Log.w(TAG, "Banner ad failed to load: " + loadAdError.getMessage());
+      }
+
+      @Override
+      public void onAdLoaded() {
+        Log.d(TAG, "Banner ad loaded successfully");
+      }
+    });
+    adViewContainer.addView(adView);
+    adView.loadAd(new AdRequest.Builder().build());
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    if (adView != null) adView.resume();
+  }
+
+  @Override
+  protected void onPause() {
+    if (adView != null) adView.pause();
+    super.onPause();
+  }
+
   @Override
   protected void onDestroy() {
+    if (adView != null) adView.destroy();
     db.close();
     super.onDestroy();
   }

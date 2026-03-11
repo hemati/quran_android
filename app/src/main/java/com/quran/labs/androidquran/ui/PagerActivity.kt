@@ -135,8 +135,11 @@ import com.quran.page.common.factory.PageViewFactoryProvider
 import com.quran.page.common.toolbar.AyahToolBar
 import com.quran.page.common.toolbar.di.AyahToolBarInjector
 import com.quran.reading.common.ReadingEventPresenter
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
 import com.appcoholic.gpt.BillingHelper
 import com.android.billingclient.api.Purchase
 import dev.zacsweers.metro.Inject
@@ -204,7 +207,8 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   private lateinit var ayahToolBar: AyahToolBar
   private lateinit var slidingPanel: SlidingUpPanelLayout
   private lateinit var slidingPager: ViewPager
-  private lateinit var adView: AdView
+  private var adView: AdView? = null
+  private lateinit var adViewContainer: FrameLayout
   private lateinit var slidingPagerAdapter: SlidingPagerAdapter
   private lateinit var translationsSpinner: QuranSpinner
   private lateinit var overlay: FrameLayout
@@ -330,17 +334,16 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     }
 
     setContentView(R.layout.quran_page_activity_slider)
-    adView = findViewById(R.id.adView)
+    adViewContainer = findViewById(R.id.adViewContainer)
 
-    // Handle window insets for the AdView so it appears above navigation bars
+    // Handle window insets for the ad container so it appears above navigation bars
     val rootView = findViewById<ViewGroup>(R.id.sliding_panel)
     ViewCompat.setOnApplyWindowInsetsListener(rootView) { _, windowInsets ->
       val insets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
 
-      // Apply bottom margin to adView
-      val adViewLayoutParams = adView.layoutParams as FrameLayout.LayoutParams
-      adViewLayoutParams.bottomMargin = insets.bottom
-      adView.layoutParams = adViewLayoutParams
+      val containerLayoutParams = adViewContainer.layoutParams as FrameLayout.LayoutParams
+      containerLayoutParams.bottomMargin = insets.bottom
+      adViewContainer.layoutParams = containerLayoutParams
 
       windowInsets
     }
@@ -405,14 +408,29 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   }
 
   private fun startAds() {
-    // Jetzt Banner/Rewarded laden – TCF-Signale sind (falls erforderlich) gesetzt.
-    // if in landscape mode, we don't show ads
     if (sharedPrefHelper.isProUser() || resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-      adView.visibility = View.GONE
-      adView.setBackgroundColor(0)
+      adView?.destroy()
+      adView = null
+      adViewContainer.removeAllViews()
+      adViewContainer.visibility = View.GONE
     } else {
-      val adRequest = AdRequest.Builder().build()
-      adView.loadAd(adRequest)
+      adViewContainer.visibility = View.VISIBLE
+      adViewContainer.removeAllViews()
+      val newAdView = AdView(this)
+      newAdView.adUnitId = getString(R.string.admob_banner_id)
+      val adWidth = (resources.displayMetrics.widthPixels / resources.displayMetrics.density).toInt()
+      newAdView.setAdSize(AdSize.getLargeAnchoredAdaptiveBannerAdSize(this, adWidth))
+      newAdView.adListener = object : AdListener() {
+        override fun onAdFailedToLoad(error: LoadAdError) {
+          Timber.w("Banner ad failed to load: %s", error.message)
+        }
+        override fun onAdLoaded() {
+          Timber.d("Banner ad loaded successfully")
+        }
+      }
+      adViewContainer.addView(newAdView)
+      adView = newAdView
+      newAdView.loadAd(AdRequest.Builder().build())
     }
   }
 
@@ -987,6 +1005,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
 
   public override fun onResume() {
     super.onResume()
+    adView?.resume()
 
     audioPresenter.bind(this)
     recentPagePresenter.bind(currentPageFlow)
@@ -1182,6 +1201,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   }
 
   public override fun onPause() {
+    adView?.pause()
     foregroundDisposable.clear()
     promptDialog?.dismiss()
     promptDialog = null
@@ -1199,6 +1219,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   }
 
   override fun onDestroy() {
+    adView?.destroy()
     Timber.d("onDestroy()")
     clearUiVisibilityListener()
 
@@ -1227,11 +1248,12 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       purchases.filter { purchase ->
         purchase.products.any { it in PRO_SKUS }
       }.forEach { billingHelper?.acknowledgePurchase(it) }
-      adView.visibility = View.GONE
-    } else if (adView.visibility != View.VISIBLE) {
-      adView.visibility = View.VISIBLE
-      val adRequest = AdRequest.Builder().build()
-      adView.loadAd(adRequest)
+      adView?.destroy()
+      adView = null
+      adViewContainer.removeAllViews()
+      adViewContainer.visibility = View.GONE
+    } else if (adViewContainer.visibility != View.VISIBLE) {
+      startAds()
     }
   }
 

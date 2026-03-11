@@ -54,12 +54,10 @@
       android:layout_alignParentBottom="true"
       android:orientation="vertical">
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
+    <FrameLayout
+        android:id="@+id/adViewContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/admob_banner_id" />
+        android:layout_height="wrap_content" />
 
     <com.stfalcon.chatkit.messages.MessageInput
         android:id="@+id/input"

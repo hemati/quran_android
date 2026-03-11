@@ -61,11 +61,9 @@
       android:layout_gravity="top"
       android:visibility="gone" />
 
-  <com.google.android.gms.ads.AdView
-      android:id="@+id/adView"
+  <FrameLayout
+      android:id="@+id/adViewContainer"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="bottom"
-      ads:adSize="BANNER"
-      ads:adUnitId="@string/admob_banner_id" />
+      android:layout_gravity="bottom" />
 </FrameLayout>
