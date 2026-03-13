@@ -423,7 +423,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       newAdView.adUnitId = getString(R.string.admob_banner_id)
       val adWidth = (resources.displayMetrics.widthPixels / resources.displayMetrics.density).toInt()
       val screenHeightDp = (resources.displayMetrics.heightPixels / resources.displayMetrics.density).toInt()
-      val adSizeType = if (screenHeightDp < 600) {
+      val adSizeType = if (screenHeightDp < 650) {
         "standard"
       } else {
         FirebaseRemoteConfig.getInstance().getString("ad_size_type").ifEmpty { "standard" }
@@ -996,10 +996,22 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       .setDuration(250)
       .start()
 
-    fabChat.animate()
-      .translationY((if (visible) 0 else - (fabChat.height + fabChat.height / 2)).toFloat())
-      .setDuration(250)
-      .start()
+    val screenHeightDp = (resources.displayMetrics.heightPixels / resources.displayMetrics.density).toInt()
+    if (screenHeightDp < 650) {
+      // Small phones: FAB hides/shows together with the header
+      fabChat.animate()
+        .alpha(if (visible) 1f else 0f)
+        .setDuration(250)
+        .withEndAction { if (!visible) fabChat.visibility = View.GONE }
+        .start()
+      if (visible) fabChat.visibility = View.VISIBLE
+    } else {
+      val fabExtraOffset = (16 * resources.displayMetrics.density).toInt()
+      fabChat.animate()
+        .translationY((if (visible) fabExtraOffset else -(fabChat.height + fabChat.height / 2)).toFloat())
+        .setDuration(250)
+        .start()
+    }
   }
 
   override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {

@@ -4,12 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
@@ -56,7 +54,7 @@ class AudioBarWrapper @JvmOverloads constructor(
       val eventListeners = remember(audioBarPresenter) { audioBarPresenter.eventListeners() }
 
       Card(
-        shape = CardDefaults.shape.topOnly(),
+        shape = CardDefaults.shape.bottomOnly(),
         modifier = Modifier.fillMaxWidth()
       ) {
         AudioBar(
@@ -64,11 +62,10 @@ class AudioBarWrapper @JvmOverloads constructor(
           eventListeners,
           modifier = Modifier
             .padding(
-              WindowInsets.navigationBars.add(WindowInsets.displayCutout)
-                  .only(WindowInsetsSides.Horizontal.plus(WindowInsetsSides.Bottom))
+              WindowInsets.displayCutout
+                  .only(WindowInsetsSides.Horizontal)
                 .asPaddingValues()
             )
-            .padding(top = 8.dp)
             .padding(horizontal = 16.dp)
             .heightIn(min = dimensionResource(id = R.dimen.audiobar_height))
         )
@@ -76,11 +73,11 @@ class AudioBarWrapper @JvmOverloads constructor(
     }
   }
 
-  private fun Shape.topOnly(): Shape {
+  private fun Shape.bottomOnly(): Shape {
     return if (this is RoundedCornerShape) {
       this.copy(
-        bottomStart = CornerSize(0.dp),
-        bottomEnd = CornerSize(0.dp)
+        topStart = CornerSize(0.dp),
+        topEnd = CornerSize(0.dp)
       )
     } else {
       this
