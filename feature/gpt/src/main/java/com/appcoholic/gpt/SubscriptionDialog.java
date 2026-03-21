@@ -34,9 +34,12 @@ import com.google.android.ump.ConsentInformation;
 import com.google.android.ump.ConsentRequestParameters;
 import com.google.android.ump.UserMessagingPlatform;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class SubscriptionDialog extends Dialog implements BillingHelper.BillingUpdatesListener{
@@ -132,6 +135,11 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
         selectedPlan == SubscriptionPlan.MONTHLY ? "qurangpt_subscription" : "qurangpt_subscription_yearly"));
 
     closeOverlay.setOnClickListener(view -> dismiss());
+
+    // Hide watch-ad button if already used today
+    if (hasWatchedAdToday()) {
+      watchAdButton.setVisibility(View.GONE);
+    }
 
     watchAdButton.setOnClickListener(v -> {
       watchAdButton.setEnabled(false);
@@ -237,6 +245,7 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
       if (activity instanceof DefaultMessagesActivity) {
         ((DefaultMessagesActivity) activity).resetDailyChatLimit();
       }
+      markAdWatchedToday();
       dismiss();
       Toast.makeText(activity, "Limit reset! You can now send more messages.", Toast.LENGTH_SHORT).show();
     });
@@ -250,6 +259,19 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
       watchAdButton.setEnabled(true);
       watchAdButton.setVisibility(View.VISIBLE);
     }
+  }
+
+  private boolean hasWatchedAdToday() {
+    android.content.SharedPreferences prefs = getContext().getSharedPreferences("rewarded_ad", Context.MODE_PRIVATE);
+    String lastDate = prefs.getString("last_rewarded_date", "");
+    String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+    return today.equals(lastDate);
+  }
+
+  private void markAdWatchedToday() {
+    android.content.SharedPreferences prefs = getContext().getSharedPreferences("rewarded_ad", Context.MODE_PRIVATE);
+    String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+    prefs.edit().putString("last_rewarded_date", today).apply();
   }
 
   private Activity getActivityFromContext(Context context) {

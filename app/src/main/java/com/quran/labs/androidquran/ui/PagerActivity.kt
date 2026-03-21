@@ -140,6 +140,11 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.appopen.AppOpenAd
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.AdError
 import com.appcoholic.gpt.BillingHelper
 import com.android.billingclient.api.Purchase
 import dev.zacsweers.metro.Inject
@@ -258,6 +263,10 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   private val DAYS_BETWEEN_PROMPTS = 3 * 24 * 60 * 60 * 1000L
 
   private var lastSuraOnPage: Int = -1
+  private var suraChangeCount: Int = 0
+  private var interstitialAd: InterstitialAd? = null
+  private var lastInterstitialTime: Long = 0
+  private var lastAppOpenAdTime: Long = 0
 
   private lateinit var audioStatusRepositoryBridge: AudioStatusRepositoryBridge
   private lateinit var readingEventPresenterBridge: ReadingEventPresenterBridge
@@ -453,6 +462,64 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       adView = newAdView
       newAdView.loadAd(AdRequest.Builder().build())
     }
+  }
+
+  // ── App-Open Ad ──────────────────────────────────────────────────────────
+  private fun showAppOpenAd() {
+    if (sharedPrefHelper.isProUser()) return
+    val cooldownMs = FirebaseRemoteConfig.getInstance()
+      .getLong("app_open_ad_cooldown").let { if (it > 0) it * 1000 else 86400_000L }
+    if (System.currentTimeMillis() - lastAppOpenAdTime < cooldownMs) return
+
+    AppOpenAd.load(this, getString(R.string.admob_app_open_id),
+      AdRequest.Builder().build(), object : AppOpenAd.AppOpenAdLoadCallback() {
+        override fun onAdLoaded(ad: AppOpenAd) {
+          ad.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+              lastAppOpenAdTime = System.currentTimeMillis()
+            }
+          }
+          ad.show(this@PagerActivity)
+          lastAppOpenAdTime = System.currentTimeMillis()
+        }
+        override fun onAdFailedToLoad(error: LoadAdError) {
+          Timber.w("App-open ad failed to load: %s", error.message)
+        }
+      })
+  }
+
+  // ── Interstitial Ad (Sura Change) ───────────────────────────────────────
+  private fun loadInterstitial() {
+    if (sharedPrefHelper.isProUser()) return
+    InterstitialAd.load(this, getString(R.string.admob_interstitial_id),
+      AdRequest.Builder().build(), object : InterstitialAdLoadCallback() {
+        override fun onAdLoaded(ad: InterstitialAd) {
+          interstitialAd = ad
+          ad.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() { interstitialAd = null }
+            override fun onAdFailedToShowFullScreenContent(error: AdError) { interstitialAd = null }
+          }
+        }
+        override fun onAdFailedToLoad(error: LoadAdError) {
+          interstitialAd = null
+          Timber.w("Interstitial ad failed to load: %s", error.message)
+        }
+      })
+  }
+
+  private fun maybeShowInterstitial() {
+    val freq = FirebaseRemoteConfig.getInstance()
+      .getLong("sura_interstitial_freq").toInt().let { if (it > 0) it else 0 }
+    if (freq == 0) return // disabled
+    suraChangeCount++
+    if (suraChangeCount % freq != 0) return
+    // 5-minute cooldown between interstitials
+    if (System.currentTimeMillis() - lastInterstitialTime < 300_000L) return
+    interstitialAd?.let {
+      it.show(this)
+      lastInterstitialTime = System.currentTimeMillis()
+      loadInterstitial() // preload next
+    } ?: loadInterstitial()
   }
 
   private fun updateDualPageMode() {
@@ -674,6 +741,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
         val suraOnPage = quranInfo.getSuraOnPage(page)
         if (lastSuraOnPage != -1 && suraOnPage != lastSuraOnPage) {
           maybePromptForRating()
+          maybeShowInterstitial()
         }
         lastSuraOnPage = suraOnPage
 
@@ -1039,6 +1107,8 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   public override fun onResume() {
     super.onResume()
     adView?.resume()
+    showAppOpenAd()
+    loadInterstitial()
 
     audioPresenter.bind(this)
     recentPagePresenter.bind(currentPageFlow)
