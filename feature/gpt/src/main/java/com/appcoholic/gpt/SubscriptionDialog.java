@@ -34,6 +34,8 @@ import com.google.android.ump.ConsentInformation;
 import com.google.android.ump.ConsentRequestParameters;
 import com.google.android.ump.UserMessagingPlatform;
 
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -118,6 +120,11 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
     watchAdButton = findViewById(R.id.watch_ad_button);
     watchAdProgress = findViewById(R.id.watch_ad_progress);
     TextView closeOverlay = findViewById(R.id.close_overlay);
+    // Set dynamic text with max_messages_per_day from RC
+    long maxMessages = FirebaseRemoteConfig.getInstance().getLong("max_messages_per_day");
+    if (maxMessages <= 0) maxMessages = 7;
+    String rewardedText = getContext().getString(R.string.watch_ad_get_questions, (int) maxMessages);
+    watchAdButton.setText(rewardedText);
 
     highlightSelectedPlan(yearlyPlanLayout, monthlyPlanLayout);
 
@@ -136,9 +143,12 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
 
     closeOverlay.setOnClickListener(view -> dismiss());
 
-    // Hide watch-ad button if already used today
-    if (hasWatchedAdToday()) {
-      watchAdButton.setVisibility(View.GONE);
+    // Hide entire rewarded section and or-divider if already used today
+    if (hasReachedDailyRewardedLimit()) {
+      View rewardedSection = findViewById(R.id.rewarded_section);
+      if (rewardedSection != null) rewardedSection.setVisibility(View.GONE);
+      View orDivider = findViewById(R.id.or_divider);
+      if (orDivider != null) orDivider.setVisibility(View.GONE);
     }
 
     watchAdButton.setOnClickListener(v -> {
@@ -147,7 +157,6 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
       if (watchAdProgress != null) {
         watchAdProgress.setVisibility(View.VISIBLE);
       }
-      // Wrap rewarded ad flow with UMP consent like PagerActivity
       requestConsentThenLoadRewarded();
     });
   }
@@ -261,17 +270,26 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
     }
   }
 
-  private boolean hasWatchedAdToday() {
+  private static final int MAX_REWARDED_PER_DAY = 3;
+
+  private boolean hasReachedDailyRewardedLimit() {
     android.content.SharedPreferences prefs = getContext().getSharedPreferences("rewarded_ad", Context.MODE_PRIVATE);
     String lastDate = prefs.getString("last_rewarded_date", "");
     String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-    return today.equals(lastDate);
+    if (!today.equals(lastDate)) return false;
+    int count = prefs.getInt("rewarded_count_today", 0);
+    return count >= MAX_REWARDED_PER_DAY;
   }
 
   private void markAdWatchedToday() {
     android.content.SharedPreferences prefs = getContext().getSharedPreferences("rewarded_ad", Context.MODE_PRIVATE);
     String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-    prefs.edit().putString("last_rewarded_date", today).apply();
+    String lastDate = prefs.getString("last_rewarded_date", "");
+    int count = today.equals(lastDate) ? prefs.getInt("rewarded_count_today", 0) : 0;
+    prefs.edit()
+        .putString("last_rewarded_date", today)
+        .putInt("rewarded_count_today", count + 1)
+        .apply();
   }
 
   private Activity getActivityFromContext(Context context) {
