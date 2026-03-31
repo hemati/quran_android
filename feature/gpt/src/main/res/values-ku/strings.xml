@@ -23,7 +23,8 @@
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
 
-  <string name="upgrade_to_premium">نوێکردنەوە بۆ Pro</string>
+  <string name="upgrade_to_premium">گەیشتیت بە سنووری ڕۆژانە</string>
+  <string name="watch_ad_get_questions">▶  ڤیدیۆیەکی کورت ببینە بۆ %d پرسیاری زیاتر</string>
   <string name="premium_features_description">
     سوود بەرهەم بگەرە لە تایبەتمەندیە تایبەتیەکان:\n
     &#8226; وەڵامەکانی قورئان GPT بێ سنوور.\n

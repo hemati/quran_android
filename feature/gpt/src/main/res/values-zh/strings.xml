@@ -21,7 +21,8 @@
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
-  <string name="upgrade_to_premium">升级到 Pro</string>
+  <string name="upgrade_to_premium">已达每日限制</string>
+  <string name="watch_ad_get_questions">▶  观看短视频即可获得 %d 个额外问题</string>
   <string name="premium_features_description">
     享受独家高级功能：\n
     &#8226; 无限制的 QuranGPT 答复。\n

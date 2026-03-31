@@ -22,7 +22,8 @@
 
   <string name="qurangpt">ҚұранGPT</string>
   <string name="qurangpt_pro">ҚұранGPT Pro</string>
-  <string name="upgrade_to_premium">Pro-ға Жаңартыңыз</string>
+  <string name="upgrade_to_premium">Күнделікті шекке жеттіңіз</string>
+  <string name="watch_ad_get_questions">▶  Қысқа бейне көріп, тағы %d сұрақ алыңыз</string>
   <string name="premium_features_description">
     Эксклюзивті премиум мүмкіндіктерінен рахат алыңыз:\n
     &#8226; QuranGPT-тен шексіз жауаптар.\n

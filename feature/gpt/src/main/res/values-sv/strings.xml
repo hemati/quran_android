@@ -23,7 +23,8 @@
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
 
-  <string name="upgrade_to_premium">Uppgradera till Pro</string>
+  <string name="upgrade_to_premium">Daglig gräns uppnådd</string>
+  <string name="watch_ad_get_questions">▶  Titta på en kort video för %d fler frågor</string>
   <string name="premium_features_description">
     Njut av exklusiva premiumfunktioner:\n
     &#8226; Obegränsade svar från QuranGPT.\n

@@ -22,7 +22,8 @@
   <string name="qurangpt">قرآنGPT</string>
   <string name="qurangpt_pro">قرآنGPT برو</string>
 
-  <string name="upgrade_to_premium">ترقية إلى Pro</string>
+  <string name="upgrade_to_premium">تم الوصول إلى الحد اليومي</string>
+  <string name="watch_ad_get_questions">▶  شاهد فيديو قصير للحصول على %d أسئلة إضافية</string>
   <string name="premium_features_description">
     استمتع بالميزات الحصرية:\n
     &#8226; إجابات غير محدودة من QuranGPT.\n

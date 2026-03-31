@@ -22,7 +22,8 @@
   <string name="qurangpt">قۇرئانGPT</string>
   <string name="qurangpt_pro">قۇرئانGPT Pro</string>
 
-  <string name="upgrade_to_premium">Pro نى ئۆستۈرۈڭ</string>
+  <string name="upgrade_to_premium">كۈندىلىك چەكلىمىگە يەتتىڭىز</string>
+  <string name="watch_ad_get_questions">▶  قىسقا سىن كۆرۈپ يەنە %d سوئال ئېلىڭ</string>
   <string name="premium_features_description">
     مەخسۇس ئالاھىدە مۇلازىمەتتىن ھوزۇرلىنىڭ:\n
     &#8226; چەكلىمىسىز QuranGPT جاۋابلىرى.\n

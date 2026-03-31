@@ -22,7 +22,8 @@
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
-  <string name="upgrade_to_premium">Nâng cấp lên Pro</string>
+  <string name="upgrade_to_premium">Đã đạt giới hạn hàng ngày</string>
+  <string name="watch_ad_get_questions">▶  Xem video ngắn để nhận thêm %d câu hỏi</string>
   <string name="premium_features_description">
     Tận hưởng các tính năng cao cấp độc quyền:\n
     &#8226; Trả lời không giới hạn từ QuranGPT.\n

@@ -67,6 +67,8 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
 
   private AppCompatButton watchAdButton;
   private ProgressBar watchAdProgress;
+  private int rewardedAdFailCount = 0;
+  private static final int MAX_REWARDED_FAIL_RETRIES = 3;
 
   public interface OnSubscriptionStatusChangedListener {
     void onSubscriptionStatusChanged(boolean subscribed);
@@ -212,9 +214,17 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
       @Override
       public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
         rewardedAd = null;
-        Log.e("SubscriptionDialog", "Ad failed to load: " + loadAdError.getMessage());
-        Toast.makeText(getContext(), R.string.ad_not_available, Toast.LENGTH_SHORT).show();
-        resetWatchAdUi();
+        rewardedAdFailCount++;
+        Log.e("SubscriptionDialog", "Ad failed to load (attempt " + rewardedAdFailCount + "): " + loadAdError.getMessage());
+        if (rewardedAdFailCount >= MAX_REWARDED_FAIL_RETRIES) {
+          Toast.makeText(getContext(), R.string.ad_not_available, Toast.LENGTH_SHORT).show();
+          // Hide button permanently for this session after 3 failures
+          if (watchAdButton != null) watchAdButton.setVisibility(View.GONE);
+          if (watchAdProgress != null) watchAdProgress.setVisibility(View.GONE);
+        } else {
+          Toast.makeText(getContext(), R.string.ad_not_available, Toast.LENGTH_SHORT).show();
+          resetWatchAdUi();
+        }
       }
 
       @Override

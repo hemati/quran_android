@@ -23,7 +23,8 @@
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
 
-  <string name="upgrade_to_premium">Nadogradite na Pro</string>
+  <string name="upgrade_to_premium">Dnevni limit dostignut</string>
+  <string name="watch_ad_get_questions">▶  Pogledajte kratak video za %d dodatnih pitanja</string>
   <string name="premium_features_description">
     Uživajte u ekskluzivnim premium funkcijama:\n
     &#8226; Neograničeni odgovori od QuranGPT-a.\n

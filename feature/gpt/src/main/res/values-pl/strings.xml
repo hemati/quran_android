@@ -21,7 +21,8 @@
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
-  <string name="upgrade_to_premium">Ulepsz do Pro</string>
+  <string name="upgrade_to_premium">Osiągnięto dzienny limit</string>
+  <string name="watch_ad_get_questions">▶  Obejrzyj krótki film, aby uzyskać %d dodatkowych pytań</string>
   <string name="premium_features_description">
     Ciesz się ekskluzywnymi funkcjami premium:\n
     &#8226; Nieograniczone odpowiedzi od QuranGPT.\n

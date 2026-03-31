@@ -491,6 +491,11 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   // ── Interstitial Ad (Sura Change) ───────────────────────────────────────
   private fun loadInterstitial() {
     if (sharedPrefHelper.isProUser()) return
+    if (interstitialAd != null) return // already preloaded
+    // Only load if interstitial frequency is enabled via RC
+    val freq = FirebaseRemoteConfig.getInstance()
+      .getLong("sura_interstitial_freq").toInt()
+    if (freq <= 0) return
     InterstitialAd.load(this, getString(R.string.admob_interstitial_id),
       AdRequest.Builder().build(), object : InterstitialAdLoadCallback() {
         override fun onAdLoaded(ad: InterstitialAd) {
@@ -519,7 +524,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       it.show(this)
       lastInterstitialTime = System.currentTimeMillis()
       loadInterstitial() // preload next
-    } ?: loadInterstitial()
+    } ?: loadInterstitial() // retry if previous load failed
   }
 
   private fun updateDualPageMode() {

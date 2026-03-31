@@ -21,7 +21,8 @@
 
   <string name="qurangpt">QuranGPT</string>
   <string name="qurangpt_pro">QuranGPT Pro</string>
-  <string name="upgrade_to_premium">Tingkatkan ke Pro</string>
+  <string name="upgrade_to_premium">Had harian dicapai</string>
+  <string name="watch_ad_get_questions">▶  Tonton video pendek untuk %d soalan lagi</string>
   <string name="premium_features_description">
     Nikmati ciri premium eksklusif:\n
     &#8226; Jawapan QuranGPT tanpa had.\n
