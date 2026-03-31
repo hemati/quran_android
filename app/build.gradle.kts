@@ -1,3 +1,5 @@
+import com.android.build.api.variant.HasUnitTest
+import com.android.build.api.variant.ResValue
 import net.ltgt.gradle.errorprone.ErrorProneOptions
 import java.util.Locale
 import java.util.Properties
@@ -9,6 +11,7 @@ plugins {
   alias(libs.plugins.errorprone)
   alias(libs.plugins.metro)
   alias(libs.plugins.kover)
+  alias(libs.plugins.sqldelight)
 }
 
 // whether or not to use Firebase - Firebase is enabled by default, and is only disabled for
@@ -32,6 +35,8 @@ android {
     versionName = "2.9.2"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
   }
+
+  buildFeatures.resValues = true
 
   androidResources {
     // Indonesian is still in instead of id due to https://issuetracker.google.com/issues/36911507
@@ -106,15 +111,6 @@ android {
     }
   }
 
-  applicationVariants.all {
-    resValue("string", "authority", "${applicationId}.data.QuranDataProvider")
-    resValue("string", "file_authority", "${applicationId}.fileprovider")
-    if (applicationId.endsWith("debug")) {
-      mergedFlavor.manifestPlaceholders["app_debug_label"] =
-        "Quran ${flavorName.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}"
-    }
-  }
-
   testOptions {
     unitTests {
       isIncludeAndroidResources = true
@@ -135,6 +131,26 @@ android {
         "META-INF/*.kotlin_module",
         "META-INF/DEPENDENCIES"
       )    }
+  }
+}
+
+androidComponents {
+  onVariants { variant ->
+    variant.resValues.put(variant.makeResValueKey("string", "authority"),
+      ResValue("${variant.applicationId.get()}.data.QuranDataProvider")
+    )
+    variant.resValues.put(variant.makeResValueKey("string", "file_authority"),
+      ResValue("${variant.applicationId.get()}.fileprovider")
+    )
+
+    if (variant.applicationId.get().endsWith("debug")) {
+      val name = variant.flavorName ?: variant.name
+      variant.manifestPlaceholders.put("app_debug_label",
+        "Quran ${name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}")
+      (variant as? HasUnitTest)?.unitTest?.manifestPlaceholders?.put("app_debug_label",
+          "Quran ${name.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }}"
+      )
+    }
   }
 }
 
@@ -237,6 +253,7 @@ dependencies {
   implementation(libs.timber)
   debugImplementation(libs.leakcanary.android)
 
+  testImplementation(project(":common:test-utils"))
   testImplementation(libs.junit)
   testImplementation(libs.truth)
   testImplementation(libs.mockito.core)
@@ -247,6 +264,8 @@ dependencies {
   testImplementation(libs.espresso.intents)
   testImplementation(libs.turbine)
   testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.sqldelight.sqlite.driver)
+  testImplementation(libs.sqldelight.primitive.adapters)
 
   errorprone(libs.errorprone.core)
 
