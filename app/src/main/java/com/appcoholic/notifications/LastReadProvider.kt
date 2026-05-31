@@ -1,8 +1,9 @@
 package com.appcoholic.notifications
 
 import com.quran.data.dao.RecentPagesDao
+import dev.zacsweers.metro.Inject
 
-class LastReadProvider(private val recentPagesDao: RecentPagesDao) {
+class LastReadProvider @Inject constructor(private val recentPagesDao: RecentPagesDao) {
   /**
    * The most recently read page, or null if there is no reading history.
    *
