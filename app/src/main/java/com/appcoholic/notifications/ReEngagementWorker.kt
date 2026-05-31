@@ -47,25 +47,31 @@ class ReEngagementWorker(
     try {
       val zone = ZoneId.systemDefault()
       val nowMs = System.currentTimeMillis()
-      val offsetHours = zone.rules.getOffset(Instant.now()).totalSeconds / 3600
+      // Derive the real wall-clock hour from the zone so quiet-hours math is
+      // correct for half-/quarter-hour offsets (UTC+4:30, +3:30, +5:30, +5:45).
+      val localHour = Instant.ofEpochMilli(nowMs).atZone(zone).hour
       val postedVerseToday = prefs.lastPostedDate("daily_verse") == LocalDate.now(zone).toString()
       val decision = ReEngagementPolicy.decide(
         enabled = prefs.reEngagementEnabled, now = nowMs,
         lastForegroundAt = prefs.lastForegroundAt, lastReEngagedAt = prefs.lastReEngagedAt,
         consecutiveUnanswered = prefs.consecutiveUnanswered, postedVerseToday = postedVerseToday,
-        thresholdDays = THRESHOLD_DAYS, quietStart = QUIET_START, quietEnd = QUIET_END, zoneOffsetHours = offsetHours,
+        thresholdDays = THRESHOLD_DAYS, quietStart = QUIET_START, quietEnd = QUIET_END, localHour = localHour,
       )
       if (decision.shouldPost) {
         val page = lastReadProvider.lastReadPage()
         val suraName = page?.let { quranDisplayData.getSuraNameFromPage(applicationContext, it, true) }
         notificationFactory.ensureChannels()
-        notificationFactory.post(
+        val shown = notificationFactory.post(
           NotificationConstants.NOTIF_ID_REENGAGE,
           notificationFactory.buildReEngagement(suraName, page)
         )
-        prefs.lastReEngagedAt = nowMs
-        prefs.consecutiveUnanswered = prefs.consecutiveUnanswered + 1
-        analytics.posted(TYPE, 0)
+        if (shown) {
+          prefs.lastReEngagedAt = nowMs
+          prefs.consecutiveUnanswered = prefs.consecutiveUnanswered + 1
+          analytics.posted(TYPE, 0)
+        } else {
+          analytics.skipped(TYPE, "not_shown")
+        }
       } else {
         analytics.skipped(TYPE, decision.reason)
       }

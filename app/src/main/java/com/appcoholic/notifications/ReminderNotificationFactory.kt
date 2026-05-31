@@ -123,15 +123,19 @@ class ReminderNotificationFactory(
    * Posts [notification] under [id], but only when the user has notifications
    * enabled. Swallows the [SecurityException] that can race in if the POST
    * permission is revoked between the check and the [NotificationManagerCompat.notify].
+   *
+   * @return true iff the notification was actually shown (permission granted +
+   *   notify succeeded). Callers use this to gate dedupe/cap state and analytics
+   *   so they don't advance counters for a notification the user never saw.
    */
-  fun post(id: Int, notification: Notification) {
+  fun post(id: Int, notification: Notification): Boolean {
     val mgr = NotificationManagerCompat.from(context)
-    if (mgr.areNotificationsEnabled()) {
-      try {
-        mgr.notify(id, notification)
-      } catch (e: SecurityException) {
-        // POST_NOTIFICATIONS revoked between the guard and notify(); ignore.
-      }
+    if (!mgr.areNotificationsEnabled()) return false
+    return try {
+      mgr.notify(id, notification)
+      true
+    } catch (e: SecurityException) {
+      false  // POST_NOTIFICATIONS revoked between the guard and notify().
     }
   }
 

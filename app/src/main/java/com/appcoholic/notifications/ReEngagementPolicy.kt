@@ -35,13 +35,12 @@ object ReEngagementPolicy {
     thresholdDays: Int,
     quietStart: Int,            // hour [0..24)
     quietEnd: Int,
-    zoneOffsetHours: Int,
+    localHour: Int,             // real wall-clock hour [0..23], computed from the zone
   ): Decision {
     if (!enabled) return Decision(false, "disabled")
     if (consecutiveUnanswered >= MAX_UNANSWERED) return Decision(false, "paused")
     if (lastForegroundAt <= 0L) return Decision(false, "no_data")
     if (now - lastForegroundAt < thresholdDays * DAY_MS) return Decision(false, "active_recently")
-    val localHour = Math.floorMod((now / 3_600_000L + zoneOffsetHours).toInt(), 24)
     val inQuiet = if (quietStart <= quietEnd) localHour in quietStart until quietEnd
                   else localHour >= quietStart || localHour < quietEnd
     if (inQuiet) return Decision(false, "quiet_hours")

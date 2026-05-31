@@ -52,12 +52,16 @@ class DailyVerseWorker(
         val ref = repo.verseForDay(date.toEpochDay())
         val text = textLoader.load(ref)
         notificationFactory.ensureChannels()
-        notificationFactory.post(
+        val shown = notificationFactory.post(
           NotificationConstants.NOTIF_ID_DAILY_VERSE,
           notificationFactory.buildDailyVerse(ref, text)
         )
-        prefs.setLastPostedDate(TYPE, today)
-        analytics.posted(TYPE, POST_DELAY_MINUTES)
+        if (shown) {
+          prefs.setLastPostedDate(TYPE, today)   // only dedupe a verse we actually showed
+          analytics.posted(TYPE, POST_DELAY_MINUTES)
+        } else {
+          analytics.skipped(TYPE, "not_shown")
+        }
       } else {
         analytics.skipped(TYPE, decision.reason)
       }

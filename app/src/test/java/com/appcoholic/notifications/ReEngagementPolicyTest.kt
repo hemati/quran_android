@@ -7,9 +7,13 @@ import org.junit.Test
  * Unit tests for [ReEngagementPolicy]. Pure logic — no Android, no DB, no DI.
  *
  * The base scenario (#1) fires: enabled, idle 4 days past a 3-day threshold,
- * at 10:00 UTC (outside the 22..7 quiet window), no verse posted today, never
- * re-engaged, and zero unanswered. Each later case mutates exactly one input so
- * the suppression branch it names is the one actually hit.
+ * at local hour 10 (outside the 22..7 quiet window), no verse posted today,
+ * never re-engaged, and zero unanswered. Each later case mutates exactly one
+ * input so the suppression branch it names is the one actually hit.
+ *
+ * Quiet-hours math now takes the real wall-clock hour ([localHour]) rather than
+ * an integer zone offset, so half-/quarter-hour zones (UTC+4:30, +3:30, +5:30,
+ * +5:45) are handled correctly — see [suppressed_at_quiet_start_half_hour_zone].
  */
 class ReEngagementPolicyTest {
 
@@ -28,7 +32,7 @@ class ReEngagementPolicyTest {
       thresholdDays = 3,
       quietStart = 22,
       quietEnd = 7,
-      zoneOffsetHours = 0,
+      localHour = 10,
     )
     assertThat(decision.shouldPost).isTrue()
     assertThat(decision.reason).isEqualTo("ok")
@@ -46,7 +50,7 @@ class ReEngagementPolicyTest {
       thresholdDays = 3,
       quietStart = 22,
       quietEnd = 7,
-      zoneOffsetHours = 0,
+      localHour = 23,
     )
     assertThat(decision.shouldPost).isFalse()
     assertThat(decision.reason).isEqualTo("quiet_hours")
@@ -64,7 +68,7 @@ class ReEngagementPolicyTest {
       thresholdDays = 3,
       quietStart = 22,
       quietEnd = 7,
-      zoneOffsetHours = 0,
+      localHour = 10,
     )
     assertThat(decision.shouldPost).isFalse()
     assertThat(decision.reason).isEqualTo("verse_posted_today")
@@ -83,7 +87,7 @@ class ReEngagementPolicyTest {
       thresholdDays = 3,
       quietStart = 22,
       quietEnd = 7,
-      zoneOffsetHours = 0,
+      localHour = 10,
     )
     assertThat(decision.shouldPost).isFalse()
     assertThat(decision.reason).isEqualTo("cap_7d")
@@ -101,7 +105,7 @@ class ReEngagementPolicyTest {
       thresholdDays = 3,
       quietStart = 22,
       quietEnd = 7,
-      zoneOffsetHours = 0,
+      localHour = 10,
     )
     assertThat(decision.shouldPost).isFalse()
     assertThat(decision.reason).isEqualTo("paused")
@@ -120,9 +124,34 @@ class ReEngagementPolicyTest {
       thresholdDays = 3,
       quietStart = 22,
       quietEnd = 7,
-      zoneOffsetHours = 0,
+      localHour = 10,
     )
     assertThat(decision.shouldPost).isFalse()
     assertThat(decision.reason).isEqualTo("active_recently")
+  }
+
+  /**
+   * Regression for the half-hour-zone fix: at local hour 22 (the start of the
+   * 22..7 quiet window) the nudge is suppressed. Under the old integer-offset
+   * math a device in a +N:30 zone would derive the wrong hour from now/3_600_000
+   * and could escape quiet hours; passing the real wall-clock hour makes quiet
+   * detection independent of the offset's fractional part.
+   */
+  @Test
+  fun suppressed_at_quiet_start_half_hour_zone() {
+    val decision = ReEngagementPolicy.decide(
+      enabled = true,
+      now = 100 * DAY + 10 * HOUR,   // idle/cap inputs keep us out of every other branch
+      lastForegroundAt = 96 * DAY,
+      lastReEngagedAt = 0L,
+      consecutiveUnanswered = 0,
+      postedVerseToday = false,
+      thresholdDays = 3,
+      quietStart = 22,
+      quietEnd = 7,
+      localHour = 22,
+    )
+    assertThat(decision.shouldPost).isFalse()
+    assertThat(decision.reason).isEqualTo("quiet_hours")
   }
 }
