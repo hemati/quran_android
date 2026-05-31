@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fork-owned reminder settings screen (com.appcoholic.notifications). Kept in a
+  separate XML from the upstream quran_preferences.xml to minimise merge surface.
+  Every preference here is bound manually to NotificationPrefs in
+  ReminderSettingsFragment with isPersistent=false, so none of these write to the
+  default SharedPreferences file (NotificationPrefs uses its own file/types).
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
+  <SwitchPreferenceCompat
+      android:key="daily_verse_enabled"
+      android:title="@string/notif_pref_daily_verse_title"
+      android:summary="@string/notif_pref_daily_verse_summary"
+      app:iconSpaceReserved="false" />
+  <ListPreference
+      android:key="verse_hour"
+      android:title="@string/notif_pref_verse_time_title"
+      android:dialogTitle="@string/notif_pref_verse_time_title"
+      android:entries="@array/notif_verse_hours"
+      android:entryValues="@array/notif_verse_hour_values"
+      android:dependency="daily_verse_enabled"
+      app:iconSpaceReserved="false" />
+  <SwitchPreferenceCompat
+      android:key="reengage_enabled"
+      android:title="@string/notif_pref_reengage_title"
+      android:summary="@string/notif_pref_reengage_summary"
+      app:iconSpaceReserved="false" />
+</PreferenceScreen>

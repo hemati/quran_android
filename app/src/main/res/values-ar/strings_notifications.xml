@@ -18,4 +18,12 @@
   <string name="notif_optin_rationale">هل تأذن لنا بإرسال آية كل يوم وتذكير لطيف بمواصلة قراءتك؟ يمكنك إيقاف ذلك في أي وقت.</string>
   <string name="notif_optin_enable">تفعيل</string>
   <string name="notif_optin_not_now">ليس الآن</string>
+
+  <!-- شاشة إعدادات التذكيرات (com.appcoholic.notifications.settings) -->
+  <string name="notif_settings_title">التذكيرات</string>
+  <string name="notif_pref_daily_verse_title">آية اليوم</string>
+  <string name="notif_pref_daily_verse_summary">احصل على آية تتدبرها كل يوم</string>
+  <string name="notif_pref_verse_time_title">وقت الآية</string>
+  <string name="notif_pref_reengage_title">تذكيرات القراءة</string>
+  <string name="notif_pref_reengage_summary">تذكير لطيف لمتابعة القراءة عند مرور وقت على آخر قراءة</string>
 </resources>

@@ -128,6 +128,12 @@
         android:summary="@string/prefs_volume_key_navigation_summary"
         android:title="@string/prefs_volume_key_navigation_title"
         app:iconSpaceReserved="false"/>
+
+    <Preference
+        android:key="key_prefs_reminders"
+        android:summary="@string/notif_pref_daily_verse_summary"
+        android:title="@string/notif_settings_title"
+        app:iconSpaceReserved="false"/>
   </PreferenceCategory>
 
   <PreferenceCategory

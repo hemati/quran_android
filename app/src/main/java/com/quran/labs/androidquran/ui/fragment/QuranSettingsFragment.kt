@@ -129,6 +129,9 @@ class QuranSettingsFragment : PreferenceFragmentCompat() {
       val intent = Intent(activity, QuranAdvancedPreferenceActivity::class.java)
       startActivity(intent)
       return true
+    } else if ("key_prefs_reminders" == key) {
+      startActivity(Intent(activity, com.appcoholic.notifications.settings.ReminderSettingsActivity::class.java))
+      return true
     } else if (Constants.PREF_PAGE_TYPE == key) {
       val intent = Intent(activity, PageSelectActivity::class.java)
       startActivity(intent)
