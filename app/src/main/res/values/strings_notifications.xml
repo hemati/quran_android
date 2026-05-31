@@ -14,4 +14,9 @@
   <string name="notif_reengage_title">Continue reading</string>
   <string name="notif_reengage_personalized">Pick up where you left off in Surah %1$s.</string>
   <string name="notif_reengage_generic">It\'s been a while — open the Quran and continue reading.</string>
+
+  <string name="notif_optin_title">Stay connected to the Quran</string>
+  <string name="notif_optin_rationale">May we send you a verse each day and a gentle reminder to keep up your reading? You can turn this off anytime.</string>
+  <string name="notif_optin_enable">Enable</string>
+  <string name="notif_optin_not_now">Not now</string>
 </resources>

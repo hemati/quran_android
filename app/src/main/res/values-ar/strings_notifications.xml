@@ -13,4 +13,9 @@
   <string name="notif_reengage_title">تابع القراءة</string>
   <string name="notif_reengage_personalized">تابع القراءة من حيث توقفت في سورة %1$s.</string>
   <string name="notif_reengage_generic">مضى وقت على آخر قراءة — افتح المصحف وتابع القراءة.</string>
+
+  <string name="notif_optin_title">ابقَ على صلة بالقرآن</string>
+  <string name="notif_optin_rationale">هل تأذن لنا بإرسال آية كل يوم وتذكير لطيف بمواصلة قراءتك؟ يمكنك إيقاف ذلك في أي وقت.</string>
+  <string name="notif_optin_enable">تفعيل</string>
+  <string name="notif_optin_not_now">ليس الآن</string>
 </resources>
