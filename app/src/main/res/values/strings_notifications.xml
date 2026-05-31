@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fork-owned notification strings (com.appcoholic). Kept in a separate file from
+  the upstream strings.xml to minimise upstream-merge surface. Android merges
+  all values*/ xml resources, so these are visible as ordinary R.string entries.
+-->
+<resources>
+  <string name="notif_channel_daily_verse">Daily Verse</string>
+  <string name="notif_channel_reading_reminders">Reading Reminders</string>
+
+  <string name="notif_daily_verse_title">Verse of the Day</string>
+  <string name="notif_daily_verse_fallback">Open the Quran for today\'s verse.</string>
+
+  <string name="notif_reengage_title">Continue reading</string>
+  <string name="notif_reengage_personalized">Pick up where you left off in Surah %1$s.</string>
+  <string name="notif_reengage_generic">It\'s been a while — open the Quran and continue reading.</string>
+</resources>

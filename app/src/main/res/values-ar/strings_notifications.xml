@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fork-owned notification strings (com.appcoholic) — Arabic. Kept separate from
+  the upstream strings.xml to minimise upstream-merge surface.
+-->
+<resources>
+  <string name="notif_channel_daily_verse">آية اليوم</string>
+  <string name="notif_channel_reading_reminders">تذكيرات القراءة</string>
+
+  <string name="notif_daily_verse_title">آية اليوم</string>
+  <string name="notif_daily_verse_fallback">افتح المصحف لقراءة آية اليوم.</string>
+
+  <string name="notif_reengage_title">تابع القراءة</string>
+  <string name="notif_reengage_personalized">تابع القراءة من حيث توقفت في سورة %1$s.</string>
+  <string name="notif_reengage_generic">مضى وقت على آخر قراءة — افتح المصحف وتابع القراءة.</string>
+</resources>
