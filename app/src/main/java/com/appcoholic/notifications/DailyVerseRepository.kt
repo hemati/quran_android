@@ -1,6 +1,8 @@
 package com.appcoholic.notifications
 
 import android.content.Context
+import com.quran.mobile.di.qualifier.ApplicationContext
+import dev.zacsweers.metro.Inject
 import org.json.JSONObject
 
 /**
@@ -10,7 +12,7 @@ import org.json.JSONObject
  * The asset holds verse *references* only (sura + ayah integers). The Arabic
  * text and translations are rendered at runtime from the app's own databases.
  */
-class DailyVerseRepository(private val context: Context) {
+class DailyVerseRepository @Inject constructor(@ApplicationContext private val context: Context) {
   private val verses: List<VerseRef> by lazy { load() }
 
   private fun load(): List<VerseRef> {

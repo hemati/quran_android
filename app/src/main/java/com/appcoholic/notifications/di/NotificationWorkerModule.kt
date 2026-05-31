@@ -1,6 +1,6 @@
 package com.appcoholic.notifications.di
 
-import com.appcoholic.notifications.NoopReminderWorker
+import com.appcoholic.notifications.DailyVerseWorker
 import com.quran.data.di.AppScope
 import com.quran.labs.androidquran.core.worker.WorkerKey
 import com.quran.labs.androidquran.core.worker.WorkerTaskFactory
@@ -14,6 +14,6 @@ import dev.zacsweers.metro.IntoMap
 interface NotificationWorkerModule {
   @Binds
   @IntoMap
-  @WorkerKey(NoopReminderWorker::class)
-  fun bindNoopReminderWorkerFactory(factory: NoopReminderWorker.Factory): WorkerTaskFactory
+  @WorkerKey(DailyVerseWorker::class)
+  fun bindDailyVerseWorkerFactory(factory: DailyVerseWorker.Factory): WorkerTaskFactory
 }

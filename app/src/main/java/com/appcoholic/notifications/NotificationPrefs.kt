@@ -2,8 +2,10 @@ package com.appcoholic.notifications
 
 import android.content.Context
 import androidx.core.content.edit
+import com.quran.mobile.di.qualifier.ApplicationContext
+import dev.zacsweers.metro.Inject
 
-class NotificationPrefs(context: Context) {
+class NotificationPrefs @Inject constructor(@ApplicationContext context: Context) {
   private val p = context.getSharedPreferences(NotificationConstants.PREFS_FILE, Context.MODE_PRIVATE)
 
   var dailyVerseEnabled: Boolean

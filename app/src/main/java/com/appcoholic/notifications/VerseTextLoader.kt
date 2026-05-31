@@ -1,5 +1,6 @@
 package com.appcoholic.notifications
 
+import com.appcoholic.notifications.di.NotificationsTranslationModel
 import com.quran.data.model.VerseRange
 import com.quran.labs.androidquran.database.TranslationsDBAdapter
 import com.quran.labs.androidquran.model.translation.TranslationModel
@@ -31,7 +32,7 @@ data class VerseText(val arabic: String?, val translation: String?)
  */
 @Inject
 class VerseTextLoader(
-  private val translationModel: TranslationModel,
+  @NotificationsTranslationModel private val translationModel: TranslationModel,
   private val translationsDBAdapter: TranslationsDBAdapter,
 ) {
   suspend fun load(ref: VerseRef): VerseText {
