@@ -10,6 +10,7 @@ import com.quran.labs.androidquran.BookmarksDatabase
 import com.quran.labs.androidquran.data.Constants
 import com.quran.mobile.bookmark.mapper.Mappers
 import com.quran.mobile.bookmark.mapper.convergeCommonlyTagged
+import com.quran.mobile.bookmark.migration.LegacyBookmarkTag
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 
@@ -111,6 +112,12 @@ class BookmarksDBAdapter @Inject constructor(bookmarksDatabase: BookmarksDatabas
 
   fun getTags(): List<Tag> {
     return tagQueries.getTags(Mappers.tagMapper).executeAsList()
+  }
+
+  fun getTagsForMigration(): List<LegacyBookmarkTag> {
+    return tagQueries.getTags { id, name, addedDate ->
+      LegacyBookmarkTag(id, name, addedDate)
+    }.executeAsList()
   }
 
   fun addTag(name: String): Long {

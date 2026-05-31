@@ -34,6 +34,7 @@ android {
     versionCode = 260331
     versionName = "2.9.2"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
+    manifestPlaceholders["oidcRedirectScheme"] = "com.quran.oauth"
   }
 
   buildFeatures.resValues = true
@@ -256,7 +257,6 @@ dependencies {
   testImplementation(project(":common:test-utils"))
   testImplementation(libs.junit)
   testImplementation(libs.truth)
-  testImplementation(libs.mockito.core)
   testImplementation(libs.okhttp.mockserver)
   testImplementation(libs.junit.ktx)
   testImplementation(libs.robolectric)

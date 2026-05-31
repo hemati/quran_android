@@ -37,6 +37,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
 import com.appcoholic.gpt.DefaultMessagesActivity
 import com.appcoholic.gpt.SubscriptionDialog
@@ -46,6 +47,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import com.quran.data.dao.RecentPagesDao
 import com.quran.labs.androidquran.AboutUsActivity
 import com.quran.labs.androidquran.HelpActivity
 import com.quran.labs.androidquran.QuranApplication
@@ -54,7 +56,7 @@ import com.quran.labs.androidquran.R
 import com.quran.labs.androidquran.SearchActivity
 import com.quran.labs.androidquran.ShortcutsActivity
 import com.quran.labs.androidquran.data.Constants
-import com.quran.labs.androidquran.model.bookmark.RecentPageModel
+import com.quran.labs.androidquran.feature.reading.model.LatestPageTracker
 import com.quran.labs.androidquran.presenter.data.QuranIndexEventLogger
 import com.quran.labs.androidquran.presenter.translation.TranslationManagerPresenter
 import com.quran.labs.androidquran.service.AudioService
@@ -77,8 +79,13 @@ import com.quran.mobile.di.ExtraScreenProvider
 import dev.zacsweers.metro.Inject
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import java.net.URLEncoder
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import kotlin.math.abs
@@ -107,7 +114,23 @@ class QuranActivity : AppCompatActivity(),
   private var searchItem: MenuItem? = null
   private var supportActionMode: ActionMode? = null
   private val compositeDisposable = CompositeDisposable()
-  lateinit var latestPageObservable: Observable<Int>
+  private val latestPageFlow: Flow<Int> by lazy {
+    combine(
+      recentPagesDao.recentPagesFlow()
+        .map { recentPages -> recentPages.firstOrNull()?.page ?: Constants.NO_PAGE },
+      latestPageTracker.latestPage
+    ) { persistedPage, latestPage ->
+      latestPage
+        ?.takeIf { it.pageType == settings.pageType }
+        ?.page
+        ?: persistedPage
+    }
+      .distinctUntilChanged()
+  }
+
+  suspend fun latestPage(): Int {
+    return latestPageFlow.first()
+  }
 
   private var backStackListener: FragmentManager.OnBackStackChangedListener? = null
   private lateinit var searchItemCollapserCallback: OnBackPressedCallback
@@ -118,7 +141,9 @@ class QuranActivity : AppCompatActivity(),
   @Inject
   lateinit var audioUtils: AudioUtils
   @Inject
-  lateinit var recentPageModel: RecentPageModel
+  lateinit var recentPagesDao: RecentPagesDao
+  @Inject
+  lateinit var latestPageTracker: LatestPageTracker
   @Inject
   lateinit var translationManagerPresenter: TranslationManagerPresenter
   @Inject
@@ -209,7 +234,6 @@ class QuranActivity : AppCompatActivity(),
       )
     }
 
-    latestPageObservable = recentPageModel.getLatestPageObservable()
     val intent = intent
     if (intent != null) {
       val extras = intent.extras
@@ -409,7 +433,6 @@ class QuranActivity : AppCompatActivity(),
   }
 
   public override fun onResume() {
-    compositeDisposable.add(latestPageObservable.subscribe())
     super.onResume()
     val isRtl = isRtl()
     if (isRtl != this.isRtl) {
@@ -670,15 +693,12 @@ class QuranActivity : AppCompatActivity(),
   }
 
   private fun jumpToLastPage() {
-    compositeDisposable.add(
-        latestPageObservable
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { recentPage: Int ->
-              jumpTo(
-                  if (recentPage == Constants.NO_PAGE) 1 else recentPage
-              )
-            }
-    )
+    lifecycleScope.launch {
+      val recentPage = latestPage()
+      jumpTo(
+        if (recentPage == Constants.NO_PAGE) 1 else recentPage
+      )
+    }
   }
 
   private fun updateTranslationsListAsNeeded() {

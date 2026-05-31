@@ -20,7 +20,6 @@ import org.robolectric.annotation.Config
 
 /**
  * Tests for BookmarkModel using in-memory SQLite database.
- * Migrated from Mockito to real database implementation.
  *
  * Uses RobolectricTestRunner so that the SQLite JDBC driver loads in the same sandbox
  * classloader as other Robolectric tests, preventing DriverManager classloader conflicts
@@ -35,7 +34,6 @@ class BookmarkModelTest {
 
   private lateinit var database: BookmarksDatabase
   private lateinit var bookmarksAdapter: BookmarksDBAdapter
-  private lateinit var recentPageModel: RecentPageModel
   private lateinit var model: BookmarkModel
 
   @Before
@@ -48,8 +46,7 @@ class BookmarkModelTest {
       Last_pages.Adapter(IntColumnAdapter)
     )
     bookmarksAdapter = BookmarksDBAdapter(database)
-    recentPageModel = RecentPageModel(bookmarksAdapter)
-    model = BookmarkModel(bookmarksAdapter, recentPageModel)
+    model = BookmarkModel(bookmarksAdapter)
   }
 
   @Test
