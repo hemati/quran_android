@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fork-owned notification strings (com.appcoholic) — Swedish. -->
+<resources>
+    <string name="notif_channel_daily_verse">Dagens vers</string>
+    <string name="notif_channel_reading_reminders">Läspåminnelser</string>
+    <string name="notif_daily_verse_title">Dagens vers</string>
+    <string name="notif_daily_verse_fallback">Öppna Koranen för dagens vers.</string>
+    <string name="notif_reengage_title">Fortsätt läsa</string>
+    <string name="notif_reengage_personalized">Fortsätt där du slutade i Surah %1$s.</string>
+    <string name="notif_reengage_generic">Det var ett tag sedan — öppna Koranen och fortsätt läsa.</string>
+    <string name="notif_optin_title">Håll kontakten med Koranen</string>
+    <string name="notif_optin_rationale">Får vi skicka dig en vers varje dag och en mild påminnelse om att fortsätta läsa? Du kan stänga av detta när som helst.</string>
+    <string name="notif_optin_enable">Aktivera</string>
+    <string name="notif_optin_not_now">Inte nu</string>
+    <string name="notif_settings_title">Påminnelser</string>
+    <string name="notif_pref_daily_verse_title">Dagens vers</string>
+    <string name="notif_pref_daily_verse_summary">Få en vers att reflektera över varje dag</string>
+    <string name="notif_pref_verse_time_title">Tid för versen</string>
+    <string name="notif_pref_reengage_title">Läspåminnelser</string>
+    <string name="notif_pref_reengage_summary">En mild påminnelse om att fortsätta läsa när det var ett tag sedan</string>
+</resources>

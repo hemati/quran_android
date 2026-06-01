@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notif_channel_daily_verse">Күнделікті аят</string>
+    <string name="notif_channel_reading_reminders">Оқу еске салғыштары</string>
+    <string name="notif_daily_verse_title">Бүгінгі аят</string>
+    <string name="notif_daily_verse_fallback">Бүгінгі аятты оқу үшін Құранды ашыңыз.</string>
+    <string name="notif_reengage_title">Оқуды жалғастыру</string>
+    <string name="notif_reengage_personalized">%1$s сүресінде тоқтаған жеріңізден жалғастырыңыз.</string>
+    <string name="notif_reengage_generic">Біраз уақыт өтті. Құранды ашып, оқуды жалғастырыңыз.</string>
+    <string name="notif_optin_title">Құранмен байланыста болыңыз</string>
+    <string name="notif_optin_rationale">Сізге күн сайын бір аят және оқуды жалғастыруға жұмсақ еске салғыш жіберіп тұрсақ бола ма? Мұны кез келген уақытта өшіре аласыз.</string>
+    <string name="notif_optin_enable">Қосу</string>
+    <string name="notif_optin_not_now">Қазір емес</string>
+    <string name="notif_settings_title">Еске салғыштар</string>
+    <string name="notif_pref_daily_verse_title">Күнделікті аят</string>
+    <string name="notif_pref_daily_verse_summary">Күн сайын ой жүгіртуге бір аят алып отырыңыз</string>
+    <string name="notif_pref_verse_time_title">Аят уақыты</string>
+    <string name="notif_pref_reengage_title">Оқу еске салғыштары</string>
+    <string name="notif_pref_reengage_summary">Біраз уақыт өтсе, оқуды жалғастыруға жұмсақ еске салғыш</string>
+</resources>

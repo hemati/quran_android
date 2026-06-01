@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fork-owned notification strings (com.appcoholic) — Dutch. -->
+<resources>
+    <string name="notif_channel_daily_verse">Vers van de dag</string>
+    <string name="notif_channel_reading_reminders">Leesherinneringen</string>
+    <string name="notif_daily_verse_title">Vers van de dag</string>
+    <string name="notif_daily_verse_fallback">Open de Koran voor het vers van vandaag.</string>
+    <string name="notif_reengage_title">Verder lezen</string>
+    <string name="notif_reengage_personalized">Ga verder waar je was gebleven, in soera %1$s.</string>
+    <string name="notif_reengage_generic">Het is alweer even geleden. Open de Koran en lees verder.</string>
+    <string name="notif_optin_title">Blijf verbonden met de Koran</string>
+    <string name="notif_optin_rationale">Mogen we je elke dag een vers sturen en een vriendelijke herinnering om te blijven lezen? Je kunt dit altijd weer uitzetten.</string>
+    <string name="notif_optin_enable">Inschakelen</string>
+    <string name="notif_optin_not_now">Niet nu</string>
+    <string name="notif_settings_title">Herinneringen</string>
+    <string name="notif_pref_daily_verse_title">Dagelijks vers</string>
+    <string name="notif_pref_daily_verse_summary">Ontvang elke dag een vers om over na te denken</string>
+    <string name="notif_pref_verse_time_title">Tijdstip van het vers</string>
+    <string name="notif_pref_reengage_title">Leesherinneringen</string>
+    <string name="notif_pref_reengage_summary">Een vriendelijke aansporing om verder te lezen wanneer het alweer even geleden is</string>
+</resources>

@@ -96,6 +96,12 @@
         android:theme="@style/QuranToolBarDayNight"
         android:configChanges="keyboardHidden|orientation|screenSize"
         android:exported="false"/>
+    <activity
+        android:name="com.appcoholic.notifications.settings.ReminderSettingsActivity"
+        android:theme="@style/QuranToolBarDayNight"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:parentActivityName=".QuranPreferenceActivity"
+        android:exported="false"/>
 
     <activity
         android:name=".SearchActivity"

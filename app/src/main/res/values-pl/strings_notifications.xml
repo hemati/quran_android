@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fork-owned notification strings (com.appcoholic) — Polish. -->
+<resources>
+    <string name="notif_channel_daily_verse">Codzienny ajat</string>
+    <string name="notif_channel_reading_reminders">Przypomnienia o czytaniu</string>
+    <string name="notif_daily_verse_title">Ajat dnia</string>
+    <string name="notif_daily_verse_fallback">Otwórz Koran i przeczytaj dzisiejszy ajat.</string>
+    <string name="notif_reengage_title">Kontynuuj czytanie</string>
+    <string name="notif_reengage_personalized">Wróć do miejsca, w którym skończyłeś — Sura %1$s.</string>
+    <string name="notif_reengage_generic">Minęło już trochę czasu — otwórz Koran i czytaj dalej.</string>
+    <string name="notif_optin_title">Pozostań blisko Koranu</string>
+    <string name="notif_optin_rationale">Czy możemy codziennie przesyłać Ci ajat oraz delikatne przypomnienie, aby wspierać Twoje czytanie? Możesz to wyłączyć w dowolnej chwili.</string>
+    <string name="notif_optin_enable">Włącz</string>
+    <string name="notif_optin_not_now">Nie teraz</string>
+    <string name="notif_settings_title">Przypomnienia</string>
+    <string name="notif_pref_daily_verse_title">Codzienny ajat</string>
+    <string name="notif_pref_daily_verse_summary">Otrzymuj każdego dnia ajat do refleksji</string>
+    <string name="notif_pref_verse_time_title">Godzina ajatu</string>
+    <string name="notif_pref_reengage_title">Przypomnienia o czytaniu</string>
+    <string name="notif_pref_reengage_summary">Delikatne przypomnienie, aby wrócić do czytania, gdy minie trochę czasu</string>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notif_channel_daily_verse">Câu kinh mỗi ngày</string>
+    <string name="notif_channel_reading_reminders">Nhắc nhở đọc kinh</string>
+    <string name="notif_daily_verse_title">Câu kinh hôm nay</string>
+    <string name="notif_daily_verse_fallback">Mở Kinh Qur\'an để đọc câu kinh hôm nay.</string>
+    <string name="notif_reengage_title">Đọc tiếp</string>
+    <string name="notif_reengage_personalized">Đọc tiếp từ chỗ bạn đang dừng ở Surah %1$s.</string>
+    <string name="notif_reengage_generic">Đã lâu rồi bạn chưa đọc. Hãy mở Kinh Qur\'an và đọc tiếp nhé.</string>
+    <string name="notif_optin_title">Gắn kết cùng Kinh Qur\'an</string>
+    <string name="notif_optin_rationale">Chúng tôi có thể gửi bạn một câu kinh mỗi ngày và lời nhắc nhẹ nhàng để bạn duy trì việc đọc kinh không? Bạn có thể tắt bất cứ lúc nào.</string>
+    <string name="notif_optin_enable">Bật</string>
+    <string name="notif_optin_not_now">Để sau</string>
+    <string name="notif_settings_title">Nhắc nhở</string>
+    <string name="notif_pref_daily_verse_title">Câu kinh mỗi ngày</string>
+    <string name="notif_pref_daily_verse_summary">Nhận một câu kinh để suy ngẫm mỗi ngày</string>
+    <string name="notif_pref_verse_time_title">Giờ nhận câu kinh</string>
+    <string name="notif_pref_reengage_title">Nhắc nhở đọc kinh</string>
+    <string name="notif_pref_reengage_summary">Lời nhắc nhẹ nhàng để đọc tiếp khi đã lâu chưa đọc</string>
+</resources>

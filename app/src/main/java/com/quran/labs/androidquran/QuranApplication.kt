@@ -57,6 +57,8 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider {
     // theme setup
     val theme = quranSettings.currentTheme()
     ThemeUtil.setTheme(theme)
+
+    com.appcoholic.notifications.NotificationBootstrap(this).start()
   }
 
   open fun setupTimber() {

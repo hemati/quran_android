@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="notif_channel_daily_verse">Аят дня</string>
+  <string name="notif_channel_reading_reminders">Напоминания о чтении</string>
+  <string name="notif_daily_verse_title">Аят дня</string>
+  <string name="notif_daily_verse_fallback">Откройте Коран и прочтите аят дня.</string>
+  <string name="notif_reengage_title">Продолжить чтение</string>
+  <string name="notif_reengage_personalized">Продолжите с того места, где остановились, — сура %1$s.</string>
+  <string name="notif_reengage_generic">Вы давно не заходили. Откройте Коран и продолжите чтение.</string>
+  <string name="notif_optin_title">Оставайтесь рядом с Кораном</string>
+  <string name="notif_optin_rationale">Присылать вам каждый день аят и ненавязчивое напоминание не оставлять чтение? Это можно отключить в любой момент.</string>
+  <string name="notif_optin_enable">Включить</string>
+  <string name="notif_optin_not_now">Не сейчас</string>
+  <string name="notif_settings_title">Напоминания</string>
+  <string name="notif_pref_daily_verse_title">Аят дня</string>
+  <string name="notif_pref_daily_verse_summary">Получайте аят для размышления каждый день</string>
+  <string name="notif_pref_verse_time_title">Время аята</string>
+  <string name="notif_pref_reengage_title">Напоминания о чтении</string>
+  <string name="notif_pref_reengage_summary">Ненавязчивое напоминание продолжить чтение, если вы давно не заходили</string>
+</resources>

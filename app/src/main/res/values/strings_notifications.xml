@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fork-owned notification strings (com.appcoholic). Kept in a separate file from
+  the upstream strings.xml to minimise upstream-merge surface. Android merges
+  all values*/ xml resources, so these are visible as ordinary R.string entries.
+-->
+<resources>
+  <string name="notif_channel_daily_verse">Daily Verse</string>
+  <string name="notif_channel_reading_reminders">Reading Reminders</string>
+
+  <string name="notif_daily_verse_title">Verse of the Day</string>
+  <string name="notif_daily_verse_fallback">Open the Quran for today\'s verse.</string>
+
+  <string name="notif_reengage_title">Continue reading</string>
+  <string name="notif_reengage_personalized">Pick up where you left off in Surah %1$s.</string>
+  <string name="notif_reengage_generic">It\'s been a while — open the Quran and continue reading.</string>
+
+  <string name="notif_optin_title">Stay connected to the Quran</string>
+  <string name="notif_optin_rationale">May we send you a verse each day and a gentle reminder to keep up your reading? You can turn this off anytime.</string>
+  <string name="notif_optin_enable">Enable</string>
+  <string name="notif_optin_not_now">Not now</string>
+
+  <!-- Reminder settings screen (com.appcoholic.notifications.settings) -->
+  <string name="notif_settings_title">Reminders</string>
+  <string name="notif_pref_daily_verse_title">Daily verse</string>
+  <string name="notif_pref_daily_verse_summary">Get a verse to reflect on each day</string>
+  <string name="notif_pref_verse_time_title">Verse time</string>
+  <string name="notif_pref_reengage_title">Reading reminders</string>
+  <string name="notif_pref_reengage_summary">A gentle nudge to continue reading when it\'s been a while</string>
+</resources>

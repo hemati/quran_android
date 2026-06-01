@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fork-owned notification strings (com.appcoholic) — French. -->
+<resources>
+  <string name="notif_channel_daily_verse">Verset du jour</string>
+  <string name="notif_channel_reading_reminders">Rappels de lecture</string>
+  <string name="notif_daily_verse_title">Verset du jour</string>
+  <string name="notif_daily_verse_fallback">Ouvrez le Coran pour découvrir le verset du jour.</string>
+  <string name="notif_reengage_title">Continuer la lecture</string>
+  <string name="notif_reengage_personalized">Reprenez votre lecture là où vous l\'avez laissée, dans la sourate %1$s.</string>
+  <string name="notif_reengage_generic">Cela fait un moment : ouvrez le Coran et poursuivez votre lecture.</string>
+  <string name="notif_optin_title">Restez connecté au Coran</string>
+  <string name="notif_optin_rationale">Pouvons-nous vous envoyer chaque jour un verset ainsi qu\'un doux rappel pour poursuivre votre lecture ? Vous pouvez désactiver cela à tout moment.</string>
+  <string name="notif_optin_enable">Activer</string>
+  <string name="notif_optin_not_now">Plus tard</string>
+  <string name="notif_settings_title">Rappels</string>
+  <string name="notif_pref_daily_verse_title">Verset du jour</string>
+  <string name="notif_pref_daily_verse_summary">Recevez chaque jour un verset à méditer</string>
+  <string name="notif_pref_verse_time_title">Heure du verset</string>
+  <string name="notif_pref_reengage_title">Rappels de lecture</string>
+  <string name="notif_pref_reengage_summary">Un doux rappel pour reprendre votre lecture après un certain temps</string>
+</resources>

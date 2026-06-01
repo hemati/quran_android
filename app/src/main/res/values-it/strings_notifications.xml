@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fork-owned notification strings (com.appcoholic) — Italian. -->
+<resources>
+  <string name="notif_channel_daily_verse">Versetto del giorno</string>
+  <string name="notif_channel_reading_reminders">Promemoria di lettura</string>
+  <string name="notif_daily_verse_title">Versetto del giorno</string>
+  <string name="notif_daily_verse_fallback">Apri il Corano per leggere il versetto di oggi.</string>
+  <string name="notif_reengage_title">Continua la lettura</string>
+  <string name="notif_reengage_personalized">Riprendi da dove hai interrotto, nella sura %1$s.</string>
+  <string name="notif_reengage_generic">È passato un po\' di tempo: apri il Corano e continua a leggere.</string>
+  <string name="notif_optin_title">Resta in contatto con il Corano</string>
+  <string name="notif_optin_rationale">Possiamo inviarti ogni giorno un versetto e un gentile promemoria per proseguire la tua lettura? Puoi disattivarlo in qualsiasi momento.</string>
+  <string name="notif_optin_enable">Attiva</string>
+  <string name="notif_optin_not_now">Non ora</string>
+  <string name="notif_settings_title">Promemoria</string>
+  <string name="notif_pref_daily_verse_title">Versetto del giorno</string>
+  <string name="notif_pref_daily_verse_summary">Ricevi ogni giorno un versetto su cui riflettere</string>
+  <string name="notif_pref_verse_time_title">Orario del versetto</string>
+  <string name="notif_pref_reengage_title">Promemoria di lettura</string>
+  <string name="notif_pref_reengage_summary">Un gentile invito a riprendere la lettura quando è passato del tempo</string>
+</resources>

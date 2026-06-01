@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notif_channel_daily_verse">อายะฮฺประจำวัน</string>
+    <string name="notif_channel_reading_reminders">การแจ้งเตือนให้อ่าน</string>
+    <string name="notif_daily_verse_title">อายะฮฺประจำวัน</string>
+    <string name="notif_daily_verse_fallback">เปิดอัลกุรอานเพื่ออ่านอายะฮฺประจำวันนี้</string>
+    <string name="notif_reengage_title">อ่านต่อ</string>
+    <string name="notif_reengage_personalized">อ่านต่อจากที่ค้างไว้ในซูเราะฮฺ %1$s</string>
+    <string name="notif_reengage_generic">ห่างหายไปสักพักแล้ว มาเปิดอัลกุรอานแล้วอ่านต่อกันเถอะ</string>
+    <string name="notif_optin_title">ใกล้ชิดกับอัลกุรอานอยู่เสมอ</string>
+    <string name="notif_optin_rationale">เราขอส่งอายะฮฺให้คุณทุกวันพร้อมคำเตือนเบา ๆ ให้คุณอ่านอย่างต่อเนื่องได้ไหม คุณปิดได้ทุกเมื่อ</string>
+    <string name="notif_optin_enable">เปิด</string>
+    <string name="notif_optin_not_now">ไว้ภายหลัง</string>
+    <string name="notif_settings_title">การแจ้งเตือน</string>
+    <string name="notif_pref_daily_verse_title">อายะฮฺประจำวัน</string>
+    <string name="notif_pref_daily_verse_summary">รับอายะฮฺมาใคร่ครวญในแต่ละวัน</string>
+    <string name="notif_pref_verse_time_title">เวลารับอายะฮฺ</string>
+    <string name="notif_pref_reengage_title">การแจ้งเตือนให้อ่าน</string>
+    <string name="notif_pref_reengage_summary">คำเตือนเบา ๆ ให้อ่านต่อเมื่อห่างหายไปนาน</string>
+</resources>

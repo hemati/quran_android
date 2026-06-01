@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="notif_channel_daily_verse">Ayat Harian</string>
+  <string name="notif_channel_reading_reminders">Peringatan Bacaan</string>
+  <string name="notif_daily_verse_title">Ayat Hari Ini</string>
+  <string name="notif_daily_verse_fallback">Buka al-Quran untuk ayat hari ini.</string>
+  <string name="notif_reengage_title">Sambung bacaan</string>
+  <string name="notif_reengage_personalized">Sambung dari tempat terakhir anda dalam Surah %1$s.</string>
+  <string name="notif_reengage_generic">Sudah agak lama. Buka al-Quran dan sambung bacaan anda.</string>
+  <string name="notif_optin_title">Kekal bersama al-Quran</string>
+  <string name="notif_optin_rationale">Boleh kami hantar satu ayat setiap hari dan peringatan lembut supaya anda terus membaca? Anda boleh mematikannya pada bila-bila masa.</string>
+  <string name="notif_optin_enable">Aktifkan</string>
+  <string name="notif_optin_not_now">Bukan sekarang</string>
+  <string name="notif_settings_title">Peringatan</string>
+  <string name="notif_pref_daily_verse_title">Ayat harian</string>
+  <string name="notif_pref_daily_verse_summary">Dapatkan satu ayat untuk direnungkan setiap hari</string>
+  <string name="notif_pref_verse_time_title">Masa ayat</string>
+  <string name="notif_pref_reengage_title">Peringatan bacaan</string>
+  <string name="notif_pref_reengage_summary">Peringatan lembut untuk menyambung bacaan apabila sudah lama tidak membuka</string>
+</resources>

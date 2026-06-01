@@ -472,6 +472,7 @@ class QuranActivity : AppCompatActivity(),
         now - lastPrompt >= DAYS_BETWEEN_PROMPTS) {
       showRatingDialog()
     }
+    com.appcoholic.notifications.NotificationOptInController(this).onAppLaunched()
   }
 
 

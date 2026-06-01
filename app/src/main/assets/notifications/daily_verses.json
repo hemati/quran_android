@@ -1,0 +1,505 @@
+{
+  "version": 1,
+  "verses": [
+    {
+      "sura": 1,
+      "ayah": 1
+    },
+    {
+      "sura": 1,
+      "ayah": 2
+    },
+    {
+      "sura": 1,
+      "ayah": 3
+    },
+    {
+      "sura": 1,
+      "ayah": 4
+    },
+    {
+      "sura": 1,
+      "ayah": 5
+    },
+    {
+      "sura": 1,
+      "ayah": 6
+    },
+    {
+      "sura": 1,
+      "ayah": 7
+    },
+    {
+      "sura": 2,
+      "ayah": 82
+    },
+    {
+      "sura": 2,
+      "ayah": 152
+    },
+    {
+      "sura": 2,
+      "ayah": 153
+    },
+    {
+      "sura": 2,
+      "ayah": 155
+    },
+    {
+      "sura": 2,
+      "ayah": 156
+    },
+    {
+      "sura": 2,
+      "ayah": 157
+    },
+    {
+      "sura": 2,
+      "ayah": 186
+    },
+    {
+      "sura": 2,
+      "ayah": 201
+    },
+    {
+      "sura": 2,
+      "ayah": 216
+    },
+    {
+      "sura": 2,
+      "ayah": 255
+    },
+    {
+      "sura": 2,
+      "ayah": 285
+    },
+    {
+      "sura": 2,
+      "ayah": 286
+    },
+    {
+      "sura": 3,
+      "ayah": 8
+    },
+    {
+      "sura": 3,
+      "ayah": 139
+    },
+    {
+      "sura": 3,
+      "ayah": 159
+    },
+    {
+      "sura": 3,
+      "ayah": 173
+    },
+    {
+      "sura": 3,
+      "ayah": 200
+    },
+    {
+      "sura": 4,
+      "ayah": 110
+    },
+    {
+      "sura": 6,
+      "ayah": 54
+    },
+    {
+      "sura": 7,
+      "ayah": 156
+    },
+    {
+      "sura": 8,
+      "ayah": 33
+    },
+    {
+      "sura": 9,
+      "ayah": 40
+    },
+    {
+      "sura": 9,
+      "ayah": 51
+    },
+    {
+      "sura": 10,
+      "ayah": 62
+    },
+    {
+      "sura": 11,
+      "ayah": 88
+    },
+    {
+      "sura": 12,
+      "ayah": 87
+    },
+    {
+      "sura": 13,
+      "ayah": 28
+    },
+    {
+      "sura": 14,
+      "ayah": 7
+    },
+    {
+      "sura": 14,
+      "ayah": 34
+    },
+    {
+      "sura": 16,
+      "ayah": 97
+    },
+    {
+      "sura": 16,
+      "ayah": 128
+    },
+    {
+      "sura": 17,
+      "ayah": 82
+    },
+    {
+      "sura": 18,
+      "ayah": 10
+    },
+    {
+      "sura": 20,
+      "ayah": 46
+    },
+    {
+      "sura": 21,
+      "ayah": 87
+    },
+    {
+      "sura": 21,
+      "ayah": 107
+    },
+    {
+      "sura": 23,
+      "ayah": 118
+    },
+    {
+      "sura": 24,
+      "ayah": 35
+    },
+    {
+      "sura": 25,
+      "ayah": 74
+    },
+    {
+      "sura": 26,
+      "ayah": 80
+    },
+    {
+      "sura": 26,
+      "ayah": 89
+    },
+    {
+      "sura": 27,
+      "ayah": 62
+    },
+    {
+      "sura": 28,
+      "ayah": 24
+    },
+    {
+      "sura": 29,
+      "ayah": 69
+    },
+    {
+      "sura": 30,
+      "ayah": 21
+    },
+    {
+      "sura": 31,
+      "ayah": 12
+    },
+    {
+      "sura": 33,
+      "ayah": 41
+    },
+    {
+      "sura": 34,
+      "ayah": 13
+    },
+    {
+      "sura": 35,
+      "ayah": 34
+    },
+    {
+      "sura": 36,
+      "ayah": 58
+    },
+    {
+      "sura": 39,
+      "ayah": 10
+    },
+    {
+      "sura": 39,
+      "ayah": 53
+    },
+    {
+      "sura": 40,
+      "ayah": 60
+    },
+    {
+      "sura": 41,
+      "ayah": 30
+    },
+    {
+      "sura": 42,
+      "ayah": 30
+    },
+    {
+      "sura": 43,
+      "ayah": 13
+    },
+    {
+      "sura": 47,
+      "ayah": 7
+    },
+    {
+      "sura": 48,
+      "ayah": 4
+    },
+    {
+      "sura": 50,
+      "ayah": 16
+    },
+    {
+      "sura": 51,
+      "ayah": 56
+    },
+    {
+      "sura": 55,
+      "ayah": 13
+    },
+    {
+      "sura": 57,
+      "ayah": 4
+    },
+    {
+      "sura": 58,
+      "ayah": 11
+    },
+    {
+      "sura": 59,
+      "ayah": 22
+    },
+    {
+      "sura": 59,
+      "ayah": 23
+    },
+    {
+      "sura": 59,
+      "ayah": 24
+    },
+    {
+      "sura": 64,
+      "ayah": 11
+    },
+    {
+      "sura": 65,
+      "ayah": 2
+    },
+    {
+      "sura": 65,
+      "ayah": 3
+    },
+    {
+      "sura": 65,
+      "ayah": 7
+    },
+    {
+      "sura": 67,
+      "ayah": 1
+    },
+    {
+      "sura": 67,
+      "ayah": 2
+    },
+    {
+      "sura": 71,
+      "ayah": 10
+    },
+    {
+      "sura": 73,
+      "ayah": 20
+    },
+    {
+      "sura": 76,
+      "ayah": 3
+    },
+    {
+      "sura": 93,
+      "ayah": 3
+    },
+    {
+      "sura": 93,
+      "ayah": 4
+    },
+    {
+      "sura": 93,
+      "ayah": 5
+    },
+    {
+      "sura": 93,
+      "ayah": 6
+    },
+    {
+      "sura": 93,
+      "ayah": 7
+    },
+    {
+      "sura": 93,
+      "ayah": 8
+    },
+    {
+      "sura": 93,
+      "ayah": 11
+    },
+    {
+      "sura": 94,
+      "ayah": 1
+    },
+    {
+      "sura": 94,
+      "ayah": 2
+    },
+    {
+      "sura": 94,
+      "ayah": 3
+    },
+    {
+      "sura": 94,
+      "ayah": 4
+    },
+    {
+      "sura": 94,
+      "ayah": 5
+    },
+    {
+      "sura": 94,
+      "ayah": 6
+    },
+    {
+      "sura": 94,
+      "ayah": 7
+    },
+    {
+      "sura": 94,
+      "ayah": 8
+    },
+    {
+      "sura": 95,
+      "ayah": 4
+    },
+    {
+      "sura": 96,
+      "ayah": 1
+    },
+    {
+      "sura": 97,
+      "ayah": 1
+    },
+    {
+      "sura": 97,
+      "ayah": 3
+    },
+    {
+      "sura": 87,
+      "ayah": 14
+    },
+    {
+      "sura": 87,
+      "ayah": 15
+    },
+    {
+      "sura": 91,
+      "ayah": 9
+    },
+    {
+      "sura": 92,
+      "ayah": 5
+    },
+    {
+      "sura": 92,
+      "ayah": 6
+    },
+    {
+      "sura": 92,
+      "ayah": 7
+    },
+    {
+      "sura": 103,
+      "ayah": 1
+    },
+    {
+      "sura": 103,
+      "ayah": 2
+    },
+    {
+      "sura": 103,
+      "ayah": 3
+    },
+    {
+      "sura": 112,
+      "ayah": 1
+    },
+    {
+      "sura": 112,
+      "ayah": 2
+    },
+    {
+      "sura": 112,
+      "ayah": 3
+    },
+    {
+      "sura": 112,
+      "ayah": 4
+    },
+    {
+      "sura": 113,
+      "ayah": 1
+    },
+    {
+      "sura": 113,
+      "ayah": 2
+    },
+    {
+      "sura": 113,
+      "ayah": 3
+    },
+    {
+      "sura": 113,
+      "ayah": 4
+    },
+    {
+      "sura": 113,
+      "ayah": 5
+    },
+    {
+      "sura": 114,
+      "ayah": 1
+    },
+    {
+      "sura": 114,
+      "ayah": 2
+    },
+    {
+      "sura": 114,
+      "ayah": 3
+    },
+    {
+      "sura": 114,
+      "ayah": 4
+    },
+    {
+      "sura": 114,
+      "ayah": 5
+    },
+    {
+      "sura": 114,
+      "ayah": 6
+    }
+  ]
+}

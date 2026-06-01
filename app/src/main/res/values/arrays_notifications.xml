@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fork-owned arrays for the reminder settings screen (com.appcoholic.notifications).
+  Kept separate from upstream arrays.xml to minimise merge surface.
+  Display labels use locale-neutral 24h time, so a values-ar override is not needed.
+  The entry values are the matching hour-of-day ints (as strings, since
+  ListPreference persists Strings; the fragment converts to Int for NotificationPrefs).
+-->
+<resources>
+  <string-array name="notif_verse_hours">
+    <item>06:00</item>
+    <item>08:00</item>
+    <item>09:00</item>
+    <item>12:00</item>
+    <item>15:00</item>
+    <item>18:00</item>
+    <item>20:00</item>
+    <item>21:00</item>
+  </string-array>
+  <string-array name="notif_verse_hour_values">
+    <item>6</item>
+    <item>8</item>
+    <item>9</item>
+    <item>12</item>
+    <item>15</item>
+    <item>18</item>
+    <item>20</item>
+    <item>21</item>
+  </string-array>
+</resources>

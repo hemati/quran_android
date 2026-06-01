@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="notif_channel_daily_verse">Ajeti i ditës</string>
+  <string name="notif_channel_reading_reminders">Kujtues për leximin</string>
+  <string name="notif_daily_verse_title">Ajeti i ditës</string>
+  <string name="notif_daily_verse_fallback">Hape Kuranin për ajetin e sotëm.</string>
+  <string name="notif_reengage_title">Vazhdo leximin</string>
+  <string name="notif_reengage_personalized">Vazhdo aty ku e le në suren %1$s.</string>
+  <string name="notif_reengage_generic">Ka kaluar pak kohë. Hape Kuranin dhe vazhdo leximin.</string>
+  <string name="notif_optin_title">Qëndro i lidhur me Kuranin</string>
+  <string name="notif_optin_rationale">Të dërgojmë çdo ditë nga një ajet dhe një kujtues të butë për ta vazhduar leximin? Këtë mund ta çaktivizosh kurdo që të duash.</string>
+  <string name="notif_optin_enable">Aktivizo</string>
+  <string name="notif_optin_not_now">Jo tani</string>
+  <string name="notif_settings_title">Kujtues</string>
+  <string name="notif_pref_daily_verse_title">Ajeti i ditës</string>
+  <string name="notif_pref_daily_verse_summary">Merr çdo ditë nga një ajet për t\'u menduar</string>
+  <string name="notif_pref_verse_time_title">Ora e ajetit</string>
+  <string name="notif_pref_reengage_title">Kujtues për leximin</string>
+  <string name="notif_pref_reengage_summary">Një kujtues i butë për të vazhduar leximin kur ke kohë pa lexuar</string>
+</resources>

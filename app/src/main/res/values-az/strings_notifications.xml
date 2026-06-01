@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notif_channel_daily_verse">Günün ayəsi</string>
+    <string name="notif_channel_reading_reminders">Oxu xatırlatmaları</string>
+    <string name="notif_daily_verse_title">Günün ayəsi</string>
+    <string name="notif_daily_verse_fallback">Bugünün ayəsi üçün Quranı aç.</string>
+    <string name="notif_reengage_title">Oxumağa davam et</string>
+    <string name="notif_reengage_personalized">%1$s surəsində qaldığın yerdən davam et.</string>
+    <string name="notif_reengage_generic">Bir müddətdir görünmürsən. Quranı aç və oxumağa davam et.</string>
+    <string name="notif_optin_title">Quranla bağlı qal</string>
+    <string name="notif_optin_rationale">Sənə hər gün bir ayə və oxumağı davam etdirmən üçün mülayim bir xatırlatma göndərə bilərikmi? Bunu istədiyin vaxt söndürə bilərsən.</string>
+    <string name="notif_optin_enable">Aktiv et</string>
+    <string name="notif_optin_not_now">İndi yox</string>
+    <string name="notif_settings_title">Xatırlatmalar</string>
+    <string name="notif_pref_daily_verse_title">Günün ayəsi</string>
+    <string name="notif_pref_daily_verse_summary">Hər gün üzərində düşünmək üçün bir ayə al</string>
+    <string name="notif_pref_verse_time_title">Ayə vaxtı</string>
+    <string name="notif_pref_reengage_title">Oxu xatırlatmaları</string>
+    <string name="notif_pref_reengage_summary">Bir müddət oxumayanda davam etmən üçün mülayim bir xatırlatma</string>
+</resources>

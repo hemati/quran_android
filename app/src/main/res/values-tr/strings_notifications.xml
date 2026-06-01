@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notif_channel_daily_verse">Günün Ayeti</string>
+    <string name="notif_channel_reading_reminders">Okuma Hatırlatıcıları</string>
+    <string name="notif_daily_verse_title">Günün Ayeti</string>
+    <string name="notif_daily_verse_fallback">Bugünün ayeti için Kur\'an\'ı aç.</string>
+    <string name="notif_reengage_title">Okumaya devam et</string>
+    <string name="notif_reengage_personalized">%1$s suresinde kaldığın yerden devam et.</string>
+    <string name="notif_reengage_generic">Bir süredir uğramadın. Kur\'an\'ı aç ve okumaya devam et.</string>
+    <string name="notif_optin_title">Kur\'an\'la bağını koru</string>
+    <string name="notif_optin_rationale">Sana her gün bir ayet ve okumanı sürdürmen için nazik bir hatırlatma gönderebilir miyiz? Bunu istediğin zaman kapatabilirsin.</string>
+    <string name="notif_optin_enable">Etkinleştir</string>
+    <string name="notif_optin_not_now">Şimdi değil</string>
+    <string name="notif_settings_title">Hatırlatıcılar</string>
+    <string name="notif_pref_daily_verse_title">Günün ayeti</string>
+    <string name="notif_pref_daily_verse_summary">Her gün üzerinde düşüneceğin bir ayet al</string>
+    <string name="notif_pref_verse_time_title">Ayet saati</string>
+    <string name="notif_pref_reengage_title">Okuma hatırlatıcıları</string>
+    <string name="notif_pref_reengage_summary">Bir süredir okumadığında devam etmen için nazik bir hatırlatma</string>
+</resources>

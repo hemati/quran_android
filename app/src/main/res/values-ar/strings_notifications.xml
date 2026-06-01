@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Fork-owned notification strings (com.appcoholic) — Arabic. Kept separate from
+  the upstream strings.xml to minimise upstream-merge surface.
+-->
+<resources>
+  <string name="notif_channel_daily_verse">آية اليوم</string>
+  <string name="notif_channel_reading_reminders">تذكيرات القراءة</string>
+
+  <string name="notif_daily_verse_title">آية اليوم</string>
+  <string name="notif_daily_verse_fallback">افتح المصحف لقراءة آية اليوم.</string>
+
+  <string name="notif_reengage_title">تابع القراءة</string>
+  <string name="notif_reengage_personalized">تابع القراءة من حيث توقفت في سورة %1$s.</string>
+  <string name="notif_reengage_generic">مضى وقت على آخر قراءة — افتح المصحف وتابع القراءة.</string>
+
+  <string name="notif_optin_title">ابقَ على صلة بالقرآن</string>
+  <string name="notif_optin_rationale">هل تأذن لنا بإرسال آية كل يوم وتذكير لطيف بمواصلة قراءتك؟ يمكنك إيقاف ذلك في أي وقت.</string>
+  <string name="notif_optin_enable">تفعيل</string>
+  <string name="notif_optin_not_now">ليس الآن</string>
+
+  <!-- شاشة إعدادات التذكيرات (com.appcoholic.notifications.settings) -->
+  <string name="notif_settings_title">التذكيرات</string>
+  <string name="notif_pref_daily_verse_title">آية اليوم</string>
+  <string name="notif_pref_daily_verse_summary">احصل على آية تتدبرها كل يوم</string>
+  <string name="notif_pref_verse_time_title">وقت الآية</string>
+  <string name="notif_pref_reengage_title">تذكيرات القراءة</string>
+  <string name="notif_pref_reengage_summary">تذكير لطيف لمتابعة القراءة عند مرور وقت على آخر قراءة</string>
+</resources>
