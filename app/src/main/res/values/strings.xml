@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <string name="app_name" translatable="false">Holy Word</string>
+  <string name="app_name" translatable="false">Rattil</string>
   <string name="ads_app_id" translatable="false">ca-app-pub-8655759847032068~7898109575</string>
   <string name="admob_banner_id" translatable="false">ca-app-pub-8655759847032068/7379234820</string>
   <string name="admob_interstitial_id" translatable="false">ca-app-pub-8655759847032068/2274236391</string>
