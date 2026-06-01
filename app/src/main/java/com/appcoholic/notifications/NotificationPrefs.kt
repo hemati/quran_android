@@ -32,9 +32,16 @@ class NotificationPrefs @Inject constructor(@ApplicationContext context: Context
   var launchCount: Int
     get() = p.getInt("launch_count", 0)
     set(v) = p.edit { putInt("launch_count", v) }
-  var optInPrompted: Boolean
-    get() = p.getBoolean("optin_prompted", false)
-    set(v) = p.edit { putBoolean("optin_prompted", v) }
+  /** Terminal flag: set only when the user enabled, declined twice, or permission already granted. */
+  var optInResolved: Boolean
+    get() = p.getBoolean("optin_resolved", false)
+    set(v) = p.edit { putBoolean("optin_resolved", v) }
+  var readingSessions: Int
+    get() = p.getInt("reading_sessions", 0)
+    set(v) = p.edit { putInt("reading_sessions", v) }
+  var optInDeferrals: Int
+    get() = p.getInt("optin_deferrals", 0)
+    set(v) = p.edit { putInt("optin_deferrals", v) }
 
   fun lastPostedDate(type: String): String? = p.getString("last_posted_$type", null)
   fun setLastPostedDate(type: String, isoDate: String) = p.edit { putString("last_posted_$type", isoDate) }

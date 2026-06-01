@@ -44,4 +44,15 @@ class ReadingActivityTrackerTest {
     tracker.onActivityStarted(activity) // 0 -> 1: foreground re-enter, launchCount = 2
     assertThat(prefs.launchCount).isEqualTo(2)
   }
+
+  // The `is PagerActivity` glue in onActivityStarted is integration-verified on device;
+  // here we unit-test the extracted increment directly.
+  @Test fun on_reading_session_increments_reading_sessions() {
+    assertThat(prefs.readingSessions).isEqualTo(0)
+
+    tracker.onReadingSession()
+    tracker.onReadingSession()
+
+    assertThat(prefs.readingSessions).isEqualTo(2)
+  }
 }

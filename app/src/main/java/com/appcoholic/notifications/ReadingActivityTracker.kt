@@ -3,6 +3,7 @@ package com.appcoholic.notifications
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.quran.labs.androidquran.ui.PagerActivity
 import java.time.LocalTime
 
 /**
@@ -22,9 +23,15 @@ class ReadingActivityTracker(private val prefs: NotificationPrefs) : Application
     prefs.recordReadingHour(LocalTime.now().hour)
   }
 
+  /** A genuine reading session — the user opened the reading view (PagerActivity). */
+  fun onReadingSession() { prefs.readingSessions = prefs.readingSessions + 1 }
+
   override fun onActivityStarted(activity: Activity) {
     if (startedActivities == 0) onEnterForeground()
     startedActivities++
+    // `is PagerActivity` (with the import) so a future upstream rename fails to COMPILE
+    // rather than silently breaking reading detection.
+    if (activity is PagerActivity) onReadingSession()
   }
   override fun onActivityStopped(activity: Activity) {
     if (startedActivities > 0) startedActivities--

@@ -29,4 +29,14 @@ class NotificationPrefsTest {
     assertThat(prefs.smartVerseHour()).isEqualTo(18)   // median of [18,18,20]
     assertThat(prefs.lastForegroundAt).isEqualTo(123L)
   }
+
+  @Test fun reading_sessions_and_deferrals_default_to_zero_and_roundtrip() {
+    assertThat(prefs.readingSessions).isEqualTo(0)
+    assertThat(prefs.optInDeferrals).isEqualTo(0)
+
+    prefs.readingSessions = 4
+    prefs.optInDeferrals = 1
+    assertThat(prefs.readingSessions).isEqualTo(4)
+    assertThat(prefs.optInDeferrals).isEqualTo(1)
+  }
 }
