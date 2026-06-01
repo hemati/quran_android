@@ -31,8 +31,8 @@ android {
   namespace = "com.quran.labs.androidquran"
 
   defaultConfig {
-    versionCode = 260331
-    versionName = "2.9.2"
+    versionCode = 260332
+    versionName = "2.10.0"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
     manifestPlaceholders["oidcRedirectScheme"] = "com.quran.oauth"
   }
