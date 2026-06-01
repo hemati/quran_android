@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="notif_channel_daily_verse">كۈندىلىك ئايەت</string>
+  <string name="notif_channel_reading_reminders">ئوقۇش ئەسكەرتىشلىرى</string>
+  <string name="notif_daily_verse_title">بۈگۈنكى ئايەت</string>
+  <string name="notif_daily_verse_fallback">بۈگۈنكى ئايەتنى ئوقۇش ئۈچۈن قۇرئاننى ئېچىڭ.</string>
+  <string name="notif_reengage_title">ئوقۇشنى داۋاملاشتۇرۇڭ</string>
+  <string name="notif_reengage_personalized">%1$s سۈرىسىدە توختىغان يېرىڭىزدىن داۋاملاشتۇرۇڭ.</string>
+  <string name="notif_reengage_generic">خېلى ۋاقىت بولدى — قۇرئاننى ئېچىپ، ئوقۇشنى داۋاملاشتۇرۇڭ.</string>
+  <string name="notif_optin_title">قۇرئان بىلەن داۋاملىق ئالاقىدە بولۇڭ</string>
+  <string name="notif_optin_rationale">سىزگە ھەر كۈنى بىر ئايەت ۋە ئوقۇشنى داۋاملاشتۇرۇشقا مۇلايىم ئەسكەرتىش ئەۋەتىپ تۇرساق بولامدۇ؟ بۇنى خالىغان ۋاقىتتا ئېتىۋەتسىڭىز بولىدۇ.</string>
+  <string name="notif_optin_enable">ئاچىش</string>
+  <string name="notif_optin_not_now">ھازىر ئەمەس</string>
+  <string name="notif_settings_title">ئەسكەرتىشلەر</string>
+  <string name="notif_pref_daily_verse_title">كۈندىلىك ئايەت</string>
+  <string name="notif_pref_daily_verse_summary">ھەر كۈنى تەپەككۇر قىلىش ئۈچۈن بىر ئايەتكە ئېرىشىڭ</string>
+  <string name="notif_pref_verse_time_title">ئايەت ۋاقتى</string>
+  <string name="notif_pref_reengage_title">ئوقۇش ئەسكەرتىشلىرى</string>
+  <string name="notif_pref_reengage_summary">خېلى ۋاقىت بولغاندا ئوقۇشنى داۋاملاشتۇرۇشقا مۇلايىم ئەسكەرتىش</string>
+</resources>

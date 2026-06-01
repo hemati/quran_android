@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="notif_channel_daily_verse">آیهٔ روزانه</string>
+  <string name="notif_channel_reading_reminders">یادآوری‌های تلاوت</string>
+  <string name="notif_daily_verse_title">آیهٔ امروز</string>
+  <string name="notif_daily_verse_fallback">برای آیهٔ امروز قرآن را باز کنید.</string>
+  <string name="notif_reengage_title">ادامهٔ خواندن</string>
+  <string name="notif_reengage_personalized">از همان‌جا که در سورهٔ %1$s رها کردید ادامه دهید.</string>
+  <string name="notif_reengage_generic">مدتی گذشته است؛ قرآن را باز کنید و به خواندن ادامه دهید.</string>
+  <string name="notif_optin_title">با قرآن همراه بمانید</string>
+  <string name="notif_optin_rationale">اجازه می‌دهید هر روز یک آیه و یک یادآوری ملایم برای تداومِ خواندنتان برایتان بفرستیم؟ هر زمان بخواهید می‌توانید آن را خاموش کنید.</string>
+  <string name="notif_optin_enable">فعال‌سازی</string>
+  <string name="notif_optin_not_now">حالا نه</string>
+  <string name="notif_settings_title">یادآوری‌ها</string>
+  <string name="notif_pref_daily_verse_title">آیهٔ روزانه</string>
+  <string name="notif_pref_daily_verse_summary">هر روز آیه‌ای برای تأمل دریافت کنید</string>
+  <string name="notif_pref_verse_time_title">زمان آیه</string>
+  <string name="notif_pref_reengage_title">یادآوری‌های تلاوت</string>
+  <string name="notif_pref_reengage_summary">یادآوری‌ای ملایم برای ادامهٔ خواندن، هر گاه مدتی گذشته باشد</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fork-owned notification strings (com.appcoholic) — Hungarian. -->
+<resources>
+    <string name="notif_channel_daily_verse">Napi ája</string>
+    <string name="notif_channel_reading_reminders">Olvasási emlékeztetők</string>
+    <string name="notif_daily_verse_title">A nap ájája</string>
+    <string name="notif_daily_verse_fallback">Nyisd meg a Koránt a mai ájáért.</string>
+    <string name="notif_reengage_title">Olvasás folytatása</string>
+    <string name="notif_reengage_personalized">Folytasd ott, ahol abbahagytad — %1$s szúra.</string>
+    <string name="notif_reengage_generic">Eltelt egy kis idő — nyisd meg a Koránt, és olvass tovább.</string>
+    <string name="notif_optin_title">Maradj kapcsolatban a Koránnal</string>
+    <string name="notif_optin_rationale">Küldhetünk neked minden nap egy áját és egy kedves emlékeztetőt, hogy fenntartsd az olvasást? Ezt bármikor kikapcsolhatod.</string>
+    <string name="notif_optin_enable">Bekapcsolás</string>
+    <string name="notif_optin_not_now">Most nem</string>
+    <string name="notif_settings_title">Emlékeztetők</string>
+    <string name="notif_pref_daily_verse_title">Napi ája</string>
+    <string name="notif_pref_daily_verse_summary">Kapj minden nap egy áját, amelyen elgondolkodhatsz</string>
+    <string name="notif_pref_verse_time_title">Az ája időpontja</string>
+    <string name="notif_pref_reengage_title">Olvasási emlékeztetők</string>
+    <string name="notif_pref_reengage_summary">Kedves emlékeztető az olvasás folytatására, ha eltelt egy kis idő</string>
+</resources>

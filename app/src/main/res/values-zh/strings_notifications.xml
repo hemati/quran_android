@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notif_channel_daily_verse">每日经文</string>
+    <string name="notif_channel_reading_reminders">阅读提醒</string>
+    <string name="notif_daily_verse_title">今日经文</string>
+    <string name="notif_daily_verse_fallback">打开古兰经，阅读今日经文。</string>
+    <string name="notif_reengage_title">继续阅读</string>
+    <string name="notif_reengage_personalized">从上次中断的%1$s章继续阅读。</string>
+    <string name="notif_reengage_generic">有段时间没读了，打开古兰经继续阅读吧。</string>
+    <string name="notif_optin_title">常伴古兰经左右</string>
+    <string name="notif_optin_rationale">我们可以每天为您送上一节经文，并温和提醒您坚持阅读吗？您可以随时关闭。</string>
+    <string name="notif_optin_enable">开启</string>
+    <string name="notif_optin_not_now">暂不</string>
+    <string name="notif_settings_title">提醒</string>
+    <string name="notif_pref_daily_verse_title">每日经文</string>
+    <string name="notif_pref_daily_verse_summary">每天获得一节经文，静心思悟</string>
+    <string name="notif_pref_verse_time_title">经文推送时间</string>
+    <string name="notif_pref_reengage_title">阅读提醒</string>
+    <string name="notif_pref_reengage_summary">久未阅读时，温和地提醒您继续阅读</string>
+</resources>

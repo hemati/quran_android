@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="notif_channel_daily_verse">Kunlik oyat</string>
+  <string name="notif_channel_reading_reminders">Oʻqish eslatmalari</string>
+  <string name="notif_daily_verse_title">Bugungi oyat</string>
+  <string name="notif_daily_verse_fallback">Bugungi oyatni oʻqish uchun Qurʼonni oching.</string>
+  <string name="notif_reengage_title">Oʻqishni davom ettiring</string>
+  <string name="notif_reengage_personalized">%1$s surasida toʻxtagan yeringizdan davom eting.</string>
+  <string name="notif_reengage_generic">Ancha vaqt boʻldi — Qurʼonni ochib, oʻqishni davom ettiring.</string>
+  <string name="notif_optin_title">Qurʼon bilan aloqada boʻling</string>
+  <string name="notif_optin_rationale">Sizga har kuni bittadan oyat va oʻqishni davom ettirish uchun muloyim eslatma yuborib tursak boʻladimi? Buni istalgan vaqtda oʻchirib qoʻyishingiz mumkin.</string>
+  <string name="notif_optin_enable">Yoqish</string>
+  <string name="notif_optin_not_now">Hozir emas</string>
+  <string name="notif_settings_title">Eslatmalar</string>
+  <string name="notif_pref_daily_verse_title">Kunlik oyat</string>
+  <string name="notif_pref_daily_verse_summary">Har kuni tafakkur qilish uchun bittadan oyat oling</string>
+  <string name="notif_pref_verse_time_title">Oyat vaqti</string>
+  <string name="notif_pref_reengage_title">Oʻqish eslatmalari</string>
+  <string name="notif_pref_reengage_summary">Ancha vaqt boʻlganda oʻqishni davom ettirishga muloyim eslatma</string>
+</resources>

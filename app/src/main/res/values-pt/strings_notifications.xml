@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fork-owned notification strings (com.appcoholic) — Portuguese. -->
+<resources>
+    <string name="notif_channel_daily_verse">Versículo do dia</string>
+    <string name="notif_channel_reading_reminders">Lembretes de leitura</string>
+    <string name="notif_daily_verse_title">Versículo do dia</string>
+    <string name="notif_daily_verse_fallback">Abra o Alcorão para ler o versículo de hoje.</string>
+    <string name="notif_reengage_title">Continue a sua leitura</string>
+    <string name="notif_reengage_personalized">Retome a leitura de onde parou, na sura %1$s.</string>
+    <string name="notif_reengage_generic">Já faz um tempo. Abra o Alcorão e continue a sua leitura.</string>
+    <string name="notif_optin_title">Mantenha-se perto do Alcorão</string>
+    <string name="notif_optin_rationale">Gostaria de receber um versículo todos os dias e um lembrete suave para manter a sua leitura? Pode desativar quando quiser.</string>
+    <string name="notif_optin_enable">Ativar</string>
+    <string name="notif_optin_not_now">Agora não</string>
+    <string name="notif_settings_title">Lembretes</string>
+    <string name="notif_pref_daily_verse_title">Versículo do dia</string>
+    <string name="notif_pref_daily_verse_summary">Receba um versículo para refletir todos os dias</string>
+    <string name="notif_pref_verse_time_title">Hora do versículo</string>
+    <string name="notif_pref_reengage_title">Lembretes de leitura</string>
+    <string name="notif_pref_reengage_summary">Um lembrete suave para retomar a leitura quando já faz um tempo</string>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="notif_channel_daily_verse">ئایەتی ڕۆژانە</string>
+  <string name="notif_channel_reading_reminders">ئاگادارکردنەوەی خوێندنەوە</string>
+  <string name="notif_daily_verse_title">ئایەتی ئەمڕۆ</string>
+  <string name="notif_daily_verse_fallback">قورئان بکەرەوە بۆ ئایەتی ئەمڕۆ.</string>
+  <string name="notif_reengage_title">بەردەوام بە لە خوێندنەوە</string>
+  <string name="notif_reengage_personalized">لەو شوێنەی پێشتر وەستابوویت لە سوورەی %1$s بەردەوام بە.</string>
+  <string name="notif_reengage_generic">ماوەیەکە — قورئان بکەرەوە و بەردەوام بە لە خوێندنەوە.</string>
+  <string name="notif_optin_title">پەیوەست بمێنە بە قورئانەوە</string>
+  <string name="notif_optin_rationale">بۆمان هەیە هەموو ڕۆژێک ئایەتێکت بۆ بنێرین و بیرخستنەوەیەکی نەرم بۆ بەردەوامبوون لە خوێندنەوەکەت؟ هەر کاتێک بتەوێت دەتوانیت ئەمە بکوژێنیتەوە.</string>
+  <string name="notif_optin_enable">چالاک بکە</string>
+  <string name="notif_optin_not_now">ئێستا نا</string>
+  <string name="notif_settings_title">بیرخستنەوەکان</string>
+  <string name="notif_pref_daily_verse_title">ئایەتی ڕۆژانە</string>
+  <string name="notif_pref_daily_verse_summary">هەموو ڕۆژێک ئایەتێک وەربگرە بۆ بیرکردنەوەی لێی</string>
+  <string name="notif_pref_verse_time_title">کاتی ئایەت</string>
+  <string name="notif_pref_reengage_title">بیرخستنەوەی خوێندنەوە</string>
+  <string name="notif_pref_reengage_summary">بیرخستنەوەیەکی نەرم بۆ بەردەوامبوون لە خوێندنەوە کاتێک ماوەیەک تێپەڕیوە</string>
+</resources>

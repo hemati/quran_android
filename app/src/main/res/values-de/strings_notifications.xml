@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fork-owned notification strings (com.appcoholic) — German. -->
+<resources>
+  <string name="notif_channel_daily_verse">Vers des Tages</string>
+  <string name="notif_channel_reading_reminders">Leseerinnerungen</string>
+  <string name="notif_daily_verse_title">Vers des Tages</string>
+  <string name="notif_daily_verse_fallback">Öffne den Koran für den heutigen Vers.</string>
+  <string name="notif_reengage_title">Weiterlesen</string>
+  <string name="notif_reengage_personalized">Lies dort weiter, wo du in Sure %1$s aufgehört hast.</string>
+  <string name="notif_reengage_generic">Es ist eine Weile her – öffne den Koran und lies weiter.</string>
+  <string name="notif_optin_title">Bleib mit dem Koran verbunden</string>
+  <string name="notif_optin_rationale">Dürfen wir dir täglich einen Vers und eine sanfte Erinnerung zum Weiterlesen schicken? Du kannst dies jederzeit abschalten.</string>
+  <string name="notif_optin_enable">Aktivieren</string>
+  <string name="notif_optin_not_now">Jetzt nicht</string>
+  <string name="notif_settings_title">Erinnerungen</string>
+  <string name="notif_pref_daily_verse_title">Vers des Tages</string>
+  <string name="notif_pref_daily_verse_summary">Erhalte täglich einen Vers zum Nachdenken</string>
+  <string name="notif_pref_verse_time_title">Uhrzeit des Verses</string>
+  <string name="notif_pref_reengage_title">Leseerinnerungen</string>
+  <string name="notif_pref_reengage_summary">Ein sanfter Anstoß zum Weiterlesen, wenn länger Zeit vergangen ist</string>
+</resources>

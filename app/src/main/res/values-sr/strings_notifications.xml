@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notif_channel_daily_verse">Ajet dana</string>
+    <string name="notif_channel_reading_reminders">Podsetnici za čitanje</string>
+    <string name="notif_daily_verse_title">Ajet dana</string>
+    <string name="notif_daily_verse_fallback">Otvorite Kur\'an i pročitajte današnji ajet.</string>
+    <string name="notif_reengage_title">Nastavi da čitaš</string>
+    <string name="notif_reengage_personalized">Nastavi tamo gde si stao u suri %1$s.</string>
+    <string name="notif_reengage_generic">Prošlo je neko vreme — otvori Kur\'an i nastavi sa čitanjem.</string>
+    <string name="notif_optin_title">Ostani povezan sa Kur\'anom</string>
+    <string name="notif_optin_rationale">Možemo li da ti šaljemo po jedan ajet svakog dana i blagi podsetnik da nastaviš sa čitanjem? To možeš da isključiš kad god želiš.</string>
+    <string name="notif_optin_enable">Uključi</string>
+    <string name="notif_optin_not_now">Ne sada</string>
+    <string name="notif_settings_title">Podsetnici</string>
+    <string name="notif_pref_daily_verse_title">Ajet dana</string>
+    <string name="notif_pref_daily_verse_summary">Primaj svakog dana po jedan ajet za razmišljanje</string>
+    <string name="notif_pref_verse_time_title">Vreme ajeta</string>
+    <string name="notif_pref_reengage_title">Podsetnici za čitanje</string>
+    <string name="notif_pref_reengage_summary">Blagi podstrek da nastaviš sa čitanjem posle duže pauze</string>
+</resources>
