@@ -171,8 +171,8 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   private void requestConsentThenLoadRewarded() {
     final Activity activity = getActivityFromContext(getContext());
     if (activity == null) {
-      Log.w("SubscriptionDialog", "No activity available for consent flow.");
-      loadRewardedAd();
+      Log.w("SubscriptionDialog", "No activity available for consent flow; cannot load ad.");
+      resetWatchAdUi();
       return;
     }
 
@@ -208,7 +208,21 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   }
 
 
+  private boolean canRequestAds() {
+    final Activity activity = getActivityFromContext(getContext());
+    if (activity == null) {
+      return false;
+    }
+    return UserMessagingPlatform.getConsentInformation(activity).canRequestAds();
+  }
+
   private void loadRewardedAd() {
+    if (!canRequestAds()) {
+      Log.w("SubscriptionDialog", "Skipping rewarded ad request: UMP consent not available yet.");
+      Toast.makeText(getContext(), R.string.ad_not_available, Toast.LENGTH_SHORT).show();
+      resetWatchAdUi();
+      return;
+    }
     AdRequest adRequest = new AdRequest.Builder().build();
     RewardedAd.load(getContext(), rewardedAdUnitId, adRequest, new RewardedAdLoadCallback() {
       @Override

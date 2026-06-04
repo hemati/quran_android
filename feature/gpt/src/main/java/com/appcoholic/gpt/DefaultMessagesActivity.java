@@ -167,9 +167,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
     boolean proUser = sharedPreferences.getBoolean("isProUser", false);
     if (proUser) {
       adViewContainer.setVisibility(View.GONE);
-    } else {
-      requestConsentThenLoadBanner();
     }
+    // Non-pro banner is loaded consent-first via setUserSubscribed() below.
 
     // Get the intent that started this activity
     Intent intent = getIntent();
@@ -531,7 +530,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
         if (adViewContainer.getVisibility() != View.VISIBLE) {
           adViewContainer.setVisibility(View.VISIBLE);
         }
-        loadBannerAd();
+        // Consent-first: never request an ad before UMP consent is resolved.
+        requestConsentThenLoadBanner();
       }
     }
   }
@@ -599,6 +599,10 @@ public class DefaultMessagesActivity extends AppCompatActivity
   }
 
 
+  private boolean canRequestAds() {
+    return UserMessagingPlatform.getConsentInformation(this).canRequestAds();
+  }
+
   private void requestConsentThenLoadBanner() {
     ConsentRequestParameters params = new ConsentRequestParameters.Builder()
         .setTagForUnderAgeOfConsent(false)
@@ -640,7 +644,11 @@ public class DefaultMessagesActivity extends AppCompatActivity
       }
     });
     adViewContainer.addView(adView);
-    adView.loadAd(new AdRequest.Builder().build());
+    if (canRequestAds()) {
+      adView.loadAd(new AdRequest.Builder().build());
+    } else {
+      Log.d(TAG, "Skipping banner ad request: UMP consent not available yet.");
+    }
   }
 
   @Override
