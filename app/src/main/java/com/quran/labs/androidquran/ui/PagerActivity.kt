@@ -448,16 +448,25 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       }
       adViewContainer.addView(newAdView)
       adView = newAdView
-      newAdView.loadAd(AdRequest.Builder().build())
+      // Only request ads once consent allows it. startAds() also runs on the
+      // consent-error path, where canRequestAds() may be false.
+      if (adsAllowed()) {
+        newAdView.loadAd(AdRequest.Builder().build())
+        loadInterstitial() // preload the sura-change interstitial, post-consent only
+      }
     }
   }
 
   // ── App-Open Ad ──────────────────────────────────────────────────────────
+  /** Ads may only be requested/shown once UMP consent is obtained or is not required. */
+  private fun adsAllowed(): Boolean =
+    UserMessagingPlatform.getConsentInformation(this).canRequestAds()
+
   private fun showAppOpenAd() {
-    if (sharedPrefHelper.isProUser()) return
-    val cooldownMs = FirebaseRemoteConfig.getInstance()
-      .getLong("app_open_ad_cooldown").let { if (it > 0) it * 1000 else 86400_000L }
-    if (System.currentTimeMillis() - lastAppOpenAdTime < cooldownMs) return
+    if (sharedPrefHelper.isProUser() || !adsAllowed()) return
+    val cooldownSec = FirebaseRemoteConfig.getInstance().getLong("app_open_ad_cooldown")
+    if (System.currentTimeMillis() - lastAppOpenAdTime <
+        com.appcoholic.ads.AdGatePolicy.appOpenCooldownMs(cooldownSec)) return
 
     AppOpenAd.load(this, getString(R.string.admob_app_open_id),
       AdRequest.Builder().build(), object : AppOpenAd.AppOpenAdLoadCallback() {
@@ -478,7 +487,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
 
   // ── Interstitial Ad (Sura Change) ───────────────────────────────────────
   private fun loadInterstitial() {
-    if (sharedPrefHelper.isProUser()) return
+    if (sharedPrefHelper.isProUser() || !adsAllowed()) return
     if (interstitialAd != null) return // already preloaded
     // Only load if interstitial frequency is enabled via RC
     val freq = FirebaseRemoteConfig.getInstance()
@@ -501,13 +510,17 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   }
 
   private fun maybeShowInterstitial() {
-    val freq = FirebaseRemoteConfig.getInstance()
-      .getLong("sura_interstitial_freq").toInt().let { if (it > 0) it else 0 }
-    if (freq == 0) return // disabled
+    if (sharedPrefHelper.isProUser() || !adsAllowed()) return
+    val freq = FirebaseRemoteConfig.getInstance().getLong("sura_interstitial_freq").toInt()
+    if (freq <= 0) return // disabled
     suraChangeCount++
-    if (suraChangeCount % freq != 0) return
-    // 5-minute cooldown between interstitials
-    if (System.currentTimeMillis() - lastInterstitialTime < 300_000L) return
+    // Never on the first sura change of the session; then every `freq`-th, min 5 min apart.
+    if (!com.appcoholic.ads.AdGatePolicy.shouldShowInterstitial(
+        isPro = false, adsAllowed = true, freq = freq,
+        suraChangeCount = suraChangeCount,
+        now = System.currentTimeMillis(), lastShown = lastInterstitialTime
+      )
+    ) return
     interstitialAd?.let {
       it.show(this)
       lastInterstitialTime = System.currentTimeMillis()
@@ -1100,8 +1113,11 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   public override fun onResume() {
     super.onResume()
     adView?.resume()
-    showAppOpenAd()
-    loadInterstitial()
+    // Consent-gated, warm-foreground-only app-open ad (never on cold start;
+    // showAppOpenAd() itself re-checks consent + cooldown).
+    if (com.appcoholic.ads.AppForegroundGate.consumeWarmForeground()) {
+      showAppOpenAd()
+    }
 
     audioPresenter.bind(this)
     recentPagePresenter.bind(currentPageFlow)

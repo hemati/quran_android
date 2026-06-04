@@ -58,6 +58,7 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider {
     val theme = quranSettings.currentTheme()
     ThemeUtil.setTheme(theme)
 
+    com.appcoholic.ads.AppForegroundGate.register(this)
     com.appcoholic.notifications.NotificationBootstrap(this).start()
   }
 

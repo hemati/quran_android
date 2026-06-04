@@ -267,7 +267,10 @@ class QuranActivity : AppCompatActivity(),
     // Set default values for Remote Config parameters
     val configDefaults = mapOf(
       "show_pro_dialog" to false,
-      "ad_size_type" to "standard"
+      "ad_size_type" to "standard",
+      // Ad-gating defaults so behavior is deterministic before/without a server fetch.
+      "sura_interstitial_freq" to com.appcoholic.ads.AdGatePolicy.DEFAULT_INTERSTITIAL_FREQ.toLong(),
+      "app_open_ad_cooldown" to com.appcoholic.ads.AdGatePolicy.DEFAULT_APP_OPEN_COOLDOWN_SEC
     )
     remoteConfig.setDefaultsAsync(configDefaults)
 
