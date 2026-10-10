@@ -21,6 +21,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BillingHelper {
   private static final String TAG = "BillingHelper";
@@ -76,6 +77,15 @@ public class BillingHelper {
         .build();
   }
 
+  /** Billing callbacks can arrive on a background thread, and the listeners update the UI. */
+  private void notifyListener(Consumer<BillingUpdatesListener> call) {
+    mainHandler.post(() -> {
+      if (billingUpdatesListener != null) {
+        call.accept(billingUpdatesListener);
+      }
+    });
+  }
+
   private void startConnection() {
     if (billingClient == null) {
       setupBillingClient();
@@ -83,11 +93,7 @@ public class BillingHelper {
     if (billingClient.isReady()) {
       // a listener registered after the connection was set up never gets onBillingSetupFinished;
       // post so callers that are still being constructed (getInstance) are fully initialized
-      mainHandler.post(() -> {
-        if (billingUpdatesListener != null) {
-          billingUpdatesListener.onBillingClientSetupFinished();
-        }
-      });
+      notifyListener(BillingUpdatesListener::onBillingClientSetupFinished);
     } else {
       billingClient.startConnection(billingClientStateListener);
     }
@@ -104,17 +110,13 @@ public class BillingHelper {
     public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
       if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
         Log.d(TAG, "Billing client setup finished");
-        if (billingUpdatesListener != null) {
-          billingUpdatesListener.onBillingClientSetupFinished();
-          firebaseAnalytics.logEvent("billing_setup_finished", null);
-        }
+        firebaseAnalytics.logEvent("billing_setup_finished", null);
+        notifyListener(BillingUpdatesListener::onBillingClientSetupFinished);
       } else {
         String errorMsg = "Billing setup failed: " + billingResult.getDebugMessage();
         Log.e(TAG, errorMsg);
         firebaseAnalytics.logEvent("billing_setup_failed", null);
-        if (billingUpdatesListener != null) {
-          billingUpdatesListener.onPurchaseError(errorMsg);
-        }
+        notifyListener(l -> l.onPurchaseError(errorMsg));
       }
     }
   };
@@ -122,20 +124,14 @@ public class BillingHelper {
   private void handlePurchaseUpdate(BillingResult billingResult, List<Purchase> purchases) {
     if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && purchases != null) {
       Log.d(TAG, "Purchases updated");
-      if (billingUpdatesListener != null) {
-        billingUpdatesListener.onPurchasesUpdated(purchases);
-      }
+      notifyListener(l -> l.onPurchasesUpdated(purchases));
     } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
       Log.d(TAG, "Purchase canceled by user");
-      if (billingUpdatesListener != null) {
-        billingUpdatesListener.onPurchaseError("Purchase canceled");
-      }
+      notifyListener(l -> l.onPurchaseError("Purchase canceled"));
     } else {
       String errorMsg = "Purchase failed: " + billingResult.getDebugMessage();
       Log.e(TAG, errorMsg);
-      if (billingUpdatesListener != null) {
-        billingUpdatesListener.onPurchaseError(errorMsg);
-      }
+      notifyListener(l -> l.onPurchaseError(errorMsg));
     }
   }
 
@@ -146,9 +142,7 @@ public class BillingHelper {
             .build(),
         (billingResult, purchases) -> {
           if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-            if (billingUpdatesListener != null) {
-              billingUpdatesListener.onPurchasesUpdated(purchases);
-            }
+            notifyListener(l -> l.onPurchasesUpdated(purchases));
           } else {
             Log.e(TAG, "Error querying purchases: " + billingResult.getDebugMessage());
           }
@@ -200,9 +194,7 @@ public class BillingHelper {
     BillingResult result = billingClient.launchBillingFlow(this.activity, billingFlowParams);
     if (result.getResponseCode() != BillingClient.BillingResponseCode.OK) {
       Log.e(TAG, "Error launching billing flow: " + result.getDebugMessage());
-      if (billingUpdatesListener != null) {
-        billingUpdatesListener.onPurchaseError(result.getDebugMessage());
-      }
+      notifyListener(l -> l.onPurchaseError(result.getDebugMessage()));
     }
   }
 
@@ -215,9 +207,7 @@ public class BillingHelper {
 
       billingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-          if (billingUpdatesListener != null) {
-            billingUpdatesListener.onPurchaseAcknowledged(purchase);
-          }
+          notifyListener(l -> l.onPurchaseAcknowledged(purchase));
         } else {
           Log.e(TAG, "Failed to acknowledge purchase: " + billingResult.getDebugMessage());
         }
