@@ -5,6 +5,7 @@ import com.quran.labs.androidquran.util.QuranSettings
 import com.quran.mobile.bookmark.importdata.MobileSyncImporter
 import com.quran.mobile.bookmark.migration.LegacyBookmarkMigrationNormalizer
 import com.quran.mobile.bookmark.migration.LegacyBookmarksDataSource
+import com.quran.mobile.bookmark.migration.PreReleaseMobileSyncUpgrade
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CancellationException
@@ -19,18 +20,37 @@ class LegacyBookmarksMigrator @Inject constructor(
   private val quranSettings: QuranSettings,
   private val legacyBookmarksDataSource: LegacyBookmarksDataSource,
   private val normalizer: LegacyBookmarkMigrationNormalizer,
-  private val mobileSyncImporter: MobileSyncImporter
+  private val mobileSyncImporter: MobileSyncImporter,
+  private val preReleaseMobileSyncUpgrade: PreReleaseMobileSyncUpgrade
 ) {
   private val migrationMutex = Mutex()
 
   suspend fun migrateIfNeeded(): Boolean {
-    if (quranSettings.haveMigratedLegacyBookmarksToMobileSync()) return true
+    if (quranSettings.haveMigratedLegacyBookmarksToMobileSync() &&
+      !preReleaseMobileSyncUpgrade.hasPendingImport()
+    ) {
+      return true
+    }
 
     return migrationMutex.withLock {
+      importPreReleaseMobileSyncData()
       if (quranSettings.haveMigratedLegacyBookmarksToMobileSync()) {
         true
       } else {
         migrate()
+      }
+    }
+  }
+
+  // Rattil: bring over bookmarks stored by 2.10.0's older mobile-sync schema
+  private suspend fun importPreReleaseMobileSyncData() {
+    withContext(Dispatchers.IO) {
+      try {
+        preReleaseMobileSyncUpgrade.importIfNeeded()
+      } catch (exception: CancellationException) {
+        throw exception
+      } catch (exception: Exception) {
+        Timber.e(exception, "Unable to import pre-release mobile-sync bookmarks.")
       }
     }
   }

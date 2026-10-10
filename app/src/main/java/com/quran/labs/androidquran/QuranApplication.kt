@@ -10,6 +10,7 @@ import com.quran.labs.androidquran.util.SharedPrefHelper
 import com.quran.labs.androidquran.util.RecordingLogTree
 import com.quran.labs.androidquran.util.ThemeUtil
 import com.quran.labs.androidquran.widget.BookmarksWidgetSubscriber
+import com.quran.mobile.bookmark.migration.PreReleaseMobileSyncUpgrade
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 
@@ -35,6 +36,8 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider {
   override fun onCreate() {
     super.onCreate()
     setupTimber()
+    // Rattil: must run before anything opens the mobile-sync database
+    PreReleaseMobileSyncUpgrade.moveAsideIfOutdated(this)
     applicationComponent = initializeInjector()
     applicationComponent.inject(this)
     initializeWorkManager()
