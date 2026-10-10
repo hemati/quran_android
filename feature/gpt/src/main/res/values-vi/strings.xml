@@ -41,4 +41,8 @@
   <string name="watch_ad_and_reset_limit">Xem toàn bộ quảng cáo để đặt lại giới hạn</string>
   <string name="ad_not_available">Quảng cáo không có sẵn. Vui lòng thử lại sau.</string>
   <string name="or_label">hoặc</string>
+  <string name="chatview_message_too_long">Tin nhắn của bạn quá dài. Vui lòng rút ngắn và thử lại.</string>
+  <string name="chatview_context_too_long_title">Cuộc trò chuyện quá dài</string>
+  <string name="chatview_context_too_long_desc">Cuộc trò chuyện này quá dài đối với QuranGPT. Hãy đặt lại cuộc trò chuyện để bắt đầu cuộc trò chuyện mới.</string>
+  <string name="chatview_reset_chat">Đặt lại cuộc trò chuyện</string>
 </resources>

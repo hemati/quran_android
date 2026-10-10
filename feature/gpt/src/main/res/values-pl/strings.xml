@@ -40,4 +40,8 @@
   <string name="watch_ad_and_reset_limit">Obejrzyj pełną reklamę, aby zresetować limit</string>
   <string name="ad_not_available">Reklama niedostępna. Spróbuj ponownie później.</string>
   <string name="or_label">lub</string>
+  <string name="chatview_message_too_long">Twoja wiadomość jest za długa. Skróć ją i spróbuj ponownie.</string>
+  <string name="chatview_context_too_long_title">Czat jest za długi</string>
+  <string name="chatview_context_too_long_desc">Ta rozmowa jest za długa dla QuranGPT. Zresetuj czat, aby rozpocząć nową rozmowę.</string>
+  <string name="chatview_reset_chat">Zresetuj czat</string>
 </resources>

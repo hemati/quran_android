@@ -41,4 +41,8 @@
   <string name="watch_ad_and_reset_limit">Bekijk de volledige advertentie om de limiet te resetten</string>
   <string name="ad_not_available">Advertentie niet beschikbaar. Probeer het later opnieuw.</string>
   <string name="or_label">of</string>
+  <string name="chatview_message_too_long">Je bericht is te lang. Maak het korter en probeer het opnieuw.</string>
+  <string name="chatview_context_too_long_title">Chat te lang</string>
+  <string name="chatview_context_too_long_desc">Dit gesprek is te lang voor QuranGPT. Reset de chat om een nieuw gesprek te beginnen.</string>
+  <string name="chatview_reset_chat">Chat resetten</string>
 </resources>

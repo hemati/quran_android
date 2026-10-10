@@ -42,4 +42,8 @@
   <string name="watch_ad_and_reset_limit">Nézze meg a teljes hirdetést a korlát visszaállításához</string>
   <string name="ad_not_available">A hirdetés nem érhető el. Kérjük, próbálkozzon újra később.</string>
   <string name="or_label">vagy</string>
+  <string name="chatview_message_too_long">Az üzeneted túl hosszú. Kérjük, rövidítsd le, és próbáld újra.</string>
+  <string name="chatview_context_too_long_title">Túl hosszú beszélgetés</string>
+  <string name="chatview_context_too_long_desc">Ez a beszélgetés túl hosszú a QuranGPT számára. Állítsd vissza a csevegést, hogy új beszélgetést kezdhess.</string>
+  <string name="chatview_reset_chat">Csevegés visszaállítása</string>
 </resources>

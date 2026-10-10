@@ -41,4 +41,8 @@
   <string name="watch_ad_and_reset_limit">چېكلەشنى ئەسلىگە كەلتۈرۈش ئۈچۈن تولۇق ئېلاننى كۆرۈڭ</string>
   <string name="ad_not_available">ئېلاننى ئىشلەتكىلى بولمايدۇ. كېيىن قايتا سىناڭ.</string>
   <string name="or_label">ياكى</string>
+  <string name="chatview_message_too_long">ئۇچۇرىڭىز بەك ئۇزۇن. ئۇنى قىسقارتىپ قايتا سىناڭ.</string>
+  <string name="chatview_context_too_long_title">سۆھبەت بەك ئۇزۇن</string>
+  <string name="chatview_context_too_long_desc">بۇ سۆھبەت QuranGPT ئۈچۈن بەك ئۇزۇن بولۇپ كەتتى. يېڭى سۆھبەت باشلاش ئۈچۈن سۆھبەتنى قايتا تەڭشەڭ.</string>
+  <string name="chatview_reset_chat">سۆھبەتنى قايتا تەڭشەش</string>
 </resources>

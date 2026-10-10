@@ -42,4 +42,8 @@
   <string name="watch_ad_and_reset_limit">تبلیغات کامل را برای تنظیم مجدد حد مشاهده کنید</string>
   <string name="ad_not_available">تبلیغ در دسترس نیست. لطفا بعداً دوباره امتحان کنید.</string>
   <string name="or_label">یا</string>
+  <string name="chatview_message_too_long">پیام شما بیش از حد طولانی است. لطفاً آن را کوتاه کنید و دوباره امتحان کنید.</string>
+  <string name="chatview_context_too_long_title">گفتگو بیش از حد طولانی است</string>
+  <string name="chatview_context_too_long_desc">این گفتگو برای QuranGPT بیش از حد طولانی شده است. برای شروع گفتگوی جدید، گفتگو را بازنشانی کنید.</string>
+  <string name="chatview_reset_chat">بازنشانی گفتگو</string>
 </resources>

@@ -94,6 +94,9 @@ public class DefaultMessagesActivity extends AppCompatActivity
   private static final String TAG = "DefaultMessagesActivity";
   private static final String SENDER_ID = "User";
   private static final int MAX_CHAT_HISTORY = 6;
+  // Size guard in characters (no tokenizer on device); can be overridden via Remote Config
+  private static final int DEFAULT_MAX_MESSAGE_CHARS = 4000;
+  private static final int DEFAULT_MAX_CONTEXT_CHARS = 12000;
   private static int MAX_MESSAGES_PER_DAY = 6;
 
   private MessagesListAdapter<Message> messagesAdapter;
@@ -101,6 +104,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
   private MessagesList messagesList;
   private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
   private FirebaseAnalytics firebaseAnalytics;
+  private int maxMessageChars = DEFAULT_MAX_MESSAGE_CHARS;
+  private int maxContextChars = DEFAULT_MAX_CONTEXT_CHARS;
   private FirebaseRemoteConfig mFirebaseRemoteConfig;
   private MessageQuotaManager quotaManager;
 
@@ -241,6 +246,13 @@ public class DefaultMessagesActivity extends AppCompatActivity
     if (!openAiApiKey.isEmpty())
       initializeOpenAIClient(openAiApiKey);
 
+    long _maxMessageChars = mFirebaseRemoteConfig.getLong("openai_max_message_chars");
+    if (_maxMessageChars > 0)
+      maxMessageChars = (int) _maxMessageChars;
+    long _maxContextChars = mFirebaseRemoteConfig.getLong("openai_max_context_chars");
+    if (_maxContextChars > 0)
+      maxContextChars = (int) _maxContextChars;
+
     long _max_messages_per_day = mFirebaseRemoteConfig.getLong("max_messages_per_day");
     if (_max_messages_per_day > 0) {
       MAX_MESSAGES_PER_DAY = (int) _max_messages_per_day;
@@ -373,13 +385,24 @@ public class DefaultMessagesActivity extends AppCompatActivity
       return false;
     }
 
+    String messageText = input.toString();
+    // Size checks before the quota, so a rejected message doesn't count against the daily limit.
+    // Returning false keeps the text in the input field.
+    if (messageText.length() > maxMessageChars) {
+      showMessageTooLongDialog();
+      return false;
+    }
+    if (getContextLength(messageText) > maxContextChars) {
+      showChatTooLongDialog();
+      return false;
+    }
+
     // Before sending a message
     if (!isUserSubscribed() && !quotaManager.incrementAndCheck()) {
       Toast.makeText(this, getString(R.string.chatview_quota_reached), Toast.LENGTH_LONG).show();
       subscriptionDialog.show();
       return false;
     } else {
-      String messageText = input.toString();
       Message message = new Message(getRandomId(), new User(SENDER_ID, SENDER_ID, null, false), messageText);
       message.setCreatedAt(new Date()); // WICHTIG: createdAt setzen für korrekte Sortierung
 
@@ -470,6 +493,41 @@ public class DefaultMessagesActivity extends AppCompatActivity
       }
     }
     return context; // guaranteed: oldest -> newest
+  }
+
+  /** Characters that would be sent: system prompt, the history getChatContextFromDb() keeps and the new message. */
+  private int getContextLength(String newMessageText) {
+    int length = SYSTEM_INSTRUCTION.length() + newMessageText.length();
+    for (Message m : db.getLastMessages(MAX_CHAT_HISTORY - 1)) {
+      if (m.getText() != null) {
+        length += m.getText().length();
+      }
+    }
+    return length;
+  }
+
+  private void showMessageTooLongDialog() {
+    firebaseAnalytics.logEvent("chat_message_too_long", null);
+    new AlertDialog.Builder(this)
+        .setMessage(R.string.chatview_message_too_long)
+        .setPositiveButton(android.R.string.ok, null)
+        .show();
+  }
+
+  private void showChatTooLongDialog() {
+    firebaseAnalytics.logEvent("chat_context_too_long", null);
+    new AlertDialog.Builder(this)
+        .setTitle(R.string.chatview_context_too_long_title)
+        .setMessage(R.string.chatview_context_too_long_desc)
+        .setPositiveButton(R.string.chatview_reset_chat, (dialog, which) -> resetChat())
+        .setNegativeButton(android.R.string.cancel, null)
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .show();
+  }
+
+  private void resetChat() {
+    messagesAdapter.clear();
+    db.deleteAllMessages();
   }
 
   private void addMessageToFirestore(Message message) {
@@ -582,8 +640,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
               R.string.chatview_delete_selected_confirmation_desc))
           .setPositiveButton(android.R.string.yes, (dialog, which) -> {
             if (messagesAdapter.getSelectedMessages().isEmpty()) {
-              messagesAdapter.clear();
-              db.deleteAllMessages();
+              resetChat();
             } else {
               for (Message message : messagesAdapter.getSelectedMessages()) {
                 messagesAdapter.delete(message);

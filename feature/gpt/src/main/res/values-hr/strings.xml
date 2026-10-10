@@ -42,4 +42,8 @@
   <string name="watch_ad_and_reset_limit">Pogledajte cijeli oglas kako biste resetirali ograničenje</string>
   <string name="ad_not_available">Oglas nije dostupan. Molimo pokušajte ponovo kasnije.</string>
   <string name="or_label">ili</string>
+  <string name="chatview_message_too_long">Vaša poruka je preduga. Molimo skratite je i pokušajte ponovno.</string>
+  <string name="chatview_context_too_long_title">Razgovor je predug</string>
+  <string name="chatview_context_too_long_desc">Ovaj razgovor je predug za QuranGPT. Ponovno pokrenite razgovor kako biste započeli novi.</string>
+  <string name="chatview_reset_chat">Ponovno pokreni razgovor</string>
 </resources>

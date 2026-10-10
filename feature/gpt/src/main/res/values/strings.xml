@@ -48,4 +48,8 @@ You\'ve reached your daily limit. Start your 3-day free trial for unlimited acce
   <string name="admob_banner_id" translatable="false">ca-app-pub-8655759847032068/7379234820</string>
   <string name="admob_rewarded_id" translatable="false">ca-app-pub-8655759847032068/3445692813</string>
   <string name="or_label">or</string>
+  <string name="chatview_message_too_long">Your message is too long. Please shorten it and try again.</string>
+  <string name="chatview_context_too_long_title">Chat too long</string>
+  <string name="chatview_context_too_long_desc">This conversation is too long for QuranGPT. Reset the chat to start a new conversation.</string>
+  <string name="chatview_reset_chat">Reset chat</string>
 </resources>

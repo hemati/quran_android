@@ -41,4 +41,8 @@
   <string name="watch_ad_and_reset_limit">Перегляньте повну рекламу, щоб скинути ліміт</string>
   <string name="ad_not_available">Реклама недоступна. Будь ласка, спробуйте пізніше.</string>
   <string name="or_label">або</string>
+  <string name="chatview_message_too_long">Ваше повідомлення занадто довге. Будь ласка, скоротіть його та спробуйте ще раз.</string>
+  <string name="chatview_context_too_long_title">Чат занадто довгий</string>
+  <string name="chatview_context_too_long_desc">Ця розмова стала занадто довгою для QuranGPT. Скиньте чат, щоб почати нову розмову.</string>
+  <string name="chatview_reset_chat">Скинути чат</string>
 </resources>

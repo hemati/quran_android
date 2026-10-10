@@ -40,4 +40,8 @@
   <string name="watch_ad_and_reset_limit">Cheklovni tiklash uchun to\'liq reklamani tomosha qiling</string>
   <string name="ad_not_available">Reklama mavjud emas. Keyinroq qayta urinib ko\'ring.</string>
   <string name="or_label">yoki</string>
+  <string name="chatview_message_too_long">Xabaringiz juda uzun. Iltimos, uni qisqartiring va qaytadan urinib ko\'ring.</string>
+  <string name="chatview_context_too_long_title">Suhbat juda uzun</string>
+  <string name="chatview_context_too_long_desc">Bu suhbat QuranGPT uchun juda uzun. Yangi suhbat boshlash uchun suhbatni qayta o\'rnating.</string>
+  <string name="chatview_reset_chat">Suhbatni qayta o\'rnatish</string>
 </resources>
