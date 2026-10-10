@@ -10,6 +10,9 @@ import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.RenderersFactory
+import androidx.media3.exoplayer.audio.MediaCodecAudioRenderer
+import androidx.media3.exoplayer.mediacodec.MediaCodecSelector
 import androidx.media3.session.LibraryResult
 import androidx.media3.session.MediaConstants
 import androidx.media3.session.MediaLibraryService
@@ -24,6 +27,7 @@ import com.quran.labs.feature.autoquran.common.RecentQariManager
 import com.quran.labs.feature.autoquran.di.QuranAutoInjector
 import com.quran.mobile.di.QuranApplicationComponentProvider
 import dev.zacsweers.metro.Inject
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -48,7 +52,11 @@ class QuranBrowsableAudioPlaybackService : MediaLibraryService() {
     .build()
 
   private val exoPlayer: ExoPlayer by lazy {
-    ExoPlayer.Builder(this).build().apply {
+    // audio only: the default video/text/metadata renderers slowed down cold starts (ANRs)
+    val audioOnlyRenderersFactory = RenderersFactory { handler, _, audioListener, _, _ ->
+      arrayOf(MediaCodecAudioRenderer(this, MediaCodecSelector.DEFAULT, handler, audioListener))
+    }
+    ExoPlayer.Builder(this, audioOnlyRenderersFactory).build().apply {
       setAudioAttributes(quranAudioAttributes, true)
       setHandleAudioBecomingNoisy(true)
       addListener(playerListener)
@@ -149,6 +157,15 @@ class QuranBrowsableAudioPlaybackService : MediaLibraryService() {
   override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaLibrarySession? =
     mediaSession
 
+  private fun logFailure(t: Throwable, message: String) {
+    // the scope is cancelled in onDestroy, which isn't a failure worth reporting
+    if (t is CancellationException) {
+      Timber.d(message)
+    } else {
+      Timber.e(t, message)
+    }
+  }
+
   private inner class PlayerEventListener : Player.Listener {
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
       if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) return
@@ -201,7 +218,7 @@ class QuranBrowsableAudioPlaybackService : MediaLibraryService() {
             LibraryResult.ofItem(item, LibraryParams.Builder().build())
           }
         }.getOrElse { t ->
-          Timber.e(t, "onGetItem failed for mediaId=$mediaId")
+          logFailure(t, "onGetItem failed for mediaId=$mediaId")
           LibraryResult.ofError(SessionError.ERROR_UNKNOWN)
         }
         settable.set(result)
@@ -224,7 +241,7 @@ class QuranBrowsableAudioPlaybackService : MediaLibraryService() {
           val children = surahBuilder.children(parentId)
           LibraryResult.ofItemList(children, LibraryParams.Builder().build())
         }.getOrElse { t ->
-          Timber.e(t, "onGetChildren failed for parentId=$parentId")
+          logFailure(t, "onGetChildren failed for parentId=$parentId")
           // Important: always respond, otherwise Android Auto can show an infinite spinner.
           LibraryResult.ofError(SessionError.ERROR_UNKNOWN)
         }
@@ -243,7 +260,7 @@ class QuranBrowsableAudioPlaybackService : MediaLibraryService() {
         val items = runCatching {
           mediaItems.mapNotNull { surahBuilder.child(it.mediaId) }
         }.getOrElse { t ->
-          Timber.e(t, "onAddMediaItems failed")
+          logFailure(t, "onAddMediaItems failed")
           emptyList()
         }
         settable.set(items)
@@ -268,7 +285,7 @@ class QuranBrowsableAudioPlaybackService : MediaLibraryService() {
             val startPosition = if (index != -1) index else 0
             MediaSession.MediaItemsWithStartPosition(items, startPosition, 0)
           }.getOrElse { t ->
-            Timber.e(t, "onSetMediaItems failed")
+            logFailure(t, "onSetMediaItems failed")
             MediaSession.MediaItemsWithStartPosition(ImmutableList.of(), 0, 0)
           }
           settable.set(result)
@@ -297,7 +314,7 @@ class QuranBrowsableAudioPlaybackService : MediaLibraryService() {
           session.notifySearchResultChanged(browser, query, surahBuilder.search(query).size, params)
           LibraryResult.ofVoid(params)
         }.getOrElse { t ->
-          Timber.e(t, "onSearch failed for query=$query")
+          logFailure(t, "onSearch failed for query=$query")
           LibraryResult.ofError(SessionError.ERROR_UNKNOWN)
         }
         settable.set(result)
@@ -319,7 +336,7 @@ class QuranBrowsableAudioPlaybackService : MediaLibraryService() {
           val items = surahBuilder.search(query)
           LibraryResult.ofItemList(items, LibraryParams.Builder().build())
         }.getOrElse { t ->
-          Timber.e(t, "onGetSearchResult failed for query=$query")
+          logFailure(t, "onGetSearchResult failed for query=$query")
           LibraryResult.ofError(SessionError.ERROR_UNKNOWN)
         }
         settable.set(result)
