@@ -48,13 +48,7 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider {
       .setTestDeviceIds(listOf("1A433D1C8B6C98FF184A4694E09AC80F"))
       .build()
     MobileAds.setRequestConfiguration(requestConfiguration)
-    Thread {
-      MobileAds.initialize(this@QuranApplication) { status ->
-        status.adapterStatusMap.forEach { (adapter, st) ->
-          Timber.d("GMA-Init: Adapter=$adapter, ${st.description}, ${st.initializationState}, ${st.latency}ms")
-        }
-      }
-    }.start()
+    // MobileAds.initialize runs after consent, see AdsInitializer
 
 
     // theme setup

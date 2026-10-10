@@ -468,6 +468,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
       // Only request ads once consent allows it. startAds() also runs on the
       // consent-error path, where canRequestAds() may be false.
       if (adsAllowed()) {
+        com.appcoholic.ads.AdsInitializer.initializeOnce(this)
         newAdView.loadAd(AdRequest.Builder().build())
         loadInterstitial() // preload the sura-change interstitial, post-consent only
       }
