@@ -12,7 +12,7 @@ kotlin {
 
 android {
     namespace = "com.appcoholic.gpt"
-    compileSdk = 36
+    compileSdk = 37
 
     buildFeatures {
         buildConfig = true
