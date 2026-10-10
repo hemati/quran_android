@@ -63,11 +63,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.espresso.core)
 
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
 
     implementation("com.github.stfalcon-studio:Chatkit:0.4.1")
-    implementation("com.openai:openai-java:4.14.0")
+    implementation("com.openai:openai-java:4.80.0")
 
     implementation("io.noties.markwon:core:4.6.2")
 
