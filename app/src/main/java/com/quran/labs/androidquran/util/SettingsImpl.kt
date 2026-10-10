@@ -74,7 +74,8 @@ class SettingsImpl @Inject constructor(private val quranSettings: QuranSettings)
   }
 
   override suspend fun pageType(): String {
-    return quranSettings.pageType
+    // unset until the first page type is chosen; collected eagerly on fresh installs
+    return quranSettings.pageType.orEmpty()
   }
 
   override suspend fun setPageType(pageType: String) {
