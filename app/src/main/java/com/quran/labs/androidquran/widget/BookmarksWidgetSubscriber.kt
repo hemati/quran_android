@@ -5,10 +5,13 @@ import com.quran.data.di.AppScope
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Singleton that monitors for changes to bookmarks and triggers [BookmarksWidget] updates.
@@ -23,8 +26,14 @@ class BookmarksWidgetSubscriber @Inject constructor(
   private var isSubscribed = false
 
   fun subscribeBookmarksWidgetIfNecessary() {
-    if (bookmarksWidgetUpdater.checkForAnyBookmarksWidgets()) {
-      subscribeBookmarksWidget()
+    // getAppWidgetIds is a binder call, so keep it off the main thread during app start (ANRs)
+    scope.launch {
+      val hasWidgets = withContext(Dispatchers.IO) {
+        bookmarksWidgetUpdater.checkForAnyBookmarksWidgets()
+      }
+      if (hasWidgets) {
+        subscribeBookmarksWidget()
+      }
     }
   }
 

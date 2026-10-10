@@ -42,4 +42,8 @@
   <string name="watch_ad_and_reset_limit">Titta på hela annonsen för att återställa gränsen</string>
   <string name="ad_not_available">Annons inte tillgänglig. Försök igen senare.</string>
   <string name="or_label">eller</string>
+  <string name="chatview_message_too_long">Ditt meddelande är för långt. Korta ner det och försök igen.</string>
+  <string name="chatview_context_too_long_title">Chatten är för lång</string>
+  <string name="chatview_context_too_long_desc">Den här konversationen är för lång för QuranGPT. Återställ chatten för att starta en ny konversation.</string>
+  <string name="chatview_reset_chat">Återställ chatten</string>
 </resources>

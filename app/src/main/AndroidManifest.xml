@@ -66,6 +66,10 @@
     <activity android:name=".ShortcutsActivity"
               android:exported="true" />
     <activity
+        android:name=".ui.whatsnew.AnnouncementActivity"
+        android:theme="@style/QuranToolBarDayNight"
+        android:exported="false"/>
+    <activity
         android:name=".ui.QuranActivity"
         android:theme="@style/QuranToolBarDayNight"
         android:exported="false"/>
@@ -101,6 +105,11 @@
         android:theme="@style/QuranToolBarDayNight"
         android:configChanges="keyboardHidden|orientation|screenSize"
         android:parentActivityName=".QuranPreferenceActivity"
+        android:exported="false"/>
+
+    <activity
+        android:name=".ui.BookmarkListActivity"
+        android:theme="@style/QuranToolBarDayNight"
         android:exported="false"/>
 
     <activity

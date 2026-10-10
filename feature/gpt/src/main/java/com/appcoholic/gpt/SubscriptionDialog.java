@@ -383,6 +383,10 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   private void updatePriceUI() {
     TextView monthlyPriceTextView = findViewById(R.id.monthly_plan_price);
     TextView yearlyPriceTextView = findViewById(R.id.yearly_plan_price);
+    if (monthlyPriceTextView == null || yearlyPriceTextView == null) {
+      // prices can arrive before the dialog is shown; show() fills them in
+      return;
+    }
 
     monthlyPriceTextView.setText(monthlyPlanPrice);
     yearlyPriceTextView.setText(yearlyPlanPrice);
@@ -391,6 +395,10 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   @Override
   public void onPurchasesUpdated(List<Purchase> purchases) {
     for (Purchase purchase : purchases) {
+      // pending purchases (e.g. cash payments) must not unlock pro until they complete
+      if (purchase.getPurchaseState() != Purchase.PurchaseState.PURCHASED) {
+        continue;
+      }
       billingHelper.acknowledgePurchase(purchase);
       this.isGPTPro = true;
       if (subscriptionStatusChangedListener != null) {

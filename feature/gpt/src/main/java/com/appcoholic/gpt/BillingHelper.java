@@ -1,6 +1,8 @@
 package com.appcoholic.gpt;
 
 import android.app.Activity;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,7 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.PendingPurchasesParams;
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.QueryProductDetailsParams;
@@ -27,6 +30,7 @@ public class BillingHelper {
   private Activity activity;
   private BillingUpdatesListener billingUpdatesListener;
   private FirebaseAnalytics firebaseAnalytics;
+  private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
 
   public interface BillingUpdatesListener {
@@ -66,7 +70,9 @@ public class BillingHelper {
   private void setupBillingClient() {
     billingClient = BillingClient.newBuilder(activity)
         .setListener(this::handlePurchaseUpdate)
-        .enablePendingPurchases()
+        .enablePendingPurchases(
+            PendingPurchasesParams.newBuilder().enableOneTimeProducts().build())
+        .enableAutoServiceReconnection()
         .build();
   }
 
@@ -74,7 +80,15 @@ public class BillingHelper {
     if (billingClient == null) {
       setupBillingClient();
     }
-    if (!billingClient.isReady()) {
+    if (billingClient.isReady()) {
+      // a listener registered after the connection was set up never gets onBillingSetupFinished;
+      // post so callers that are still being constructed (getInstance) are fully initialized
+      mainHandler.post(() -> {
+        if (billingUpdatesListener != null) {
+          billingUpdatesListener.onBillingClientSetupFinished();
+        }
+      });
+    } else {
       billingClient.startConnection(billingClientStateListener);
     }
   }
@@ -82,8 +96,8 @@ public class BillingHelper {
   private final BillingClientStateListener billingClientStateListener = new BillingClientStateListener() {
     @Override
     public void onBillingServiceDisconnected() {
+      // the client reconnects on the next request (enableAutoServiceReconnection)
       Log.e(TAG, "Billing service disconnected");
-      // Optionally implement retry logic
     }
 
     @Override
@@ -155,10 +169,14 @@ public class BillingHelper {
         .setProductList(products)
         .build();
 
-    billingClient.queryProductDetailsAsync(params, (billingResult, productDetailsList) -> {
+    billingClient.queryProductDetailsAsync(params, (billingResult, result) -> {
       if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+        if (!result.getUnfetchedProductList().isEmpty()) {
+          Log.e(TAG, "Unfetched products: " + result.getUnfetchedProductList().size());
+        }
         if (listener != null) {
-          listener.onProductDetailsResponse(productDetailsList);
+          // listeners update the UI
+          mainHandler.post(() -> listener.onProductDetailsResponse(result.getProductDetailsList()));
         }
       } else {
         Log.e(TAG, "Error querying product details: " + billingResult.getDebugMessage());

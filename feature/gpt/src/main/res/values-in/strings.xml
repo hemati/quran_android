@@ -41,4 +41,8 @@
   <string name="watch_ad_and_reset_limit">Tonton iklan lengkap untuk mengatur ulang batas</string>
   <string name="ad_not_available">Iklan tidak tersedia. Silakan coba lagi nanti.</string>
   <string name="or_label">atau</string>
+  <string name="chatview_message_too_long">Pesan Anda terlalu panjang. Silakan persingkat dan coba lagi.</string>
+  <string name="chatview_context_too_long_title">Obrolan terlalu panjang</string>
+  <string name="chatview_context_too_long_desc">Percakapan ini terlalu panjang untuk QuranGPT. Atur ulang obrolan untuk memulai percakapan baru.</string>
+  <string name="chatview_reset_chat">Atur ulang obrolan</string>
 </resources>

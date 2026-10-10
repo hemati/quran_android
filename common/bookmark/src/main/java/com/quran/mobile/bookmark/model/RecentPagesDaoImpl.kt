@@ -8,8 +8,6 @@ import com.quran.data.dao.Settings
 import com.quran.data.di.AppCoroutineScope
 import com.quran.data.di.AppScope
 import com.quran.data.model.bookmark.RecentPage
-import com.quran.mobile.bookmark.sync.LocalDataChangeNotifier
-import com.quran.mobile.bookmark.sync.notifyLocalDataChanged
 import com.quran.mobile.bookmark.time.MobileSyncTimestampProvider
 import com.quran.shared.persistence.model.ReadingSession
 import com.quran.shared.persistence.repository.readingsession.repository.ReadingSessionsRepository
@@ -18,7 +16,6 @@ import com.quran.shared.persistence.util.toPlatform
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.SingleIn
-import kotlin.time.Instant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,6 +27,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.withContext
+import kotlin.time.Instant
 
 @SingleIn(AppScope::class)
 @ContributesBinding(AppScope::class)
@@ -37,7 +35,6 @@ class RecentPagesDaoImpl @Inject constructor(
   private val quranInfoProvider: () -> QuranInfo,
   private val settings: Settings,
   private val readingSessionsRepository: ReadingSessionsRepository,
-  private val localDataChangeNotifier: LocalDataChangeNotifier,
   private val timestampProvider: MobileSyncTimestampProvider,
   appCoroutineScope: AppCoroutineScope
 ) : RecentPagesDao {
@@ -68,68 +65,50 @@ class RecentPagesDaoImpl @Inject constructor(
 
   override suspend fun addRecentPage(page: Int) {
     val timestamp = timestampProvider.now()
-    val updated = withContext(Dispatchers.IO) {
+    withContext(Dispatchers.IO) {
       val quranInfo = quranInfoProvider()
-      val added = addRecentPageInternal(page, quranInfo, timestamp)
-      val pruned = pruneRecentSessions(quranInfo)
-      added || pruned
-    }
-    if (updated) {
-      localDataChangeNotifier.notifyLocalDataChanged()
+      addRecentPageInternal(page, quranInfo, timestamp)
+      pruneRecentSessions(quranInfo)
     }
   }
 
   override suspend fun replaceRecentRangeWithPage(deleteRangeStart: Int, deleteRangeEnd: Int, page: Int) {
     val timestamp = timestampProvider.now()
-    val updated = withContext(Dispatchers.IO) {
+    withContext(Dispatchers.IO) {
       val quranInfo = quranInfoProvider()
-      val deleted = deleteSessionsForPageRange(deleteRangeStart..deleteRangeEnd, quranInfo)
-      val added = addRecentPageInternal(page, quranInfo, timestamp)
-      val pruned = pruneRecentSessions(quranInfo)
-      deleted || added || pruned
-    }
-    if (updated) {
-      localDataChangeNotifier.notifyLocalDataChanged()
+      deleteSessionsForPageRange(deleteRangeStart..deleteRangeEnd, quranInfo)
+      addRecentPageInternal(page, quranInfo, timestamp)
+      pruneRecentSessions(quranInfo)
     }
   }
 
   override suspend fun removeRecentPages() {
-    val removed = withContext(Dispatchers.IO) {
+    withContext(Dispatchers.IO) {
       removeRecentPagesInternal()
-    }
-    if (removed) {
-      localDataChangeNotifier.notifyLocalDataChanged()
     }
   }
 
   override suspend fun replaceRecentPages(pages: List<RecentPage>) {
-    val updated = withContext(Dispatchers.IO) {
+    withContext(Dispatchers.IO) {
       val quranInfo = quranInfoProvider()
-      var didWrite = removeRecentPagesInternal()
+      removeRecentPagesInternal()
       pages
         .take(MAX_RECENT_PAGES)
         .asReversed()
         .forEach { recentPage ->
-          didWrite = addRecentPageInternal(
+          addRecentPageInternal(
             page = recentPage.page,
             quranInfo = quranInfo,
-            timestamp = recentPage.timestamp.toPlatformDateTime()
-          ) || didWrite
+            timestamp = recentPage.timestamp
+          )
         }
-      val pruned = pruneRecentSessions(quranInfo)
-      didWrite || pruned
-    }
-    if (updated) {
-      localDataChangeNotifier.notifyLocalDataChanged()
+      pruneRecentSessions(quranInfo)
     }
   }
 
   override suspend fun removeRecentsForPage(page: Int) {
-    val removed = withContext(Dispatchers.IO) {
+    withContext(Dispatchers.IO) {
       deleteSessionsForPageRange(page..page, quranInfoProvider())
-    }
-    if (removed) {
-      localDataChangeNotifier.notifyLocalDataChanged()
     }
   }
 
@@ -181,7 +160,7 @@ class RecentPagesDaoImpl @Inject constructor(
     return readingSessionsRepository.getReadingSessions()
       .sortedWith(
         compareByDescending<ReadingSession> { it.lastUpdated.toEpochMilliseconds() }
-          .thenByDescending { it.localId.toLongOrNull() ?: Long.MIN_VALUE }
+          .thenByDescending { it.id.toLongOrNull() ?: Long.MIN_VALUE }
       )
   }
 
@@ -191,12 +170,12 @@ class RecentPagesDaoImpl @Inject constructor(
     return sessions
       .sortedWith(
         compareByDescending<ReadingSession> { it.lastUpdated.toEpochMilliseconds() }
-          .thenByDescending { it.localId.toLongOrNull() ?: Long.MIN_VALUE }
+          .thenByDescending { it.id.toLongOrNull() ?: Long.MIN_VALUE }
       )
       .mapNotNull { session ->
         val page = pageForSession(session, quranInfo)
         if (page != null && seenPages.add(page)) {
-          RecentPage(page, session.lastUpdated.toEpochMilliseconds() / 1000)
+          RecentPage(page, session.lastUpdated)
         } else {
           null
         }

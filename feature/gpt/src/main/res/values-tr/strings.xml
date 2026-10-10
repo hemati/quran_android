@@ -40,4 +40,8 @@
   <string name="watch_ad_and_reset_limit">Sınırı sıfırlamak için tam reklamı izleyin</string>
   <string name="ad_not_available">Reklam mevcut değil. Lütfen daha sonra tekrar deneyin.</string>
   <string name="or_label">veya</string>
+  <string name="chatview_message_too_long">Mesajınız çok uzun. Lütfen kısaltın ve tekrar deneyin.</string>
+  <string name="chatview_context_too_long_title">Sohbet çok uzun</string>
+  <string name="chatview_context_too_long_desc">Bu sohbet QuranGPT için çok uzun. Yeni bir sohbet başlatmak için sohbeti sıfırlayın.</string>
+  <string name="chatview_reset_chat">Sohbeti sıfırla</string>
 </resources>

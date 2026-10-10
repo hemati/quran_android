@@ -40,4 +40,8 @@
   <string name="watch_ad_and_reset_limit">观看完整广告以重置限制</string>
   <string name="ad_not_available">广告不可用。请稍后再试。</string>
   <string name="or_label">或</string>
+  <string name="chatview_message_too_long">您的消息太长。请缩短后重试。</string>
+  <string name="chatview_context_too_long_title">聊天内容过长</string>
+  <string name="chatview_context_too_long_desc">此对话对 QuranGPT 来说太长了。请重置聊天以开始新的对话。</string>
+  <string name="chatview_reset_chat">重置聊天</string>
 </resources>

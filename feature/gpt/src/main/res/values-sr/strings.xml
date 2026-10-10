@@ -42,4 +42,8 @@
   <string name="watch_ad_and_reset_limit">Гледајте комплетну рекламу да бисте ресетовали границу</string>
   <string name="ad_not_available">Реклама није доступна. Покушајте поново касније.</string>
   <string name="or_label">или</string>
+  <string name="chatview_message_too_long">Ваша порука је предугачка. Молимо скратите је и покушајте поново.</string>
+  <string name="chatview_context_too_long_title">Разговор је предугачак</string>
+  <string name="chatview_context_too_long_desc">Овај разговор је предугачак за QuranGPT. Ресетујте разговор да бисте започели нови.</string>
+  <string name="chatview_reset_chat">Ресетуј разговор</string>
 </resources>

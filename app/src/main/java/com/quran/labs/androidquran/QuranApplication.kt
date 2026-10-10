@@ -10,6 +10,7 @@ import com.quran.labs.androidquran.util.SharedPrefHelper
 import com.quran.labs.androidquran.util.RecordingLogTree
 import com.quran.labs.androidquran.util.ThemeUtil
 import com.quran.labs.androidquran.widget.BookmarksWidgetSubscriber
+import com.quran.mobile.bookmark.migration.PreReleaseMobileSyncUpgrade
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 
@@ -35,6 +36,8 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider {
   override fun onCreate() {
     super.onCreate()
     setupTimber()
+    // Rattil: must run before anything opens the mobile-sync database
+    PreReleaseMobileSyncUpgrade.moveAsideIfOutdated(this)
     applicationComponent = initializeInjector()
     applicationComponent.inject(this)
     initializeWorkManager()
@@ -45,13 +48,7 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider {
       .setTestDeviceIds(listOf("1A433D1C8B6C98FF184A4694E09AC80F"))
       .build()
     MobileAds.setRequestConfiguration(requestConfiguration)
-    Thread {
-      MobileAds.initialize(this@QuranApplication) { status ->
-        status.adapterStatusMap.forEach { (adapter, st) ->
-          Timber.d("GMA-Init: Adapter=$adapter, ${st.description}, ${st.initializationState}, ${st.latency}ms")
-        }
-      }
-    }.start()
+    // MobileAds.initialize runs after consent, see AdsInitializer
 
 
     // theme setup

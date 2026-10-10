@@ -71,7 +71,7 @@ dependencies {
 
     implementation("io.noties.markwon:core:4.6.2")
 
-    implementation("com.android.billingclient:billing:7.0.0")
+    implementation("com.android.billingclient:billing:9.1.0")
 
     implementation("com.google.android.gms:play-services-ads:25.0.0")
 

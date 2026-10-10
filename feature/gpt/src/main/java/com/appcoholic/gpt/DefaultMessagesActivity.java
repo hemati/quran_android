@@ -32,6 +32,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigFetchThrottledException;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
@@ -61,6 +62,7 @@ import com.google.android.ump.UserMessagingPlatform;
 import android.util.DisplayMetrics;
 import android.widget.FrameLayout;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,6 +94,9 @@ public class DefaultMessagesActivity extends AppCompatActivity
   private static final String TAG = "DefaultMessagesActivity";
   private static final String SENDER_ID = "User";
   private static final int MAX_CHAT_HISTORY = 6;
+  // Size guard in characters (no tokenizer on device); can be overridden via Remote Config
+  private static final int DEFAULT_MAX_MESSAGE_CHARS = 4000;
+  private static final int DEFAULT_MAX_CONTEXT_CHARS = 12000;
   private static int MAX_MESSAGES_PER_DAY = 6;
 
   private MessagesListAdapter<Message> messagesAdapter;
@@ -99,6 +104,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
   private MessagesList messagesList;
   private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
   private FirebaseAnalytics firebaseAnalytics;
+  private int maxMessageChars = DEFAULT_MAX_MESSAGE_CHARS;
+  private int maxContextChars = DEFAULT_MAX_CONTEXT_CHARS;
   private FirebaseRemoteConfig mFirebaseRemoteConfig;
   private MessageQuotaManager quotaManager;
 
@@ -212,40 +219,60 @@ public class DefaultMessagesActivity extends AppCompatActivity
     if (isNetworkAvailable()) {
       mFirebaseRemoteConfig.fetchAndActivate()
           .addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()) {
-              // Fetch and activate succeeded
-              String openAiApiKey = mFirebaseRemoteConfig.getString("openai_api_key");
-              String _modelKey = mFirebaseRemoteConfig.getString("openai_model_key");
-              if (!modelKey.isEmpty())
-                this.modelKey = _modelKey;
-              initializeOpenAIClient(openAiApiKey);
-
-              long _max_messages_per_day = mFirebaseRemoteConfig.getLong("max_messages_per_day");
-              if (_max_messages_per_day > 0) {
-                MAX_MESSAGES_PER_DAY = (int) _max_messages_per_day;
-                quotaManager.setMaxMessagesPerDay(MAX_MESSAGES_PER_DAY);
-              }
-
-              // Fetch and set the Vector Store ID for Quran text
-              String _vectorStoreId = mFirebaseRemoteConfig.getString("vector_store_id");
-              if (!_vectorStoreId.isEmpty()) {
-                vectorStoreId = _vectorStoreId;
-              }
-            } else {
-              // Fetch failed, handle specific reasons
+            if (!task.isSuccessful()) {
               Exception exception = task.getException();
-              if (exception != null) {
-                Log.e(TAG, "Fetch failed: " + exception.getMessage());
+              Log.e(TAG, "Fetch failed", exception);
+              // throttling and network failures are expected, the last activated config still works
+              if (exception != null
+                  && !(exception instanceof FirebaseRemoteConfigFetchThrottledException)
+                  && !isNetworkError(exception)) {
                 FirebaseCrashlytics.getInstance().recordException(exception);
               }
-              FirebaseCrashlytics.getInstance().recordException(new Exception("Fetch failed"));
             }
+            applyConfig();
           });
     } else {
       Log.d(TAG, "No internet connection");
-      //FirebaseCrashlytics.getInstance().recordException(new Exception("No internet connection"));
+      applyConfig();
       Toast.makeText(this, "No internet connection", Toast.LENGTH_LONG).show();
     }
+  }
+
+  private void applyConfig() {
+    String openAiApiKey = mFirebaseRemoteConfig.getString("openai_api_key");
+    String _modelKey = mFirebaseRemoteConfig.getString("openai_model_key");
+    if (!_modelKey.isEmpty())
+      this.modelKey = _modelKey;
+    if (!openAiApiKey.isEmpty())
+      initializeOpenAIClient(openAiApiKey);
+
+    long _maxMessageChars = mFirebaseRemoteConfig.getLong("openai_max_message_chars");
+    if (_maxMessageChars > 0)
+      maxMessageChars = (int) _maxMessageChars;
+    long _maxContextChars = mFirebaseRemoteConfig.getLong("openai_max_context_chars");
+    if (_maxContextChars > 0)
+      maxContextChars = (int) _maxContextChars;
+
+    long _max_messages_per_day = mFirebaseRemoteConfig.getLong("max_messages_per_day");
+    if (_max_messages_per_day > 0) {
+      MAX_MESSAGES_PER_DAY = (int) _max_messages_per_day;
+      quotaManager.setMaxMessagesPerDay(MAX_MESSAGES_PER_DAY);
+    }
+
+    // Fetch and set the Vector Store ID for Quran text
+    String _vectorStoreId = mFirebaseRemoteConfig.getString("vector_store_id");
+    if (!_vectorStoreId.isEmpty()) {
+      vectorStoreId = _vectorStoreId;
+    }
+  }
+
+  private static boolean isNetworkError(Throwable error) {
+    for (Throwable t = error; t != null; t = t.getCause()) {
+      if (t instanceof IOException) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private void initializeOpenAIClient(String openAiApiKey) {
@@ -350,13 +377,32 @@ public class DefaultMessagesActivity extends AppCompatActivity
 
   @Override
   public boolean onSubmit(CharSequence input) {
+    if (client == null) {
+      // config isn't loaded yet; keep the input and the quota so the user can retry
+      Log.e(TAG, "OpenAI client is not initialized");
+      fetchAndActivateConfig();
+      Toast.makeText(this, "QuranGPT is not available at the moment. Please try again later.", Toast.LENGTH_LONG).show();
+      return false;
+    }
+
+    String messageText = input.toString();
+    // Size checks before the quota, so a rejected message doesn't count against the daily limit.
+    // Returning false keeps the text in the input field.
+    if (messageText.length() > maxMessageChars) {
+      showMessageTooLongDialog();
+      return false;
+    }
+    if (getContextLength(messageText) > maxContextChars) {
+      showChatTooLongDialog();
+      return false;
+    }
+
     // Before sending a message
     if (!isUserSubscribed() && !quotaManager.incrementAndCheck()) {
       Toast.makeText(this, getString(R.string.chatview_quota_reached), Toast.LENGTH_LONG).show();
       subscriptionDialog.show();
       return false;
     } else {
-      String messageText = input.toString();
       Message message = new Message(getRandomId(), new User(SENDER_ID, SENDER_ID, null, false), messageText);
       message.setCreatedAt(new Date()); // WICHTIG: createdAt setzen für korrekte Sortierung
 
@@ -375,29 +421,25 @@ public class DefaultMessagesActivity extends AppCompatActivity
       isTypingMessage.setCreatedAt(new Date());
       runOnUiThread(() -> messagesAdapter.addToStart(isTypingMessage, true));
 
-      if (client != null) {
-        // Use Responses API with File Search for grounded Quran answers
-        ResponseCreateParams params = buildResponseParams(chatMessagesContext);
+      // Use Responses API with File Search for grounded Quran answers
+      ResponseCreateParams params = buildResponseParams(chatMessagesContext);
 
-        client.responses().create(params)
-            .thenAcceptAsync(this::handleResponse)
-            .exceptionally(error -> {
-              Log.e(TAG, "Failed to get response", error);
+      client.responses().create(params)
+          .thenAcceptAsync(this::handleResponse)
+          .exceptionally(error -> {
+            Log.e(TAG, "Failed to get response", error);
+            if (!isNetworkError(error)) {
               FirebaseCrashlytics.getInstance().recordException(error);
-              runOnUiThread(() -> {
-                messagesAdapter.delete(isTypingMessage);
-                Toast.makeText(this, "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
-              });
-              return null;
-            })
-            .thenRunAsync(() -> {
-              runOnUiThread(() -> messagesAdapter.delete(isTypingMessage));
+            }
+            runOnUiThread(() -> {
+              messagesAdapter.delete(isTypingMessage);
+              Toast.makeText(this, "QuranGPT is not available at the moment. Please try again later.", Toast.LENGTH_LONG).show();
             });
-      } else {
-        Log.e(TAG, "OpenAI client is not initialized");
-        FirebaseCrashlytics.getInstance().recordException(new Exception("OpenAI client is not initialized"));
-        Toast.makeText(this, "QuranGPT is not available at the moment. Please try again later.", Toast.LENGTH_LONG).show();
-      }
+            return null;
+          })
+          .thenRunAsync(() -> {
+            runOnUiThread(() -> messagesAdapter.delete(isTypingMessage));
+          });
       logFirebaseEvent("message_sent", message);
       return true;
     }
@@ -451,6 +493,41 @@ public class DefaultMessagesActivity extends AppCompatActivity
       }
     }
     return context; // guaranteed: oldest -> newest
+  }
+
+  /** Characters that would be sent: system prompt, the history getChatContextFromDb() keeps and the new message. */
+  private int getContextLength(String newMessageText) {
+    int length = SYSTEM_INSTRUCTION.length() + newMessageText.length();
+    for (Message m : db.getLastMessages(MAX_CHAT_HISTORY - 1)) {
+      if (m.getText() != null) {
+        length += m.getText().length();
+      }
+    }
+    return length;
+  }
+
+  private void showMessageTooLongDialog() {
+    firebaseAnalytics.logEvent("chat_message_too_long", null);
+    new AlertDialog.Builder(this)
+        .setMessage(R.string.chatview_message_too_long)
+        .setPositiveButton(android.R.string.ok, null)
+        .show();
+  }
+
+  private void showChatTooLongDialog() {
+    firebaseAnalytics.logEvent("chat_context_too_long", null);
+    new AlertDialog.Builder(this)
+        .setTitle(R.string.chatview_context_too_long_title)
+        .setMessage(R.string.chatview_context_too_long_desc)
+        .setPositiveButton(R.string.chatview_reset_chat, (dialog, which) -> resetChat())
+        .setNegativeButton(android.R.string.cancel, null)
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .show();
+  }
+
+  private void resetChat() {
+    messagesAdapter.clear();
+    db.deleteAllMessages();
   }
 
   private void addMessageToFirestore(Message message) {
@@ -563,8 +640,7 @@ public class DefaultMessagesActivity extends AppCompatActivity
               R.string.chatview_delete_selected_confirmation_desc))
           .setPositiveButton(android.R.string.yes, (dialog, which) -> {
             if (messagesAdapter.getSelectedMessages().isEmpty()) {
-              messagesAdapter.clear();
-              db.deleteAllMessages();
+              resetChat();
             } else {
               for (Message message : messagesAdapter.getSelectedMessages()) {
                 messagesAdapter.delete(message);

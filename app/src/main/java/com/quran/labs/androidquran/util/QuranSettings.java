@@ -209,6 +209,24 @@ public class QuranSettings {
     prefs.edit().putBoolean(Constants.PREF_SHOW_DATE, isDateShown).apply();
   }
 
+  public boolean isHighlightsCollapsed(boolean defaultValue) {
+    return prefs.getBoolean(Constants.PREF_HIGHLIGHTS_COLLAPSED, defaultValue);
+  }
+
+  public void setHighlightsCollapsed(boolean isCollapsed) {
+    prefs.edit().putBoolean(Constants.PREF_HIGHLIGHTS_COLLAPSED, isCollapsed).apply();
+  }
+
+  public Set<String> getCollapsedCollections() {
+    return prefs.getStringSet(Constants.PREF_COLLAPSED_COLLECTIONS, Collections.emptySet());
+  }
+
+  public void setCollapsedCollections(Set<String> collapsedCollections) {
+    prefs.edit()
+        .putStringSet(Constants.PREF_COLLAPSED_COLLECTIONS, new HashSet<>(collapsedCollections))
+        .apply();
+  }
+
   public boolean isQuranSplitWithTranslation() {
     return prefs.getBoolean(Constants.PREF_SPLIT_PAGE_AND_TRANSLATION, false);
   }
@@ -290,12 +308,34 @@ public class QuranSettings {
         .putBoolean(Constants.PREF_DID_PRESENT_PERMISSIONS_DIALOG, true).apply();
   }
 
+  /** Marks the education as seen and returns whether this is its first presentation. */
+  public boolean markMovableBookmarkEducationSeen() {
+    final boolean isFirstPresentation = !perInstallationPrefs.getBoolean(
+        Constants.PREF_HAS_SEEN_MOVABLE_BOOKMARK_EDUCATION, false);
+    if (isFirstPresentation) {
+      perInstallationPrefs.edit()
+          .putBoolean(Constants.PREF_HAS_SEEN_MOVABLE_BOOKMARK_EDUCATION, true).apply();
+    }
+    return isFirstPresentation;
+  }
+
   public String getAppCustomLocation() {
     final String path = perInstallationPrefs.getString(Constants.PREF_APP_LOCATION, getDefaultLocation());
     if (path == null) {
       return getDefaultLocation();
     } else {
       return path;
+    }
+  }
+
+  public boolean shouldShowAnnouncement(int announcementId) {
+    return perInstallationPrefs.getInt(Constants.PREF_LAST_SEEN_ANNOUNCEMENT, 0) < announcementId;
+  }
+
+  public void markAnnouncementSeen(int announcementId) {
+    if (shouldShowAnnouncement(announcementId)) {
+      perInstallationPrefs.edit()
+          .putInt(Constants.PREF_LAST_SEEN_ANNOUNCEMENT, announcementId).apply();
     }
   }
 

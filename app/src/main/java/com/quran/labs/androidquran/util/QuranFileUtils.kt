@@ -31,6 +31,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import java.io.InterruptedIOException
 import java.text.NumberFormat
 import java.util.Collections
 import java.util.Locale
@@ -342,6 +343,9 @@ class QuranFileUtils @Inject constructor(
       }
     } catch (_: InterruptedException) {
       // do nothing, this is expected if the job is canceled
+    } catch (_: InterruptedIOException) {
+      // the page load was disposed, so retrying is pointless
+      return Response(Response.ERROR_DOWNLOADING_ERROR)
     } catch (ioe: IOException) {
       Timber.e(ioe, "exception downloading file")
     } finally {
@@ -549,7 +553,7 @@ class QuranFileUtils @Inject constructor(
       if (ayahInfoFile.exists()) {
         val translationsFile =
           File(base, QuranDataProvider.QURAN_ARABIC_DATABASE)
-        if (base.exists() || base.mkdirs() == true) {
+        if (base.exists() || base.mkdirs()) {
           try {
             copyFile(ayahInfoFile, translationsFile)
             return true

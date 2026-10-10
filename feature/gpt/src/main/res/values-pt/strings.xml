@@ -41,4 +41,8 @@
   <string name="watch_ad_and_reset_limit">Assista ao anúncio completo para redefinir o limite</string>
   <string name="ad_not_available">Anúncio não disponível. Por favor, tente novamente mais tarde.</string>
   <string name="or_label">ou</string>
+  <string name="chatview_message_too_long">Sua mensagem é muito longa. Encurte-a e tente novamente.</string>
+  <string name="chatview_context_too_long_title">Chat muito longo</string>
+  <string name="chatview_context_too_long_desc">Esta conversa ficou longa demais para o QuranGPT. Redefina o chat para iniciar uma nova conversa.</string>
+  <string name="chatview_reset_chat">Redefinir chat</string>
 </resources>

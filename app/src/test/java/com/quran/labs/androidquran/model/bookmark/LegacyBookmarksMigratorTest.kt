@@ -15,6 +15,7 @@ import com.quran.mobile.bookmark.importdata.MobileSyncImporter
 import com.quran.mobile.bookmark.migration.LegacyBookmarkMigrationNormalizer
 import com.quran.mobile.bookmark.migration.LegacyBookmarksDataSource
 import com.quran.mobile.bookmark.migration.LegacyBookmarksSnapshot
+import com.quran.mobile.bookmark.migration.PreReleaseMobileSyncUpgrade
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -50,7 +51,8 @@ class LegacyBookmarksMigratorTest {
       quranSettings = quranSettings,
       legacyBookmarksDataSource = dataSource,
       normalizer = LegacyBookmarkMigrationNormalizer(context, QuranInfo(MadaniDataSource())),
-      mobileSyncImporter = importer
+      mobileSyncImporter = importer,
+      preReleaseMobileSyncUpgrade = PreReleaseMobileSyncUpgrade(context, importer)
     )
   }
 
@@ -127,10 +129,12 @@ class LegacyBookmarksMigratorTest {
   private fun snapshotWithBookmark(): LegacyBookmarksSnapshot {
     return LegacyBookmarksSnapshot(
       tags = emptyList(),
-      bookmarks = listOf(Bookmark(1L, 2, 255, page = 50, timestamp = 1000L)),
+      bookmarks = listOf(Bookmark(legacyBookmarkId(1L), 2, 255, page = 50, timestamp = 1000L)),
       recentPages = emptyList()
     )
   }
+
+  private fun legacyBookmarkId(id: Long): String = id.toString()
 
   private class FakeLegacyBookmarksDataSource : LegacyBookmarksDataSource {
     var snapshot: LegacyBookmarksSnapshot = LegacyBookmarksSnapshot(
@@ -169,7 +173,7 @@ class LegacyBookmarksMigratorTest {
         collectionsImported = data.collections.size,
         collectionBookmarksImported = data.collectionBookmarks.size,
         readingSessionsImported = data.readingSessions.size,
-        readingBookmarkImported = data.readingBookmark != null
+        readingBookmarkImported = 0
       )
     }
   }

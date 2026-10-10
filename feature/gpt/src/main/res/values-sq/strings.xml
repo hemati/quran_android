@@ -42,4 +42,8 @@
   <string name="watch_ad_and_reset_limit">Shikoni reklamën e plotë për të rivendosur kufirin</string>
   <string name="ad_not_available">Reklama nuk është e disponueshme. Ju lutemi provoni përsëri më vonë.</string>
   <string name="or_label">ose</string>
+  <string name="chatview_message_too_long">Mesazhi juaj është shumë i gjatë. Ju lutemi shkurtojeni dhe provoni përsëri.</string>
+  <string name="chatview_context_too_long_title">Biseda është shumë e gjatë</string>
+  <string name="chatview_context_too_long_desc">Kjo bisedë është shumë e gjatë për QuranGPT. Rivendosni bisedën për të filluar një bisedë të re.</string>
+  <string name="chatview_reset_chat">Rivendos bisedën</string>
 </resources>
