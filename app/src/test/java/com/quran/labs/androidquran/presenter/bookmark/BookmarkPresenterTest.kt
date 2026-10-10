@@ -1,38 +1,58 @@
 package com.quran.labs.androidquran.presenter.bookmark
 
+import android.content.Context
+import android.hardware.display.DisplayManager
+import android.view.Display
 import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
+import com.quran.data.core.QuranInfo
 import com.quran.data.dao.BookmarkSortOrder
+import com.quran.data.model.SuraAyah
+import com.quran.data.model.bookmark.AyahReadingBookmark
 import com.quran.data.model.bookmark.Bookmark
+import com.quran.data.model.bookmark.EmptyReadingBookmark
+import com.quran.data.model.bookmark.PageReadingBookmark
+import com.quran.data.model.bookmark.ReadingBookmarkType
 import com.quran.data.model.bookmark.RecentPage
 import com.quran.data.model.bookmark.Tag
+import com.quran.data.model.highlight.Highlight
+import com.quran.data.model.highlight.HighlightColor
+import com.quran.data.source.DisplaySize
 import com.quran.labs.androidquran.base.TestApplication
+import com.quran.labs.androidquran.dao.bookmark.AyahMark
 import com.quran.labs.androidquran.dao.bookmark.BookmarkRawResult
 import com.quran.labs.androidquran.dao.bookmark.BookmarkRowData
+import com.quran.labs.androidquran.database.DatabaseHandler
 import com.quran.labs.androidquran.fakes.FakeBookmarksDao
+import com.quran.labs.androidquran.fakes.FakeHighlightsDao
+import com.quran.labs.androidquran.fakes.FakePageProvider
+import com.quran.labs.androidquran.fakes.FakeReadingBookmarksDao
 import com.quran.labs.androidquran.fakes.FakeRecentPagesDao
+import com.quran.labs.androidquran.model.translation.ArabicDatabaseUtils
+import com.quran.labs.androidquran.pages.data.madani.MadaniDataSource
 import com.quran.labs.androidquran.ui.helpers.QuranRow
+import com.quran.labs.androidquran.util.QuranFileUtils
+import com.quran.labs.androidquran.util.QuranScreenInfo
 import com.quran.labs.androidquran.util.QuranSettings
-import com.quran.labs.awaitTerminalEvent
-import com.quran.labs.test.RxSchedulerRule
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import kotlin.time.Instant
 
 @Config(application = TestApplication::class, sdk = [33])
 @RunWith(RobolectricTestRunner::class)
 class BookmarkPresenterTest {
 
-  @get:Rule
-  val rxRule = RxSchedulerRule()
-
   private lateinit var quranSettings: QuranSettings
   private lateinit var fakeBookmarksDao: FakeBookmarksDao
   private lateinit var fakeRecentPagesDao: FakeRecentPagesDao
+  private lateinit var fakeReadingBookmarksDao: FakeReadingBookmarksDao
+  private lateinit var fakeHighlightsDao: FakeHighlightsDao
 
   @Before
   fun setupTest() {
@@ -40,6 +60,8 @@ class BookmarkPresenterTest {
     quranSettings = QuranSettings.getInstance(ApplicationProvider.getApplicationContext())
     fakeBookmarksDao = FakeBookmarksDao()
     fakeRecentPagesDao = FakeRecentPagesDao()
+    fakeReadingBookmarksDao = FakeReadingBookmarksDao()
+    fakeHighlightsDao = FakeHighlightsDao()
   }
 
   @After
@@ -54,8 +76,10 @@ class BookmarkPresenterTest {
 
     val result = getBookmarkResultByDateAndValidate(makeBookmarkPresenter())
 
-    assertThat(result.tagMap).containsExactly(1L, TAGS[0], 2L, TAGS[1])
-    assertThat(result.rows.first()).isInstanceOf(BookmarkRowData.AyahBookmarksHeader::class.java)
+    // the default collection is a tag like any other now, so it is in the map too
+    assertThat(result.tagMap).containsAtLeast("tag-1", TAGS[0], "tag-2", TAGS[1])
+    assertThat(result.tagMap.values.single { it.isDefault }.name).isEqualTo("Favorites")
+    assertThat(result.rows.filterIsInstance<BookmarkRowData.AyahBookmarksHeader>()).hasSize(1)
     assertThat(result.rows.filterIsInstance<BookmarkRowData.BookmarkItem>()).hasSize(2)
   }
 
@@ -67,7 +91,11 @@ class BookmarkPresenterTest {
 
     assertThat(result.rows.filterIsInstance<BookmarkRowData.PageBookmarksHeader>()).isEmpty()
     assertThat(result.rows.filterIsInstance<BookmarkRowData.BookmarkItem>())
-      .containsExactly(BookmarkRowData.BookmarkItem(AYAH_BOOKMARKS.first(), null))
+      .containsExactly(
+        BookmarkRowData.BookmarkItem(
+          taggedBookmark(AYAH_BOOKMARKS.first()), null, AyahMark.Unhighlighted
+        )
+      )
   }
 
   @Test
@@ -85,6 +113,87 @@ class BookmarkPresenterTest {
   }
 
   @Test
+  fun `renders reading bookmark ahead of recent pages`() {
+    val readingBookmark = PageReadingBookmark(ReadingBookmarkType.PURPLE, 42, Instant.fromEpochSeconds(300))
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+    fakeRecentPagesDao.setRecentPages(RECENT_PAGES)
+    fakeReadingBookmarksDao.setReadingBookmark(readingBookmark)
+
+    val result = getBookmarkResultByDateAndValidate(makeBookmarkPresenter())
+
+    assertThat(result.rows.take(5)).containsExactly(
+      BookmarkRowData.ReadingBookmarkHeader(1),
+      BookmarkRowData.ReadingBookmarkItem(readingBookmark),
+      BookmarkRowData.RecentPageHeader(RECENT_PAGES.size),
+      BookmarkRowData.RecentPage(RECENT_PAGES[0]),
+      BookmarkRowData.RecentPage(RECENT_PAGES[1])
+    ).inOrder()
+  }
+
+  @Test
+  fun `renders every placed reading bookmark in pin order and leaves unplaced ones out`() {
+    val blue =
+      AyahReadingBookmark(ReadingBookmarkType.BLUE, 2, 255, Instant.fromEpochSeconds(400))
+    val green = PageReadingBookmark(ReadingBookmarkType.GREEN, 77, Instant.fromEpochSeconds(300))
+    fakeReadingBookmarksDao = FakeReadingBookmarksDao(
+      blue,
+      EmptyReadingBookmark(ReadingBookmarkType.PURPLE, Instant.fromEpochSeconds(500)),
+      green
+    )
+    fakeRecentPagesDao.setRecentPages(RECENT_PAGES)
+
+    val result = getBookmarkResultByDateAndValidate(makeBookmarkPresenter())
+
+    assertThat(result.rows.take(4)).containsExactly(
+      BookmarkRowData.ReadingBookmarkHeader(2),
+      BookmarkRowData.ReadingBookmarkItem(green),
+      BookmarkRowData.ReadingBookmarkItem(blue),
+      BookmarkRowData.RecentPageHeader(RECENT_PAGES.size)
+    ).inOrder()
+  }
+
+  @Test
+  fun `omits the reading bookmarks section when no pin is placed`() {
+    fakeReadingBookmarksDao = FakeReadingBookmarksDao(
+      EmptyReadingBookmark(ReadingBookmarkType.GREEN, Instant.fromEpochSeconds(500))
+    )
+    fakeRecentPagesDao.setRecentPages(RECENT_PAGES)
+
+    val result = getBookmarkResultByDateAndValidate(makeBookmarkPresenter())
+
+    assertThat(result.rows.first()).isEqualTo(BookmarkRowData.RecentPageHeader(RECENT_PAGES.size))
+  }
+
+  @Test
+  fun `ayah bookmarks carry their ayah text`() {
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS + PAGE_BOOKMARK)
+
+    val presenter = makeBookmarkPresenter(fakeArabicDatabaseUtils())
+    val result = getBookmarkResultByDateAndValidate(presenter)
+
+    val quranInfo = QuranInfo(MadaniDataSource())
+    assertThat(
+      result.rows.filterIsInstance<BookmarkRowData.BookmarkItem>()
+        .associate { it.bookmark.id to it.bookmark.ayahText }
+    ).containsExactly(
+      "bookmark-42", "verse ${quranInfo.getAyahId(46, 1)}",
+      "bookmark-2", "verse ${quranInfo.getAyahId(2, 4)}"
+    )
+  }
+
+  @Test
+  fun `ayah bookmarks fall back to sura and ayah without the arabic database`() {
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+
+    // the default presenter's arabic database throws, as a missing one would
+    val result = getBookmarkResultByDateAndValidate(makeBookmarkPresenter())
+
+    assertThat(
+      result.rows.filterIsInstance<BookmarkRowData.BookmarkItem>().map { it.bookmark.ayahText }
+    ).containsExactly(null, null)
+  }
+
+  @Test
   fun `renders grouped tag rows`() {
     fakeBookmarksDao.setTags(TAGS)
     fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
@@ -92,13 +201,392 @@ class BookmarkPresenterTest {
     val result = getBookmarkResultAndValidate(makeBookmarkPresenter(), BookmarkSortOrder.SORT_DATE_ADDED, true)
 
     assertThat(result.rows).containsAtLeast(
-      BookmarkRowData.TagHeader(TAGS[0]),
-      BookmarkRowData.BookmarkItem(AYAH_BOOKMARKS[0], 1),
-      BookmarkRowData.TagHeader(TAGS[1]),
-      BookmarkRowData.BookmarkItem(AYAH_BOOKMARKS[0], 2),
-      BookmarkRowData.NotTaggedHeader,
-      BookmarkRowData.BookmarkItem(AYAH_BOOKMARKS[1], null),
+      BookmarkRowData.TagHeader(TAGS[0], 1, false),
+      BookmarkRowData.BookmarkItem(taggedBookmark(AYAH_BOOKMARKS[0]), "tag-1"),
+      BookmarkRowData.TagHeader(TAGS[1], 1, false),
+      BookmarkRowData.BookmarkItem(taggedBookmark(AYAH_BOOKMARKS[0]), "tag-2"),
     ).inOrder()
+  }
+
+  @Test
+  fun `default collection is an ordinary header, listed above the named collections`() {
+    fakeBookmarksDao.setTags(TAGS)
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+
+    val result = getBookmarkResultAndValidate(
+      makeBookmarkPresenter(), BookmarkSortOrder.SORT_DATE_ADDED, true
+    )
+
+    val headers = result.rows.filterIsInstance<BookmarkRowData.TagHeader>()
+    assertThat(headers.map { it.tag.name })
+      .containsExactly("Favorites", "Review", "Important")
+      .inOrder()
+    assertThat(headers.first().tag.isDefault).isTrue()
+    assertThat(headers.first().tag.isSystem).isTrue()
+    // every ayah bookmark is in the default collection in the fake, so nothing is left over
+    assertThat(headers.first().count).isEqualTo(2)
+  }
+
+  @Test
+  fun `system collection headers offer no rename or delete`() {
+    val presenter = makeBookmarkPresenter()
+
+    val systemHeader = presenter.getContextualOperationsForItems(
+      listOf(
+        QuranRow.Builder()
+          .withType(QuranRow.BOOKMARK_HEADER)
+          .withTagId("fake-default")
+          .withSystemCollection(true)
+          .build()
+      )
+    )
+
+    assertThat(systemHeader.asList()).containsExactly(false, false, false).inOrder()
+  }
+
+  @Test
+  fun `collapsed collection hides its bookmarks but keeps its header and count`() {
+    fakeBookmarksDao.setTags(TAGS)
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+    val presenter = makeBookmarkPresenter()
+
+    presenter.toggleCollectionCollapsed("tag-1")
+    val result = getBookmarkResultAndValidate(
+      presenter, BookmarkSortOrder.SORT_DATE_ADDED, true
+    )
+
+    assertThat(result.rows).containsAtLeast(
+      BookmarkRowData.TagHeader(TAGS[0], 1, true),
+      BookmarkRowData.TagHeader(TAGS[1], 1, false),
+      BookmarkRowData.BookmarkItem(taggedBookmark(AYAH_BOOKMARKS[0]), "tag-2"),
+    ).inOrder()
+    assertThat(result.rows).doesNotContain(
+      BookmarkRowData.BookmarkItem(taggedBookmark(AYAH_BOOKMARKS[0]), "tag-1")
+    )
+    assertThat(quranSettings.collapsedCollections).containsExactly("tag-1")
+  }
+
+  @Test
+  fun `deleting a bookmark drops the collection count while the undo window is open`() {
+    fakeBookmarksDao.setTags(TAGS)
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+    quranSettings.bookmarksGroupedByTags = true
+    val presenter = makeBookmarkPresenter()
+    val current = getBookmarkResultAndValidate(
+      presenter, BookmarkSortOrder.SORT_DATE_ADDED, true
+    )
+
+    val preview = presenter.previewAfterDeletion(
+      current,
+      listOf(
+        QuranRow.Builder()
+          .withType(QuranRow.AYAH_BOOKMARK)
+          .withBookmark(taggedBookmark(AYAH_BOOKMARKS[0]))
+          .withTagId("tag-1")
+          .build()
+      )
+    )
+
+    assertThat(preview.rows).contains(BookmarkRowData.TagHeader(TAGS[0], 0, false))
+    assertThat(preview.rows).contains(BookmarkRowData.TagHeader(TAGS[1], 1, false))
+    assertThat(preview.rows).doesNotContain(
+      BookmarkRowData.BookmarkItem(taggedBookmark(AYAH_BOOKMARKS[0]), "tag-1")
+    )
+  }
+
+  @Test
+  fun `a selected reading bookmark can only be deleted, alone or alongside other rows`() {
+    val presenter = makeBookmarkPresenter()
+    val readingBookmark = readingBookmarkRow(ReadingBookmarkType.GREEN)
+
+    val alone = presenter.getContextualOperationsForItems(listOf(readingBookmark))
+    val withBookmark = presenter.getContextualOperationsForItems(
+      listOf(readingBookmark, QuranRow.Builder().withType(QuranRow.AYAH_BOOKMARK).build())
+    )
+    val withHeader = presenter.getContextualOperationsForItems(
+      listOf(
+        readingBookmark,
+        QuranRow.Builder().withType(QuranRow.BOOKMARK_HEADER).withTagId("tag-1").build()
+      )
+    )
+
+    assertThat(alone.asList()).containsExactly(false, true, false).inOrder()
+    assertThat(withBookmark.asList()).containsExactly(false, true, false).inOrder()
+    assertThat(withHeader.asList()).containsExactly(false, true, false).inOrder()
+  }
+
+  @Test
+  fun `an unplaced reading bookmark row offers nothing`() {
+    val presenter = makeBookmarkPresenter()
+
+    val result = presenter.getContextualOperationsForItems(
+      listOf(QuranRow.Builder().withType(QuranRow.PAGE_READING_BOOKMARK).build())
+    )
+
+    assertThat(result.asList()).containsExactly(false, false, false).inOrder()
+  }
+
+  @Test
+  fun `deleting a reading bookmark drops it and the section count while the undo window is open`() {
+    val green = PageReadingBookmark(ReadingBookmarkType.GREEN, 77, Instant.fromEpochSeconds(300))
+    val blue = AyahReadingBookmark(ReadingBookmarkType.BLUE, 2, 255, Instant.fromEpochSeconds(400))
+    fakeReadingBookmarksDao = FakeReadingBookmarksDao(green, blue)
+    fakeRecentPagesDao.setRecentPages(RECENT_PAGES)
+    val presenter = makeBookmarkPresenter()
+    val current = getBookmarkResultByDateAndValidate(presenter)
+
+    val preview = presenter.previewAfterDeletion(
+      current, listOf(readingBookmarkRow(ReadingBookmarkType.GREEN))
+    )
+
+    assertThat(preview.rows.take(3)).containsExactly(
+      BookmarkRowData.ReadingBookmarkHeader(1),
+      BookmarkRowData.ReadingBookmarkItem(blue),
+      BookmarkRowData.RecentPageHeader(RECENT_PAGES.size)
+    ).inOrder()
+  }
+
+  @Test
+  fun `deleting the last reading bookmark takes its section header with it`() {
+    val green = PageReadingBookmark(ReadingBookmarkType.GREEN, 77, Instant.fromEpochSeconds(300))
+    fakeReadingBookmarksDao = FakeReadingBookmarksDao(green)
+    fakeRecentPagesDao.setRecentPages(RECENT_PAGES)
+    val presenter = makeBookmarkPresenter()
+    val current = getBookmarkResultByDateAndValidate(presenter)
+
+    val preview = presenter.previewAfterDeletion(
+      current, listOf(readingBookmarkRow(ReadingBookmarkType.GREEN))
+    )
+
+    assertThat(preview.rows.filterIsInstance<BookmarkRowData.ReadingBookmarkHeader>()).isEmpty()
+    assertThat(preview.rows.filterIsInstance<BookmarkRowData.ReadingBookmarkItem>()).isEmpty()
+    assertThat(preview.rows.first()).isEqualTo(BookmarkRowData.RecentPageHeader(RECENT_PAGES.size))
+  }
+
+  @Test
+  fun `removing a reading bookmark clears only its slot`() {
+    val green = PageReadingBookmark(ReadingBookmarkType.GREEN, 77, Instant.fromEpochSeconds(300))
+    val blue = AyahReadingBookmark(ReadingBookmarkType.BLUE, 2, 255, Instant.fromEpochSeconds(400))
+    fakeReadingBookmarksDao = FakeReadingBookmarksDao(green, blue)
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+    val presenter = makeBookmarkPresenter()
+
+    runBlocking {
+      presenter.removeItems(listOf(readingBookmarkRow(ReadingBookmarkType.GREEN)))
+    }
+
+    assertThat(runBlocking { fakeReadingBookmarksDao.readingBookmarks() }).containsExactly(blue)
+    assertThat(fakeBookmarksDao.currentBookmarks().map { it.id })
+      .containsExactly("bookmark-42", "bookmark-2")
+  }
+
+  @Test
+  fun `a selected highlighted ayah can only be deleted, alone or alongside other rows`() {
+    val presenter = makeBookmarkPresenter()
+    val highlight = highlightRow(HIGHLIGHTS[0])
+
+    val alone = presenter.getContextualOperationsForItems(listOf(highlight))
+    val withBookmark = presenter.getContextualOperationsForItems(
+      listOf(highlight, QuranRow.Builder().withType(QuranRow.AYAH_BOOKMARK).build())
+    )
+
+    assertThat(alone.asList()).containsExactly(false, true, false).inOrder()
+    assertThat(withBookmark.asList()).containsExactly(false, true, false).inOrder()
+  }
+
+  @Test
+  fun `deleting a highlighted ayah drops it and its color count while the undo window is open`() {
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+    fakeHighlightsDao.setHighlights(HIGHLIGHTS)
+    val presenter = makeBookmarkPresenter()
+    val current = getBookmarkResultAndValidate(presenter, BookmarkSortOrder.SORT_LOCATION)
+
+    val preview = presenter.previewAfterDeletion(current, listOf(highlightRow(HIGHLIGHTS[0])))
+
+    assertThat(preview.rows).containsAtLeast(
+      BookmarkRowData.HighlightColorItem(HighlightColor.GREEN, 1),
+      BookmarkRowData.HighlightColorItem(HighlightColor.BLUE, 1)
+    ).inOrder()
+    assertThat(preview.rows.filterIsInstance<BookmarkRowData.HighlightedAyahItem>())
+      .containsExactly(
+        BookmarkRowData.HighlightedAyahItem(HIGHLIGHTS[1]),
+        BookmarkRowData.HighlightedAyahItem(HIGHLIGHTS[2])
+      ).inOrder()
+    assertThat(preview.rows.filterIsInstance<BookmarkRowData.BookmarkItem>()).hasSize(2)
+  }
+
+  @Test
+  fun `deleting the last ayah row takes the ayahs header with it`() {
+    fakeRecentPagesDao.setRecentPages(RECENT_PAGES)
+    fakeHighlightsDao.setHighlights(listOf(HIGHLIGHTS[2]))
+    val presenter = makeBookmarkPresenter()
+    val current = getBookmarkResultByDateAndValidate(presenter)
+    assertThat(current.rows).contains(BookmarkRowData.AyahBookmarksHeader)
+
+    val preview = presenter.previewAfterDeletion(current, listOf(highlightRow(HIGHLIGHTS[2])))
+
+    assertThat(preview.rows).doesNotContain(BookmarkRowData.AyahBookmarksHeader)
+    assertThat(preview.rows).contains(BookmarkRowData.HighlightColorItem(HighlightColor.GREEN, 0))
+  }
+
+  @Test
+  fun `removing a highlighted ayah clears only its highlight`() {
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+    fakeHighlightsDao.setHighlights(HIGHLIGHTS)
+    val presenter = makeBookmarkPresenter()
+
+    runBlocking { presenter.removeItems(listOf(highlightRow(HIGHLIGHTS[0]))) }
+
+    assertThat(runBlocking { fakeHighlightsDao.highlightsFlow().first() })
+      .containsExactly(HIGHLIGHTS[1], HIGHLIGHTS[2])
+    assertThat(fakeBookmarksDao.currentBookmarks().map { it.id })
+      .containsExactly("bookmark-42", "bookmark-2")
+  }
+
+  @Test
+  fun `renders highlights after recent pages, with every color and its count`() {
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+    fakeRecentPagesDao.setRecentPages(RECENT_PAGES)
+    fakeHighlightsDao.setHighlights(HIGHLIGHTS)
+
+    val result = getBookmarkResultByDateAndValidate(makeBookmarkPresenter())
+
+    assertThat(result.rows.take(9)).containsExactly(
+      BookmarkRowData.RecentPageHeader(RECENT_PAGES.size),
+      BookmarkRowData.RecentPage(RECENT_PAGES[0]),
+      BookmarkRowData.RecentPage(RECENT_PAGES[1]),
+      BookmarkRowData.HighlightsHeader(isCollapsed = false),
+      BookmarkRowData.HighlightColorItem(HighlightColor.YELLOW, 0),
+      BookmarkRowData.HighlightColorItem(HighlightColor.GREEN, 1),
+      BookmarkRowData.HighlightColorItem(HighlightColor.BLUE, 2),
+      BookmarkRowData.HighlightColorItem(HighlightColor.RED, 0),
+      BookmarkRowData.HighlightColorItem(HighlightColor.PURPLE, 0)
+    ).inOrder()
+  }
+
+  @Test
+  fun `ungrouped list has one row per ayah, highlighted or bookmarked`() {
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+    fakeHighlightsDao.setHighlights(HIGHLIGHTS)
+
+    val result = getBookmarkResultAndValidate(
+      makeBookmarkPresenter(), BookmarkSortOrder.SORT_LOCATION
+    )
+
+    val ayahRows = result.rows.dropWhile { row -> row !is BookmarkRowData.AyahBookmarksHeader }
+    assertThat(ayahRows.first()).isInstanceOf(BookmarkRowData.AyahBookmarksHeader::class.java)
+    assertThat(ayahRows.drop(1)).containsExactly(
+      // 2:4 is bookmarked, the other four ayat are highlighted, and none is both
+      BookmarkRowData.BookmarkItem(taggedBookmark(AYAH_BOOKMARKS[1]), null, AyahMark.Unhighlighted),
+      BookmarkRowData.HighlightedAyahItem(HIGHLIGHTS[0]),
+      BookmarkRowData.HighlightedAyahItem(HIGHLIGHTS[1]),
+      BookmarkRowData.BookmarkItem(taggedBookmark(AYAH_BOOKMARKS[0]), null, AyahMark.Unhighlighted),
+      BookmarkRowData.HighlightedAyahItem(HIGHLIGHTS[2])
+    ).inOrder()
+  }
+
+  @Test
+  fun `highlighted ayat in the ungrouped list carry their ayah text, like the bookmarks`() {
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+    fakeHighlightsDao.setHighlights(HIGHLIGHTS)
+
+    val presenter = makeBookmarkPresenter(fakeArabicDatabaseUtils())
+    val result = getBookmarkResultAndValidate(presenter, BookmarkSortOrder.SORT_LOCATION)
+
+    val quranInfo = QuranInfo(MadaniDataSource())
+    assertThat(
+      result.rows.filterIsInstance<BookmarkRowData.HighlightedAyahItem>()
+        .associate { it.highlight.suraAyah to it.ayahText }
+    ).containsExactly(
+      SuraAyah(2, 255), "verse ${quranInfo.getAyahId(2, 255)}",
+      SuraAyah(3, 93), "verse ${quranInfo.getAyahId(3, 93)}",
+      SuraAyah(50, 44), "verse ${quranInfo.getAyahId(50, 44)}"
+    )
+  }
+
+  @Test
+  fun `a bookmarked ayah that is also highlighted is one row carrying the mark`() {
+    val bookmark = Bookmark("bookmark-99", 2, 255, 42, 500)
+    fakeBookmarksDao.setBookmarks(listOf(bookmark))
+    fakeHighlightsDao.setHighlights(listOf(HIGHLIGHTS[0]))
+
+    val result = getBookmarkResultAndValidate(
+      makeBookmarkPresenter(), BookmarkSortOrder.SORT_LOCATION
+    )
+
+    assertThat(result.rows.filterIsInstance<BookmarkRowData.HighlightedAyahItem>()).isEmpty()
+    assertThat(result.rows.filterIsInstance<BookmarkRowData.BookmarkItem>()).containsExactly(
+      BookmarkRowData.BookmarkItem(
+        taggedBookmark(bookmark), null, AyahMark.Highlighted(HighlightColor.BLUE)
+      )
+    )
+  }
+
+  @Test
+  fun `grouped rows say nothing about highlights, since collections are the axis there`() {
+    val bookmark = Bookmark("bookmark-99", 2, 255, 42, 500, listOf("tag-1"))
+    fakeBookmarksDao.setTags(TAGS)
+    fakeBookmarksDao.setBookmarks(listOf(bookmark))
+    fakeHighlightsDao.setHighlights(listOf(HIGHLIGHTS[0]))
+    quranSettings.bookmarksGroupedByTags = true
+    val presenter = makeBookmarkPresenter()
+
+    val result = getBookmarkResultAndValidate(
+      presenter, BookmarkSortOrder.SORT_DATE_ADDED, true
+    )
+
+    assertThat(result.rows).contains(
+      BookmarkRowData.BookmarkItem(taggedBookmark(bookmark), "tag-1", AyahMark.Bookmark)
+    )
+    // and the collection names are already in the headers, so the rows do not repeat them
+    assertThat(presenter.isGroupedByTags).isTrue()
+    assertThat(presenter.shouldShowInlineTags()).isFalse()
+  }
+
+  @Test
+  fun `highlights section is there but collapsed when there are no highlights`() {
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+
+    val result = getBookmarkResultByDateAndValidate(makeBookmarkPresenter())
+
+    assertThat(result.rows.first())
+      .isEqualTo(BookmarkRowData.HighlightsHeader(isCollapsed = true))
+    assertThat(result.rows.filterIsInstance<BookmarkRowData.HighlightColorItem>()).isEmpty()
+  }
+
+  @Test
+  fun `an expanded highlights section stays expanded with no highlights left`() {
+    fakeBookmarksDao.setBookmarks(AYAH_BOOKMARKS)
+    val presenter = makeBookmarkPresenter()
+    getBookmarkResultByDateAndValidate(presenter)
+
+    presenter.toggleHighlightsCollapsed()
+    val result = getBookmarkResultByDateAndValidate(presenter)
+
+    assertThat(result.rows.first())
+      .isEqualTo(BookmarkRowData.HighlightsHeader(isCollapsed = false))
+    assertThat(result.rows.filterIsInstance<BookmarkRowData.HighlightColorItem>()).hasSize(5)
+  }
+
+  @Test
+  fun `a collapsed highlights section keeps its count and hides its colors`() {
+    fakeHighlightsDao.setHighlights(HIGHLIGHTS)
+    val presenter = makeBookmarkPresenter()
+    getBookmarkResultByDateAndValidate(presenter)
+
+    presenter.toggleHighlightsCollapsed()
+    val result = getBookmarkResultByDateAndValidate(presenter)
+
+    assertThat(result.rows.first())
+      .isEqualTo(BookmarkRowData.HighlightsHeader(isCollapsed = true))
+    assertThat(result.rows.filterIsInstance<BookmarkRowData.HighlightColorItem>()).isEmpty()
+  }
+
+  @Test
+  fun `an empty tab has no rows at all, so its empty state can show`() {
+    val result = getBookmarkResultByDateAndValidate(makeBookmarkPresenter())
+
+    assertThat(result.rows).isEmpty()
   }
 
   @Test
@@ -109,7 +597,6 @@ class BookmarkPresenterTest {
     presenter.toggleGroupByTags()
 
     assertThat(presenter.isGroupedByTags).isFalse()
-    assertThat(presenter.shouldShowInlineTags()).isTrue()
     assertThat(quranSettings.bookmarksGroupedByTags).isFalse()
   }
 
@@ -117,7 +604,7 @@ class BookmarkPresenterTest {
   fun `contextual actions allow editing one tag header and tagging bookmark rows`() {
     val presenter = makeBookmarkPresenter()
     val tagHeaderResult = presenter.getContextualOperationsForItems(
-      listOf(QuranRow.Builder().withType(QuranRow.BOOKMARK_HEADER).withTagId(1).build())
+      listOf(QuranRow.Builder().withType(QuranRow.BOOKMARK_HEADER).withTagId("tag-1").build())
     )
     val bookmarkResult = presenter.getContextualOperationsForItems(
       listOf(
@@ -130,31 +617,71 @@ class BookmarkPresenterTest {
   }
 
   @Test
+  fun `contextual actions ignore non-tag collection header`() {
+    val presenter = makeBookmarkPresenter()
+    val result = presenter.getContextualOperationsForItems(
+      listOf(
+        QuranRow.Builder()
+          .withType(QuranRow.BOOKMARK_HEADER)
+          .build()
+      )
+    )
+
+    assertThat(result.asList()).containsExactly(false, false, false).inOrder()
+  }
+
+  @Test
   fun `location sort delegates to bookmarks dao`() {
     fakeBookmarksDao.setBookmarks(
       listOf(
-        Bookmark(1, 4, 1, 75, 2),
-        Bookmark(2, 2, 255, 42, 1)
+        Bookmark("bookmark-1", 4, 1, 75, 2),
+        Bookmark("bookmark-2", 2, 255, 42, 1)
       )
     )
 
     val result = getBookmarkResultAndValidate(makeBookmarkPresenter(), BookmarkSortOrder.SORT_LOCATION)
 
     assertThat(result.rows.filterIsInstance<BookmarkRowData.BookmarkItem>().map { it.bookmark.id })
-      .containsExactly(2L, 1L)
+      .containsExactly("bookmark-2", "bookmark-1")
       .inOrder()
   }
 
-  private fun makeBookmarkPresenter(): BookmarkPresenter {
+  private fun makeBookmarkPresenter(
+    arabicDatabaseUtils: ArabicDatabaseUtils? = null
+  ): BookmarkPresenter {
     return object : BookmarkPresenter(
       fakeBookmarksDao,
       fakeRecentPagesDao,
+      fakeReadingBookmarksDao,
+      fakeHighlightsDao,
       quranSettings,
-      { throw IllegalStateException("ArabicDatabaseUtils not wired up in test") },
+      {
+        arabicDatabaseUtils ?: throw IllegalStateException("ArabicDatabaseUtils not wired up in test")
+      },
     ) {
       override fun subscribeToChanges() {
         // nothing
       }
+    }
+  }
+
+  private fun fakeArabicDatabaseUtils(): ArabicDatabaseUtils {
+    val context = ApplicationProvider.getApplicationContext<Context>()
+    val pageProvider = FakePageProvider()
+    val display = context.getSystemService(DisplayManager::class.java)
+      .getDisplay(Display.DEFAULT_DISPLAY)!!
+    val quranScreenInfo = QuranScreenInfo(
+      context, display, pageProvider.getPageSizeCalculator(DisplaySize(0, 0))
+    )
+    return object : ArabicDatabaseUtils(
+      context,
+      QuranInfo(MadaniDataSource()),
+      QuranFileUtils(context, pageProvider, quranScreenInfo)
+    ) {
+      override fun getArabicDatabaseHandler(): DatabaseHandler? = null
+
+      override fun getAyahTextForAyat(ayat: List<Int>): Map<Int, String> =
+        ayat.associateWith { ayahId -> "verse $ayahId" }
     }
   }
 
@@ -167,28 +694,49 @@ class BookmarkPresenterTest {
     sortOrder: Int,
     groupByTags: Boolean = false
   ): BookmarkRawResult {
-    val testObserver = presenter
-      .getBookmarksListObservable(sortOrder, groupByTags)
-      .test()
-    testObserver.awaitTerminalEvent()
-    testObserver.assertNoErrors()
-    testObserver.assertValueCount(1)
-    return testObserver.values()[0]
+    return runBlocking {
+      presenter.getBookmarksList(sortOrder, groupByTags)
+    }
   }
+
+  /** A placed pin's row, as the factory builds it; only the slot matters for removing it. */
+  private fun readingBookmarkRow(slot: ReadingBookmarkType): QuranRow =
+    QuranRow.Builder()
+      .withType(QuranRow.PAGE_READING_BOOKMARK)
+      .withPage(77)
+      .withReadingBookmarkType(slot)
+      .build()
+
+  private fun highlightRow(highlight: Highlight): QuranRow =
+    QuranRow.Builder()
+      .withType(QuranRow.HIGHLIGHTED_AYAH)
+      .withSura(highlight.suraAyah.sura)
+      .withAyah(highlight.suraAyah.ayah)
+      .withHighlightColor(highlight.color)
+      .build()
+
+  /** The fake puts every ayah bookmark in the default collection, the way the dao does. */
+  private fun taggedBookmark(bookmark: Bookmark): Bookmark =
+    bookmark.copy(tags = bookmark.tags + "fake-default")
 
   private companion object {
     private val TAGS = listOf(
-      Tag(1, "Review"),
-      Tag(2, "Important")
+      Tag("tag-1", "Review"),
+      Tag("tag-2", "Important")
     )
     private val AYAH_BOOKMARKS = listOf(
-      Bookmark(42, 46, 1, 502, 200, listOf(1, 2)),
-      Bookmark(2, 2, 4, 2, 100)
+      Bookmark("bookmark-42", 46, 1, 502, 200, listOf("tag-1", "tag-2")),
+      Bookmark("bookmark-2", 2, 4, 2, 100)
     )
-    private val PAGE_BOOKMARK = Bookmark(23, null, null, 400, 300)
+    private val PAGE_BOOKMARK = Bookmark("bookmark-23", null, null, 400, 300)
     private val RECENT_PAGES = listOf(
-      RecentPage(42, 200),
-      RecentPage(43, 100)
+      RecentPage(42, Instant.fromEpochSeconds(200)),
+      RecentPage(43, Instant.fromEpochSeconds(100))
+    )
+    private val HIGHLIGHTS = listOf(
+      Highlight(SuraAyah(2, 255), HighlightColor.BLUE, Instant.fromEpochSeconds(300)),
+      Highlight(SuraAyah(3, 93), HighlightColor.BLUE, Instant.fromEpochSeconds(200)),
+      Highlight(SuraAyah(50, 44), HighlightColor.GREEN, Instant.fromEpochSeconds(100))
     )
   }
 }

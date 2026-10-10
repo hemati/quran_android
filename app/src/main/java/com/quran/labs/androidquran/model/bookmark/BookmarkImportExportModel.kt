@@ -7,12 +7,12 @@ import com.quran.data.dao.BookmarkSortOrder
 import com.quran.data.dao.BookmarksDao
 import com.quran.data.dao.ReadingBookmarksDao
 import com.quran.data.dao.RecentPagesDao
-import com.quran.data.dao.Settings
 import com.quran.data.model.bookmark.BackupReadingBookmark
 import com.quran.data.model.bookmark.BookmarkData
 import com.quran.labs.androidquran.R
 import com.quran.mobile.bookmark.importdata.BookmarkBackupImportNormalizer
 import com.quran.mobile.bookmark.importdata.MobileSyncImporter
+import com.quran.mobile.bookmark.model.ReadingBookmarkPageMapper
 import com.quran.mobile.di.qualifier.ApplicationContext
 import dev.zacsweers.metro.Inject
 import io.reactivex.rxjava3.core.Observable
@@ -31,7 +31,7 @@ class BookmarkImportExportModel @Inject internal constructor(
   private val bookmarksDao: BookmarksDao,
   private val recentPagesDao: RecentPagesDao,
   private val readingBookmarksDao: ReadingBookmarksDao,
-  private val settings: Settings,
+  private val pageMapper: ReadingBookmarkPageMapper,
   private val backupImportNormalizer: BookmarkBackupImportNormalizer,
   private val mobileSyncImporter: MobileSyncImporter
 ) {
@@ -97,14 +97,22 @@ class BookmarkImportExportModel @Inject internal constructor(
   private fun bookmarkDataWithRecentsObservable(): Single<BookmarkData> {
     return Single.fromCallable {
       runBlocking {
+        val pageType = pageMapper.currentPageType()
+        val allTags = bookmarksDao.tags()
+        val systemTagIds = allTags.filter { tag -> tag.isSystem }.mapTo(mutableSetOf()) { it.id }
         BookmarkData(
-          tags = bookmarksDao.tags(),
+          tags = allTags.filterNot { tag -> tag.isSystem },
           bookmarks = bookmarksDao.bookmarks(BookmarkSortOrder.SORT_DATE_ADDED)
-            .filterNot { bookmark -> bookmark.isPageBookmark() },
+            .filterNot { bookmark -> bookmark.isPageBookmark() }
+            .map { bookmark -> bookmark.withTags(bookmark.tags - systemTagIds) },
           recentPages = recentPagesDao.recentPages(),
-          readingBookmark = readingBookmarksDao.readingBookmark()
-            ?.let(BackupReadingBookmark::fromReadingBookmark),
-          pageType = settings.pageType()
+          readingBookmarks = readingBookmarksDao.readingBookmarks()
+            .mapNotNull { bookmark ->
+              BackupReadingBookmark.fromReadingBookmark(bookmark) { sura, ayah ->
+                pageMapper.suraAyahToPage(sura, ayah, pageType)
+              }
+            },
+          pageType = pageType
         )
       }
     }.subscribeOn(Schedulers.io())

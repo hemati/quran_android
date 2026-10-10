@@ -10,7 +10,6 @@ import com.quran.data.model.bookmark.RecentPage
 import com.quran.labs.androidquran.pages.data.madani.MadaniDataSource
 import com.quran.labs.androidquran.pages.data.warsh.WarshDataSource
 import com.quran.mobile.bookmark.di.MobileSyncDatabase
-import com.quran.mobile.bookmark.sync.FakeLocalDataChangeNotifier
 import com.quran.mobile.bookmark.time.FakeMobileSyncTimestampProvider
 import com.quran.shared.persistence.repository.readingsession.repository.ReadingSessionsRepositoryImpl
 import kotlinx.coroutines.cancel
@@ -23,6 +22,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.RobolectricTestRunner
+import kotlin.time.Instant
 
 @RunWith(RobolectricTestRunner::class)
 class RecentPagesDaoImplTest {
@@ -32,7 +32,6 @@ class RecentPagesDaoImplTest {
   private lateinit var dao: RecentPagesDaoImpl
   private lateinit var appCoroutineScope: AppCoroutineScope
   private lateinit var settings: FakeSettings
-  private lateinit var localDataChangeNotifier: FakeLocalDataChangeNotifier
   private lateinit var timestampProvider: FakeMobileSyncTimestampProvider
 
   @Before
@@ -45,13 +44,11 @@ class RecentPagesDaoImplTest {
     quranInfo = QuranInfo(MadaniDataSource())
     settings = FakeSettings()
     appCoroutineScope = AppCoroutineScope()
-    localDataChangeNotifier = FakeLocalDataChangeNotifier()
     timestampProvider = FakeMobileSyncTimestampProvider()
     dao = RecentPagesDaoImpl(
       quranInfoProvider = { quranInfo },
       settings = settings,
       readingSessionsRepository = repository,
-      localDataChangeNotifier = localDataChangeNotifier,
       timestampProvider = timestampProvider,
       appCoroutineScope = appCoroutineScope
     )
@@ -67,7 +64,6 @@ class RecentPagesDaoImplTest {
   @Test
   fun `recent pages are empty when no reading sessions exist`() = runTest {
     assertThat(dao.recentPages()).isEmpty()
-    assertThat(localDataChangeNotifier.updateCount).isEqualTo(0)
   }
 
   @Test
@@ -82,8 +78,7 @@ class RecentPagesDaoImplTest {
     assertThat(sessions).hasSize(1)
     assertThat(sessions.single().sura).isEqualTo(pageBounds[0])
     assertThat(sessions.single().ayah).isEqualTo(pageBounds[1])
-    assertThat(recentPages.single().timestamp).isEqualTo(timestampProvider.timestampSeconds)
-    assertThat(localDataChangeNotifier.updateCount).isEqualTo(1)
+    assertThat(recentPages.single().timestamp).isEqualTo(timestampProvider.now())
   }
 
   @Test
@@ -139,10 +134,10 @@ class RecentPagesDaoImplTest {
   fun `replace recent pages preserves provided newest first order`() = runTest {
     dao.replaceRecentPages(
       listOf(
-        RecentPage(10, 1),
-        RecentPage(20, 1),
-        RecentPage(30, 1),
-        RecentPage(40, 1)
+        RecentPage(10, Instant.fromEpochSeconds(1)),
+        RecentPage(20, Instant.fromEpochSeconds(1)),
+        RecentPage(30, Instant.fromEpochSeconds(1)),
+        RecentPage(40, Instant.fromEpochSeconds(1))
       )
     )
 
@@ -155,24 +150,21 @@ class RecentPagesDaoImplTest {
   fun `replace recent pages notifies once for multi step write`() = runTest {
     dao.addRecentPage(50)
     dao.addRecentPage(60)
-    localDataChangeNotifier.reset()
 
     dao.replaceRecentPages(
       listOf(
-        RecentPage(10, 1),
-        RecentPage(20, 1),
-        RecentPage(30, 1)
+        RecentPage(10, Instant.fromEpochSeconds(1)),
+        RecentPage(20, Instant.fromEpochSeconds(1)),
+        RecentPage(30, Instant.fromEpochSeconds(1))
       )
     )
 
-    assertThat(localDataChangeNotifier.updateCount).isEqualTo(1)
   }
 
   @Test
   fun `removing no recent pages does not notify`() = runTest {
     dao.removeRecentPages()
 
-    assertThat(localDataChangeNotifier.updateCount).isEqualTo(0)
   }
 
   @Test

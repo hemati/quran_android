@@ -5,6 +5,7 @@ import com.quran.data.model.SuraAyah
 import com.quran.data.model.bookmark.BackupReadingBookmark
 import com.quran.data.model.bookmark.Bookmark
 import com.quran.data.model.bookmark.BookmarkData
+import com.quran.data.model.bookmark.ReadingBookmarkType
 import com.quran.data.model.bookmark.RecentPage
 import com.quran.data.model.bookmark.Tag
 import com.quran.mobile.bookmark.R
@@ -12,6 +13,7 @@ import com.quran.mobile.bookmark.model.ReadingBookmarkPageMapper
 import com.quran.mobile.bookmark.time.MobileSyncTimestampProvider
 import com.quran.mobile.bookmark.time.legacyTimestampMillis
 import com.quran.mobile.di.qualifier.ApplicationContext
+import com.quran.shared.persistence.model.ReadingBookmarkSlot
 import dev.zacsweers.metro.Inject
 
 class BookmarkBackupImportNormalizer @Inject constructor(
@@ -62,14 +64,14 @@ class BookmarkBackupImportNormalizer @Inject constructor(
         }
       },
       readingSessions = normalizeRecentPages(data.recentPages, sourcePageType),
-      readingBookmark = normalizeReadingBookmark(data.readingBookmark, sourcePageType)
+      readingBookmarks = normalizeReadingBookmarks(data.readingBookmarks, sourcePageType)
     )
   }
 
   private fun CollectionState.oldPageBookmarkCollectionId(timestamp: Long): String {
     val oldPageBookmarksName = appContext.getString(R.string.old_page_bookmarks)
     return importIdForName[oldPageBookmarksName]
-      ?: OLD_PAGE_BOOKMARKS_COLLECTION_ID.also { importId ->
+      ?: nextCollectionImportId().also { importId ->
         add(
           MobileSyncImportCollection(
             importId = importId,
@@ -109,41 +111,64 @@ class BookmarkBackupImportNormalizer @Inject constructor(
     recentPages.forEach { recentPage ->
       val suraAyah = pageMapper.sourcePageToSuraAyah(recentPage.page, pageType)
       val existingSession = sessions[suraAyah]
-      val timestamp = recentPage.timestamp.legacyTimestampMillis()
-      if (existingSession == null || timestamp > existingSession.timestampMillis) {
+      val timestamp = recentPage.timestamp
+      if (existingSession == null) {
         sessions[suraAyah] = MobileSyncImportReadingSession(
           sura = suraAyah.sura,
           ayah = suraAyah.ayah,
-          timestampMillis = timestamp
+          timestampMillis = timestamp.toEpochMilliseconds()
         )
       }
     }
     return sessions.values.toList()
   }
 
-  private fun normalizeReadingBookmark(
-    readingBookmark: BackupReadingBookmark?,
+  private fun normalizeReadingBookmarks(
+    readingBookmarks: List<BackupReadingBookmark>,
     pageType: String?
-  ): MobileSyncImportReadingBookmark? {
-    return when (readingBookmark?.type) {
-      BackupReadingBookmark.TYPE_AYAH -> {
-        val sura = readingBookmark.sura ?: return null
-        val ayah = readingBookmark.ayah ?: return null
-        if (!isValidSuraAyah(sura, ayah)) return null
-        MobileSyncImportReadingBookmark.Ayah(
-          sura = sura,
-          ayah = ayah,
-          timestampMillis = readingBookmark.timestamp.legacyTimestampMillis()
-        )
+  ): List<MobileSyncImportReadingBookmark> {
+    return readingBookmarks.mapNotNull { readingBookmark ->
+      when (readingBookmark.type) {
+        BackupReadingBookmark.TYPE_AYAH -> {
+          val sura = readingBookmark.sura
+          val ayah = readingBookmark.ayah
+          if (sura == null || ayah == null || !isValidSuraAyah(sura, ayah)) {
+            null
+          } else {
+            MobileSyncImportReadingBookmark.Ayah(
+              slot = readingBookmark.slot.asBookmarkSlot(),
+              sura = sura,
+              ayah = ayah,
+              timestampMillis = readingBookmark.timestamp.toEpochMilliseconds(),
+              name = readingBookmark.name
+            )
+          }
+        }
+
+        BackupReadingBookmark.TYPE_PAGE -> {
+          val page = readingBookmark.page
+          if (page == null) {
+            null
+          } else {
+            MobileSyncImportReadingBookmark.Page(
+              slot = readingBookmark.slot.asBookmarkSlot(),
+              page = pageMapper.sourcePageToStoragePage(page, pageType),
+              timestampMillis = readingBookmark.timestamp.toEpochMilliseconds(),
+              name = readingBookmark.name
+            )
+          }
+        }
+
+        else -> null
       }
-      BackupReadingBookmark.TYPE_PAGE -> {
-        val page = readingBookmark.page ?: return null
-        MobileSyncImportReadingBookmark.Page(
-          page = pageMapper.sourcePageToStoragePage(page, pageType),
-          timestampMillis = readingBookmark.timestamp.legacyTimestampMillis()
-        )
-      }
-      else -> null
+    }
+  }
+
+  private fun ReadingBookmarkType.asBookmarkSlot(): ReadingBookmarkSlot {
+    return when (this) {
+      ReadingBookmarkType.GREEN -> ReadingBookmarkSlot.GREEN
+      ReadingBookmarkType.PURPLE -> ReadingBookmarkSlot.PURPLE
+      ReadingBookmarkType.BLUE -> ReadingBookmarkSlot.BLUE
     }
   }
 
@@ -194,40 +219,62 @@ class BookmarkBackupImportNormalizer @Inject constructor(
   }
 
   private data class CollectionState(
-    val importIdForBackupTagId: MutableMap<Long, String> = mutableMapOf(),
+    val importIdForBackupTagId: MutableMap<String, String> = mutableMapOf(),
     val importIdForName: MutableMap<String, String> = mutableMapOf(),
-    val collections: MutableList<MobileSyncImportCollection> = mutableListOf()
+    val collections: MutableList<MobileSyncImportCollection> = mutableListOf(),
+    val reservedCollectionImportIds: MutableSet<String> = mutableSetOf()
   ) {
+    private var nextCollectionImportIndex = 0
+
     fun add(collection: MobileSyncImportCollection) {
       importIdForName[collection.name] = collection.importId
+      reservedCollectionImportIds.add(collection.importId)
       collections.add(collection)
     }
 
     companion object {
       fun from(tags: List<Tag>, importTimestampMillis: Long): CollectionState {
         val state = CollectionState()
-        tags.sortedBy { tag -> tag.id }.forEach { tag ->
-          val name = tag.name
-          if (name.isBlank()) return@forEach
-          val existingImportId = state.importIdForName[name]
-          if (existingImportId != null) {
-            state.importIdForBackupTagId[tag.id] = existingImportId
-          } else {
-            val collection = MobileSyncImportCollection(
-              importId = "tag-${tag.id}",
-              name = name,
-              timestampMillis = importTimestampMillis
-            )
-            state.importIdForBackupTagId[tag.id] = collection.importId
-            state.add(collection)
+        state.reservedCollectionImportIds.addAll(tags.map { tag -> tag.id })
+        tags.sortedWith(
+          compareBy<Tag> { tag -> legacyTagNumber(tag.id) ?: Long.MAX_VALUE }
+            .thenBy { tag -> tag.id }
+        )
+          .forEach { tag ->
+            val name = tag.name
+            if (name.isBlank()) return@forEach
+            val existingImportId = state.importIdForName[name]
+            if (existingImportId != null) {
+              state.importIdForBackupTagId[tag.id] = existingImportId
+            } else {
+              val collection = MobileSyncImportCollection(
+                importId = state.nextCollectionImportId(),
+                name = name,
+                timestampMillis = importTimestampMillis
+              )
+              state.importIdForBackupTagId[tag.id] = collection.importId
+              state.add(collection)
+            }
           }
-        }
         return state
       }
-    }
-  }
 
-  companion object {
-    private const val OLD_PAGE_BOOKMARKS_COLLECTION_ID = "old-page-bookmarks"
+      private fun legacyTagNumber(tagId: String): Long? {
+        return tagId.toLongOrNull()
+      }
+    }
+
+    /**
+     * Import IDs only correlate this import payload's collections to its bookmark links. They are
+     * not mobile-sync local IDs, so do not reuse backup-provided tag IDs here.
+     */
+    fun nextCollectionImportId(): String {
+      while (true) {
+        val importId = "backup-collection-${nextCollectionImportIndex++}"
+        if (reservedCollectionImportIds.add(importId)) {
+          return importId
+        }
+      }
+    }
   }
 }
