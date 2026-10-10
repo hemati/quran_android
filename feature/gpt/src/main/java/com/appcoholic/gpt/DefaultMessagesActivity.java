@@ -36,6 +36,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigFetchThrottledExcept
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
+import com.openai.models.Reasoning;
+import com.openai.models.ReasoningEffort;
 // Responses API imports for File Search (RAG)
 import com.openai.models.responses.Response;
 import com.openai.models.responses.ResponseCreateParams;
@@ -112,6 +114,12 @@ public class DefaultMessagesActivity extends AppCompatActivity
   private OpenAIClientAsync client;
 
   private String modelKey = "gpt-4.1-mini";
+  // Only for reasoning models (e.g. gpt-6-luna); empty = parameter not sent, gpt-4.1-mini rejects it
+  private String reasoningEffort = "";
+  // Reasoning tokens count against max_output_tokens, so reasoning models need a larger budget
+  private static final long DEFAULT_MAX_OUTPUT_TOKENS = 350;
+  private static final long DEFAULT_MAX_OUTPUT_TOKENS_REASONING = 2000;
+  private long maxOutputTokensOverride = 0;
   // Vector Store ID for Quran text - set via Firebase Remote Config
   private String vectorStoreId = "vs_69601adb86388191941c061e5e21a95a";
 
@@ -243,6 +251,8 @@ public class DefaultMessagesActivity extends AppCompatActivity
     String _modelKey = mFirebaseRemoteConfig.getString("openai_model_key");
     if (!_modelKey.isEmpty())
       this.modelKey = _modelKey;
+    reasoningEffort = mFirebaseRemoteConfig.getString("openai_reasoning_effort");
+    maxOutputTokensOverride = mFirebaseRemoteConfig.getLong("openai_max_output_tokens");
     if (!openAiApiKey.isEmpty())
       initializeOpenAIClient(openAiApiKey);
 
@@ -358,7 +368,11 @@ public class DefaultMessagesActivity extends AppCompatActivity
 //        .temperature(0.3)  // Lower temperature for more deterministic responses
         .instructions(SYSTEM_INSTRUCTION)
         .inputOfResponse(inputItems)
-        .maxOutputTokens(350);  // Shorter responses for chat-like experience
+        .maxOutputTokens(maxOutputTokens());  // Shorter responses for chat-like experience
+
+    if (!reasoningEffort.isEmpty()) {
+      builder.reasoning(Reasoning.builder().effort(ReasoningEffort.of(reasoningEffort)).build());
+    }
 
     // Enable File Search tool if Vector Store is configured
     if (vectorStoreId != null && !vectorStoreId.isEmpty()) {
@@ -373,6 +387,13 @@ public class DefaultMessagesActivity extends AppCompatActivity
     }
 
     return builder.build();
+  }
+
+  private long maxOutputTokens() {
+    if (maxOutputTokensOverride > 0) {
+      return maxOutputTokensOverride;
+    }
+    return reasoningEffort.isEmpty() ? DEFAULT_MAX_OUTPUT_TOKENS : DEFAULT_MAX_OUTPUT_TOKENS_REASONING;
   }
 
   @Override
