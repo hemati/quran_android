@@ -46,6 +46,8 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider {
 
     val requestConfiguration = RequestConfiguration.Builder()
       .setTestDeviceIds(listOf("1A433D1C8B6C98FF184A4694E09AC80F"))
+      // no mature ads (sexual content etc.) in a Quran app; matches the AdMob account setting
+      .setMaxAdContentRating(RequestConfiguration.MAX_AD_CONTENT_RATING_T)
       .build()
     MobileAds.setRequestConfiguration(requestConfiguration)
     // MobileAds.initialize runs after consent, see AdsInitializer
