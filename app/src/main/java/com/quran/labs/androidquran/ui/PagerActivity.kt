@@ -1375,14 +1375,15 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   }
 
   override fun onPurchasesUpdated(purchases: List<Purchase>) {
-    val hasPro = purchases.any { purchase ->
-      purchase.products.any { it in PRO_SKUS }
+    // pending purchases (e.g. cash payments) must not unlock pro until they complete
+    val proPurchases = purchases.filter { purchase ->
+      purchase.purchaseState == Purchase.PurchaseState.PURCHASED &&
+        purchase.products.any { it in PRO_SKUS }
     }
+    val hasPro = proPurchases.isNotEmpty()
     sharedPrefHelper.setProUser(hasPro)
     if (hasPro) {
-      purchases.filter { purchase ->
-        purchase.products.any { it in PRO_SKUS }
-      }.forEach { billingHelper?.acknowledgePurchase(it) }
+      proPurchases.forEach { billingHelper?.acknowledgePurchase(it) }
       adView?.destroy()
       adView = null
       adViewContainer.removeAllViews()

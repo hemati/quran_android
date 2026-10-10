@@ -10,6 +10,7 @@ import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
+import com.android.billingclient.api.PendingPurchasesParams;
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.QueryProductDetailsParams;
@@ -66,7 +67,9 @@ public class BillingHelper {
   private void setupBillingClient() {
     billingClient = BillingClient.newBuilder(activity)
         .setListener(this::handlePurchaseUpdate)
-        .enablePendingPurchases()
+        .enablePendingPurchases(
+            PendingPurchasesParams.newBuilder().enableOneTimeProducts().build())
+        .enableAutoServiceReconnection()
         .build();
   }
 
@@ -82,8 +85,8 @@ public class BillingHelper {
   private final BillingClientStateListener billingClientStateListener = new BillingClientStateListener() {
     @Override
     public void onBillingServiceDisconnected() {
+      // the client reconnects on the next request (enableAutoServiceReconnection)
       Log.e(TAG, "Billing service disconnected");
-      // Optionally implement retry logic
     }
 
     @Override
@@ -155,10 +158,13 @@ public class BillingHelper {
         .setProductList(products)
         .build();
 
-    billingClient.queryProductDetailsAsync(params, (billingResult, productDetailsList) -> {
+    billingClient.queryProductDetailsAsync(params, (billingResult, result) -> {
       if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+        if (!result.getUnfetchedProductList().isEmpty()) {
+          Log.e(TAG, "Unfetched products: " + result.getUnfetchedProductList().size());
+        }
         if (listener != null) {
-          listener.onProductDetailsResponse(productDetailsList);
+          listener.onProductDetailsResponse(result.getProductDetailsList());
         }
       } else {
         Log.e(TAG, "Error querying product details: " + billingResult.getDebugMessage());

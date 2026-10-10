@@ -391,6 +391,10 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   @Override
   public void onPurchasesUpdated(List<Purchase> purchases) {
     for (Purchase purchase : purchases) {
+      // pending purchases (e.g. cash payments) must not unlock pro until they complete
+      if (purchase.getPurchaseState() != Purchase.PurchaseState.PURCHASED) {
+        continue;
+      }
       billingHelper.acknowledgePurchase(purchase);
       this.isGPTPro = true;
       if (subscriptionStatusChangedListener != null) {
