@@ -1,6 +1,8 @@
 package com.appcoholic.gpt;
 
 import android.app.Activity;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -28,6 +30,7 @@ public class BillingHelper {
   private Activity activity;
   private BillingUpdatesListener billingUpdatesListener;
   private FirebaseAnalytics firebaseAnalytics;
+  private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
 
   public interface BillingUpdatesListener {
@@ -77,7 +80,15 @@ public class BillingHelper {
     if (billingClient == null) {
       setupBillingClient();
     }
-    if (!billingClient.isReady()) {
+    if (billingClient.isReady()) {
+      // a listener registered after the connection was set up never gets onBillingSetupFinished;
+      // post so callers that are still being constructed (getInstance) are fully initialized
+      mainHandler.post(() -> {
+        if (billingUpdatesListener != null) {
+          billingUpdatesListener.onBillingClientSetupFinished();
+        }
+      });
+    } else {
       billingClient.startConnection(billingClientStateListener);
     }
   }
@@ -164,7 +175,8 @@ public class BillingHelper {
           Log.e(TAG, "Unfetched products: " + result.getUnfetchedProductList().size());
         }
         if (listener != null) {
-          listener.onProductDetailsResponse(result.getProductDetailsList());
+          // listeners update the UI
+          mainHandler.post(() -> listener.onProductDetailsResponse(result.getProductDetailsList()));
         }
       } else {
         Log.e(TAG, "Error querying product details: " + billingResult.getDebugMessage());

@@ -383,6 +383,10 @@ public class SubscriptionDialog extends Dialog implements BillingHelper.BillingU
   private void updatePriceUI() {
     TextView monthlyPriceTextView = findViewById(R.id.monthly_plan_price);
     TextView yearlyPriceTextView = findViewById(R.id.yearly_plan_price);
+    if (monthlyPriceTextView == null || yearlyPriceTextView == null) {
+      // prices can arrive before the dialog is shown; show() fills them in
+      return;
+    }
 
     monthlyPriceTextView.setText(monthlyPlanPrice);
     yearlyPriceTextView.setText(yearlyPlanPrice);
