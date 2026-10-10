@@ -7,11 +7,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import kotlin.time.Instant
 
 class LastReadProviderTest {
   private fun dao(pages: List<Int>) = object : RecentPagesDao {
     override fun recentPagesFlow(): Flow<List<RecentPage>> = flowOf(emptyList())
-    override suspend fun recentPages() = pages.map { RecentPage(it, 0L) }
+    override suspend fun recentPages() = pages.map { RecentPage(it, Instant.fromEpochMilliseconds(0)) }
     override suspend fun addRecentPage(page: Int) {}
     override suspend fun replaceRecentRangeWithPage(deleteRangeStart: Int, deleteRangeEnd: Int, page: Int) {}
     override suspend fun removeRecentPages() {}

@@ -495,7 +495,8 @@ class QuranDataActivity : AppCompatActivity(), SimpleDownloadListener, OnRequest
       } else {
         val isNormalLaunch = intent?.action == null || intent?.action == Intent.ACTION_MAIN
         val destination = targetIntent()
-        val nextIntent = if (isNormalLaunch && AnnouncementActivity.shouldShow(quranSettings)) {
+        val nextIntent = if (SHOW_UPSTREAM_ANNOUNCEMENTS && isNormalLaunch &&
+          AnnouncementActivity.shouldShow(quranSettings)) {
           AnnouncementActivity.createIntent(this, destination)
         } else {
           destination
@@ -553,6 +554,9 @@ class QuranDataActivity : AppCompatActivity(), SimpleDownloadListener, OnRequest
   }
 
   companion object {
+    // Rattil: upstream announcements (e.g. the Quran.com app icon change) don't apply to this app.
+    private const val SHOW_UPSTREAM_ANNOUNCEMENTS = false
+
     const val ACTION_OPEN_PAGE = "com.quran.labs.androidquran.open_page"
     const val PAGES_DOWNLOAD_KEY = "PAGES_DOWNLOAD_KEY"
     private const val REQUEST_POST_NOTIFICATION_PERMISSIONS = 1
