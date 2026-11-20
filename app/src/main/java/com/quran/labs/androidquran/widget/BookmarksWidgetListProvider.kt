@@ -18,6 +18,8 @@ import com.quran.labs.androidquran.ui.helpers.QuranRowFactory
 import com.quran.labs.androidquran.ui.PagerActivity
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeoutOrNull
+import timber.log.Timber
 
 /**
  * [RemoteViewsFactory] implementation responsible for providing a list of bookmark views to be
@@ -25,6 +27,8 @@ import kotlinx.coroutines.runBlocking
  */
 class BookmarksWidgetListProvider(private val context: Context) : RemoteViewsFactory {
 
+  // Rattil: written in onDataSetChanged, read in getCount/getViewAt, all on binder threads
+  @Volatile
   private var quranRowList: List<QuranRow> = listOf()
 
   @Inject
@@ -41,14 +45,23 @@ class BookmarksWidgetListProvider(private val context: Context) : RemoteViewsFac
 
   init {
     (context.applicationContext as QuranApplication).applicationComponent.inject(this)
-    populateListItem()
+    // Rattil: don't load here. RemoteViewsService.onBind builds the factory on the main thread,
+    // and blocking it until the bookmarks arrived hung the whole app when they never did (ANRs
+    // on 2.11.0). The widget host calls onDataSetChanged on a binder thread right after binding.
   }
 
   private fun populateListItem() {
     val appContext = context.applicationContext
+    // Rattil: bounded, so a bookmarks flow that never emits can't hold the binder thread forever
     val bookmarksList = runBlocking {
-      legacyBookmarksMigrator.migrateIfNeeded()
-      bookmarksDao.bookmarks(BookmarkSortOrder.SORT_LOCATION)
+      withTimeoutOrNull(LOAD_TIMEOUT_MS) {
+        legacyBookmarksMigrator.migrateIfNeeded()
+        bookmarksDao.bookmarks(BookmarkSortOrder.SORT_LOCATION)
+      }
+    }
+    if (bookmarksList == null) {
+      Timber.w("Bookmarks for the widget took longer than %d ms, keeping the last list", LOAD_TIMEOUT_MS)
+      return
     }
     quranRowList = bookmarksList.map { quranRowFactory.fromBookmark(appContext, it) }
   }
@@ -93,4 +106,8 @@ class BookmarksWidgetListProvider(private val context: Context) : RemoteViewsFac
   override fun getLoadingView() = null
 
   override fun getViewTypeCount() = 1
+
+  private companion object {
+    const val LOAD_TIMEOUT_MS = 10_000L
+  }
 }
