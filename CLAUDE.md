@@ -6,7 +6,7 @@ Fork von [quran/quran_android](https://github.com/quran/quran_android) (GPLv3) m
 
 ```bash
 ./gradlew assembleMadaniDebug                           # Debug-APK
-./gradlew bundleMadaniRelease                           # Release-AAB, signiert über local.properties
+./gradlew bundleMadaniRelease                           # Release-AAB, signiert über keystore.properties
 ./gradlew testMadaniDebugUnitTest testReleaseUnitTest   # Unit-Tests (:app bzw. Bibliotheksmodule)
 ./gradlew lintMadaniDebug
 git fetch quran_android && git merge quran_android/main  # Upstream-Sync, Regeln siehe unten
@@ -44,7 +44,8 @@ git fetch quran_android && git merge quran_android/main  # Upstream-Sync, Regeln
 ## Release
 
 - versionCode = Datum `YYMMDD` in `app/build.gradle.kts`, muss steigen. Commit `chore: bump version to X.Y.Z (code)`.
-- Signatur aus `local.properties` (`STORE_FILE`, `STORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD`). `local.properties` und `app/google-services.json` sind nicht getrackt; Werte nie committen oder ausgeben.
+- Signatur aus `keystore.properties` im Projekt-Root (Vorlage `keystore.properties.example`): `storeFile`, `keyAlias` (`key0` im gemeinsamen Upload-Keystore `appcoholic.keystore`), Passwort per `passwordCommand` aus dem Keyring, das nur bei Release-Tasks läuft. Fallbacks: die alten Keys `STORE_FILE`, `STORE_PASSWORD`, `KEY_ALIAS`, `KEY_PASSWORD` in `local.properties`, dann `-PRELEASE_STORE_FILE` usw. Ohne Keystore laufen Debug-Builds normal, Release-Builds bleiben unsigniert. `app/gradle.properties` enthält nur Platzhalter unter den alten Namen.
+- `keystore.properties`, `local.properties` und `app/google-services.json` sind nicht getrackt; Werte nie committen oder ausgeben.
 - Minify/R8 ist aus (in `app/build.gradle.kts` auskommentiert).
 - Store-Texte pflegt die Play Console; `metadata/` stammt von Upstream und wird nicht genutzt. In Titel und Beschreibungen keine Fremdmarken (z. B. „GPT“) und keine Preiswörter („Free“).
 - Neue SDKs, die Daten erheben (Werbung, Analytics, Mediation-Adapter), brauchen eine angepasste Datensicherheitserklärung in der Play Console, sonst lehnt Play das Update ab.

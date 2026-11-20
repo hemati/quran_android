@@ -27,6 +27,47 @@ val oauthProperties = Properties().apply {
   }
 }
 
+// Release signing, same scheme as the other appcoholic apps. Sources, first hit wins:
+// keystore.properties in the project root (gitignored, see keystore.properties.example),
+// the legacy STORE_FILE/STORE_PASSWORD/KEY_ALIAS/KEY_PASSWORD keys in local.properties,
+// then -PRELEASE_STORE_FILE etc. (app/gradle.properties holds placeholder values under the
+// plain names, so those are never read as Gradle properties).
+fun loadProperties(name: String) = Properties().apply {
+  val propertiesFile = rootProject.file(name)
+  if (propertiesFile.exists()) {
+    propertiesFile.inputStream().use(::load)
+  }
+}
+val keystoreProperties = loadProperties("keystore.properties")
+val localProperties = loadProperties("local.properties")
+
+fun signingValue(key: String, legacyKey: String): String? =
+  keystoreProperties.getProperty(key)?.takeIf { it.isNotBlank() }
+    ?: localProperties.getProperty(legacyKey)?.takeIf { it.isNotBlank() }
+    ?: (findProperty("RELEASE_$legacyKey") as String?)?.takeIf { it.isNotBlank() }
+
+val releaseStoreFile =
+  keystoreProperties.getProperty("storeFile")?.takeIf { it.isNotBlank() }?.let { rootProject.file(it) }
+    // legacy local.properties paths were resolved relative to app/, keep that
+    ?: localProperties.getProperty("STORE_FILE")?.takeIf { it.isNotBlank() }?.let { file(it) }
+    ?: (findProperty("RELEASE_STORE_FILE") as String?)?.takeIf { it.isNotBlank() }?.let { rootProject.file(it) }
+
+// passwordCommand prints the password (e.g. from the system keyring); it only runs when a
+// release task was requested, and at most once per build.
+val releaseRequested = gradle.startParameter.taskNames.any { it.lowercase().contains("release") }
+val commandPassword: String? by lazy {
+  val command = keystoreProperties.getProperty("passwordCommand")?.trim()
+  if (command.isNullOrEmpty() || !releaseRequested) {
+    null
+  } else {
+    providers.exec { commandLine(command.split(Regex("\\s+"))) }
+      .standardOutput.asText.get().trim()
+  }
+}
+
+fun releasePassword(key: String, legacyKey: String): String? =
+  signingValue(key, legacyKey) ?: commandPassword
+
 // only want to apply the Firebase plugin if we're building a release build. moving this to the
 // release build type won't work, since debug builds would also implicitly get the plugin.
 if (true || (getGradle().startParameter.taskRequests.toString().contains("Release") && useFirebase)) {
@@ -65,22 +106,14 @@ android {
   buildFeatures.buildConfig = true
 
   signingConfigs {
-    create("release") {
-      val properties = Properties()
-      val propertiesFile = rootProject.file("local.properties")
-      if (propertiesFile.exists()) {
-        properties.load(propertiesFile.inputStream())
+    // no store file on this machine -> no release config; debug builds keep working
+    if (releaseStoreFile != null) {
+      create("release") {
+        storeFile = releaseStoreFile
+        storePassword = releasePassword("storePassword", "STORE_PASSWORD")
+        keyAlias = signingValue("keyAlias", "KEY_ALIAS")
+        keyPassword = releasePassword("keyPassword", "KEY_PASSWORD")
       }
-
-      storeFile = file(properties.getProperty("STORE_FILE"))
-      storePassword = properties.getProperty("STORE_PASSWORD")
-      keyAlias = properties.getProperty("KEY_ALIAS")
-      keyPassword = properties.getProperty("KEY_PASSWORD")
-
-//      storeFile = file((project.property("STORE_FILE") as String))
-//      storePassword = project.property("STORE_PASSWORD") as String
-//      keyAlias = project.property("KEY_ALIAS") as String
-//      keyPassword = project.property("KEY_PASSWORD") as String
     }
   }
 
@@ -114,7 +147,9 @@ android {
 //      isMinifyEnabled = true
 //      isShrinkResources = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg")
-      signingConfig = signingConfigs.getByName("release")
+      if (releaseStoreFile != null) {
+        signingConfig = signingConfigs.getByName("release")
+      }
     }
   }
 
