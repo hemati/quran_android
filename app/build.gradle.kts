@@ -390,10 +390,10 @@ dependencies {
   implementation("com.android.billingclient:billing:9.1.0")
   implementation("com.google.android.gms:play-services-ads:25.5.0")
 
-  implementation("com.unity3d.ads:unity-ads:4.20.1")
-  implementation("com.google.ads.mediation:unity:4.20.1.0")
-  implementation("com.google.ads.mediation:facebook:6.22.0.1")
-  implementation("com.google.ads.mediation:inmobi:11.4.1.2")
+  implementation("com.unity3d.ads:unity-ads:4.21.0")
+  implementation("com.google.ads.mediation:unity:4.21.0.0")
+  implementation("com.google.ads.mediation:facebook:6.22.1.0")
+  implementation("com.google.ads.mediation:inmobi:11.5.1.0")
 
   implementation("com.google.android.ump:user-messaging-platform:4.0.0")
 

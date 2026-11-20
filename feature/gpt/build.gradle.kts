@@ -70,7 +70,7 @@ dependencies {
 
 
     implementation("com.github.stfalcon-studio:Chatkit:0.4.1")
-    implementation("com.openai:openai-java:4.80.0")
+    implementation("com.openai:openai-java:4.111.0")
 
     implementation("io.noties.markwon:core:4.6.2")
 
@@ -78,9 +78,9 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-ads:25.5.0")
 
-    implementation("com.unity3d.ads:unity-ads:4.20.1")
-    implementation("com.google.ads.mediation:unity:4.20.1.0")
-    implementation("com.google.ads.mediation:facebook:6.22.0.1")
+    implementation("com.unity3d.ads:unity-ads:4.21.0")
+    implementation("com.google.ads.mediation:unity:4.21.0.0")
+    implementation("com.google.ads.mediation:facebook:6.22.1.0")
 
     implementation(platform(libs.firebase.bom))
     implementation("com.google.firebase:firebase-analytics")
