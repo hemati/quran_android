@@ -370,6 +370,7 @@ dependencies {
   testImplementation(libs.okhttp.mockserver)
   testImplementation(libs.junit.ktx)
   testImplementation(libs.robolectric)
+  testImplementation(libs.androidx.work.testing)
   testImplementation(libs.espresso.core)
   testImplementation(libs.espresso.intents)
   testImplementation(libs.turbine)

@@ -31,7 +31,10 @@ class NotificationScheduler(
   @ApplicationContext private val context: Context,
   private val prefs: NotificationPrefs,
 ) {
-  fun scheduleDailyVerse() {
+  /** Moves the daily verse to the current hour setting, replacing a pending run. */
+  fun scheduleDailyVerse() = scheduleDailyVerse(ExistingWorkPolicy.REPLACE)
+
+  private fun scheduleDailyVerse(policy: ExistingWorkPolicy) {
     if (!prefs.dailyVerseEnabled) {
       WorkManager.getInstance(context).cancelUniqueWork(NotificationConstants.WORK_DAILY_VERSE)
       return
@@ -43,7 +46,7 @@ class NotificationScheduler(
       .setInitialDelay(delay, TimeUnit.MILLISECONDS)
       .build()
     WorkManager.getInstance(context).enqueueUniqueWork(
-      NotificationConstants.WORK_DAILY_VERSE, ExistingWorkPolicy.REPLACE, req
+      NotificationConstants.WORK_DAILY_VERSE, policy, req
     )
   }
 
@@ -57,6 +60,16 @@ class NotificationScheduler(
     WorkManager.getInstance(context).enqueueUniquePeriodicWork(
       NotificationConstants.WORK_REENGAGE, ExistingPeriodicWorkPolicy.UPDATE, req
     )
+  }
+
+  /**
+   * For app start: schedules what is missing and keeps a pending daily verse. WorkManager
+   * cold-starts the process to run the verse, and replacing it here cancelled that run and moved
+   * it to the next day, so the verse never posted while the app wasn't running.
+   */
+  fun ensureScheduled() {
+    scheduleDailyVerse(ExistingWorkPolicy.KEEP)
+    scheduleReEngagement()
   }
 
   /** Idempotent: (re)schedules both reminders, each respecting its enabled flag. */
