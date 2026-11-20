@@ -50,7 +50,12 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider, 
     val sharedPrefHelper = SharedPrefHelper(this)
 
     val requestConfiguration = RequestConfiguration.Builder()
-      .setTestDeviceIds(listOf("1A433D1C8B6C98FF184A4694E09AC80F"))
+      .setTestDeviceIds(
+        listOf(
+          "1A433D1C8B6C98FF184A4694E09AC80F",
+          "5964BD06B21ECB2C86D3393CF70AC4D5" // Rattil: Galaxy S22 (developer device)
+        )
+      )
       // no mature ads (sexual content etc.) in a Quran app; matches the AdMob account setting
       .setMaxAdContentRating(RequestConfiguration.MAX_AD_CONTENT_RATING_T)
       .build()
