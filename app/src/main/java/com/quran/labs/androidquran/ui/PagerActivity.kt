@@ -153,7 +153,6 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -289,7 +288,6 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   private var suraChangeCount: Int = 0
   private var interstitialAd: InterstitialAd? = null
   private var lastInterstitialTime: Long = 0
-  private var lastAppOpenAdTime: Long = 0
 
   private lateinit var audioStatusRepositoryBridge: AudioStatusRepositoryBridge
   private lateinit var readingEventPresenterBridge: ReadingEventPresenterBridge
@@ -475,6 +473,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
         com.appcoholic.ads.AdsInitializer.initializeOnce(this)
         newAdView.loadAd(AdRequest.Builder().build())
         loadInterstitial() // preload the sura-change interstitial, post-consent only
+        preloadAppOpenAd()
       }
     }
   }
@@ -487,24 +486,18 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   private fun showAppOpenAd() {
     if (sharedPrefHelper.isProUser() || !adsAllowed()) return
     val cooldownSec = FirebaseRemoteConfig.getInstance().getLong("app_open_ad_cooldown")
-    if (System.currentTimeMillis() - lastAppOpenAdTime <
+    if (System.currentTimeMillis() - com.appcoholic.ads.AppOpenAdCache.lastShownAt <
         com.appcoholic.ads.AdGatePolicy.appOpenCooldownMs(cooldownSec)) return
+    // only an ad that is already loaded: loading here and showing it on arrival put it over the
+    // page seconds after the user came back (an unexpected ad under Google's app-open rules)
+    com.appcoholic.ads.AppOpenAdCache.showIfReady(this)
+  }
 
-    AppOpenAd.load(this, getString(R.string.admob_app_open_id),
-      AdRequest.Builder().build(), object : AppOpenAd.AppOpenAdLoadCallback() {
-        override fun onAdLoaded(ad: AppOpenAd) {
-          ad.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdDismissedFullScreenContent() {
-              lastAppOpenAdTime = System.currentTimeMillis()
-            }
-          }
-          ad.show(this@PagerActivity)
-          lastAppOpenAdTime = System.currentTimeMillis()
-        }
-        override fun onAdFailedToLoad(error: LoadAdError) {
-          Timber.w("App-open ad failed to load: %s", error.message)
-        }
-      })
+  /** Loads the next app-open ad ahead of time; it is shown on the next return to the app. */
+  private fun preloadAppOpenAd() {
+    if (sharedPrefHelper.isProUser() || !adsAllowed()) return
+    com.appcoholic.ads.AdsInitializer.initializeOnce(this)
+    com.appcoholic.ads.AppOpenAdCache.preload(this, getString(R.string.admob_app_open_id))
   }
 
   // ── Interstitial Ad (Sura Change) ───────────────────────────────────────
@@ -1363,6 +1356,8 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     // the activity will be paused when requesting notification
     // permissions, which will otherwise break audio presenter.
     audioPresenter.unbind(this)
+    // Rattil: the app may be going to the background; have an app-open ad ready for the return
+    preloadAppOpenAd()
     super.onStop()
   }
 

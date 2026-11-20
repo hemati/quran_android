@@ -14,6 +14,7 @@ object AdGatePolicy {
   const val DEFAULT_APP_OPEN_COOLDOWN_SEC = 14_400L      // 4 hours
   const val DEFAULT_INTERSTITIAL_FREQ = 4
   const val INTERSTITIAL_MIN_GAP_MS = 300_000L           // 5 minutes
+  const val APP_OPEN_AD_MAX_AGE_MS = 14_400_000L         // Google: don't show app-open ads older than 4h
 
   /** App-open cooldown in ms. A non-positive RC value falls back to the 4h default (NOT 24h). */
   fun appOpenCooldownMs(rcCooldownSec: Long): Long =
@@ -35,6 +36,10 @@ object AdGatePolicy {
     if (isPro || !adsAllowed || !warmForeground) return false
     return now - lastShown >= appOpenCooldownMs(rcCooldownSec)
   }
+
+  /** A preloaded app-open ad may be shown only while it is younger than 4 hours. */
+  fun isAppOpenAdFresh(loadedAt: Long, now: Long): Boolean =
+    now - loadedAt < APP_OPEN_AD_MAX_AGE_MS
 
   /**
    * Whether to show the sura-change interstitial now. `suraChangeCount` is the

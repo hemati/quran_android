@@ -83,4 +83,17 @@ class AdGatePolicyTest {
     assertThat(AdGatePolicy.shouldShowInterstitial(false, true, freq = 1, suraChangeCount = 1, now = 10 * FIVE_MIN, lastShown = 0)).isFalse()
     assertThat(AdGatePolicy.shouldShowInterstitial(false, true, freq = 1, suraChangeCount = 2, now = 10 * FIVE_MIN, lastShown = 0)).isTrue()
   }
+
+  // ---- app-open preload freshness ----
+  @Test fun appOpen_ad_is_fresh_for_less_than_4h() {
+    val loadedAt = 1_000_000L
+    assertThat(AdGatePolicy.isAppOpenAdFresh(loadedAt, now = loadedAt)).isTrue()
+    assertThat(AdGatePolicy.isAppOpenAdFresh(loadedAt, now = loadedAt + FOUR_H_MS - 1)).isTrue()
+  }
+
+  @Test fun appOpen_ad_expires_after_4h() {
+    // Google: app-open ads older than 4 hours must not be shown
+    val loadedAt = 1_000_000L
+    assertThat(AdGatePolicy.isAppOpenAdFresh(loadedAt, now = loadedAt + FOUR_H_MS)).isFalse()
+  }
 }
