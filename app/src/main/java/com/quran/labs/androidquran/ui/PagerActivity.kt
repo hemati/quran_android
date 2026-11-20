@@ -287,6 +287,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
   private var lastSuraOnPage: Int = -1
   private var suraChangeCount: Int = 0
   private var interstitialAd: InterstitialAd? = null
+  private var appOpenAdPending = false
   private var lastInterstitialTime: Long = 0
 
   private lateinit var audioStatusRepositoryBridge: AudioStatusRepositoryBridge
@@ -490,7 +491,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
         com.appcoholic.ads.AdGatePolicy.appOpenCooldownMs(cooldownSec)) return
     // only an ad that is already loaded: loading here and showing it on arrival put it over the
     // page seconds after the user came back (an unexpected ad under Google's app-open rules)
-    com.appcoholic.ads.AppOpenAdCache.showIfReady(this)
+    com.appcoholic.ads.AppOpenAdCache.showIfReady(this, getString(R.string.admob_app_open_id))
   }
 
   /** Loads the next app-open ad ahead of time; it is shown on the next return to the app. */
@@ -941,6 +942,10 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
 
   override fun onWindowFocusChanged(hasFocus: Boolean) {
     super.onWindowFocusChanged(hasFocus)
+    if (hasFocus && appOpenAdPending) {
+      appOpenAdPending = false
+      showAppOpenAd()
+    }
     if (hasFocus) {
       handler.sendEmptyMessageDelayed(MSG_HIDE_ACTIONBAR, DEFAULT_HIDE_AFTER_TIME)
     } else {
@@ -1126,9 +1131,15 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     refreshQuranPages()
     adView?.resume()
     // Consent-gated, warm-foreground-only app-open ad (never on cold start;
-    // showAppOpenAd() itself re-checks consent + cooldown).
+    // showAppOpenAd() itself re-checks consent + cooldown). Shown once the window has focus:
+    // showing from onResume ran before the ads SDK saw the app in the foreground, and on Samsung
+    // it refused with its "shown while in the background" policy warning.
     if (com.appcoholic.ads.AppForegroundGate.consumeWarmForeground()) {
-      showAppOpenAd()
+      appOpenAdPending = true
+      if (hasWindowFocus()) {
+        appOpenAdPending = false
+        window.decorView.post { if (!isFinishing) showAppOpenAd() }
+      }
     }
 
     audioPresenter.bind(this)

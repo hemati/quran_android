@@ -2,7 +2,9 @@ package com.appcoholic.ads
 
 import android.app.Activity
 import android.content.Context
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.appopen.AppOpenAd
 import timber.log.Timber
@@ -46,13 +48,27 @@ object AppOpenAdCache {
     )
   }
 
-  /** Shows the preloaded ad if there is a fresh one; returns whether it was shown. */
-  fun showIfReady(activity: Activity): Boolean {
+  /**
+   * Shows the preloaded ad if there is a fresh one; returns whether one was handed to the SDK.
+   * The cooldown starts only once the SDK reports the ad as shown, so a refused show doesn't
+   * cost the next chance; a failed ad is dropped and a new one loaded for the next return.
+   */
+  fun showIfReady(activity: Activity, adUnitId: String): Boolean {
     val readyAd = ad ?: return false
     ad = null
     if (!AdGatePolicy.isAppOpenAdFresh(loadedAt, System.currentTimeMillis())) return false
+    val appContext = activity.applicationContext
+    readyAd.fullScreenContentCallback = object : FullScreenContentCallback() {
+      override fun onAdShowedFullScreenContent() {
+        lastShownAt = System.currentTimeMillis()
+      }
+
+      override fun onAdFailedToShowFullScreenContent(error: AdError) {
+        Timber.w("App-open ad failed to show: %s", error.message)
+        preload(appContext, adUnitId)
+      }
+    }
     readyAd.show(activity)
-    lastShownAt = System.currentTimeMillis()
     return true
   }
 }
