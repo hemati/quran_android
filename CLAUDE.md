@@ -10,6 +10,7 @@ Fork von [quran/quran_android](https://github.com/quran/quran_android) (GPLv3) m
 ./gradlew testMadaniDebugUnitTest testReleaseUnitTest   # Unit-Tests (:app bzw. Bibliotheksmodule)
 ./gradlew lintMadaniDebug
 git fetch quran_android && git merge quran_android/main  # Upstream-Sync, Regeln siehe unten
+# frischer Klon: git remote add quran_android https://github.com/quran/quran_android.git
 ```
 
 - Gradle braucht ein JDK mit `javac` (17–21). Ein reines JRE scheitert mit `does not provide the required capabilities: [JAVA_COMPILER]`.
@@ -38,7 +39,10 @@ git fetch quran_android && git merge quran_android/main  # Upstream-Sync, Regeln
 - `app_name` gibt es nur einmal (`values/strings.xml`, „Rattil“, nicht übersetzbar). Upstream-`app_name` in Sprachdateien entfernen.
 - Upstream-Ankündigungen (`AnnouncementActivity`) bleiben aus: `SHOW_UPSTREAM_ANNOUNCEMENTS` in `QuranDataActivity`.
 - Quran.com-Login/Sync (`feature/sync`) bleibt unsichtbar, solange keine `oauth.properties` mit Client-ID existiert.
-- mobile-sync (`quranMobileSyncVersion`) hat sein `quran.db`-Schema schon ohne Migration geändert. Rattil 2.10.0 lief mit 0.1.7; `PreReleaseMobileSyncUpgrade` übernimmt diese Daten. Nach jedem mobile-sync-Update das Upgrade testen: alte Store-Version per `git worktree` bauen, Lesezeichen und Tags anlegen, neue Version darüber installieren, `quran.db` prüfen.
+- mobile-sync (`quranMobileSyncVersion`) ändert sein Schema ohne Migration, weil Upstream nie eine Version mit mobile-sync veröffentlicht hat (letzter Upstream-Release v3.6.3 ohne). Rattil 2.10.0 lief mit 0.1.7, 2.11.0 mit 0.1.21 (beide in `quran.db`); ab 0.1.5x liegen die Daten in `user_data.db`. `PreReleaseMobileSyncUpgrade` (`common/bookmark`) liest alte `quran.db`-Schemata und importiert Lesezeichen, Tags, Highlights, Lesepositionen und Leseverlauf. Nach jedem mobile-sync-Update prüfen, ob sich Dateiname oder Schema von `user_data.db` geändert haben (`.sq`-Dateien im Repo quran/mobile-sync zwischen den Tags vergleichen), und das Upgrade testen: alte Store-Version per `git worktree` bauen, Lesezeichen, Tags und Highlights anlegen, neue Version darüber installieren, Daten prüfen.
+- mobile-sync kommt nur noch aus `https://quran.github.io/mobile-sync/maven`. `app/build.gradle.kts` und `feature/gpt/build.gradle.kts` haben eigene `repositories`-Blöcke, die die aus `settings.gradle.kts` ersetzen; neue Upstream-Repos dort nachtragen.
+- Farben: Rattil-Akzent ist Grün (`accent_color` in `values/colors.xml`, `accent_navy_gold` zeigt darauf). Upstream-Selektoren `res/color/accent_color*.xml` und `res/color-night/accent_color_dark.xml` löschen, sonst doppelte Ressourcen.
+- Launcher-Icons: Rattil nutzt eigene `.webp`-Icons in `main`. Upstream-PNGs, `mipmap-anydpi-v33` und das Debug-Icon/-Label (`ic_launcher_debug`, `app_debug_label`) nicht übernehmen.
 - Danach auch `bundleMadaniRelease` bauen: Der Release prüft AAR-Metadaten strenger als Debug (z. B. compileSdk von `feature/gpt`).
 
 ## Release

@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.quran.data.model.QuranText
 import com.quran.data.model.VerseRange
 import com.quran.labs.androidquran.fakes.FakeTranslationsDBAdapter
-import com.quran.labs.androidquran.model.translation.TranslationModel
+import com.quran.mobile.translation.verse.TranslationModel
 import com.quran.mobile.translation.model.LocalTranslation
 import kotlinx.coroutines.test.runTest
 import org.junit.Test

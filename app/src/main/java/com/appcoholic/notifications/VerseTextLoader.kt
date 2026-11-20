@@ -3,7 +3,7 @@ package com.appcoholic.notifications
 import com.appcoholic.notifications.di.NotificationsTranslationModel
 import com.quran.data.model.VerseRange
 import com.quran.labs.androidquran.database.TranslationsDBAdapter
-import com.quran.labs.androidquran.model.translation.TranslationModel
+import com.quran.mobile.translation.verse.TranslationModel
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.first
 

@@ -3,7 +3,7 @@ package com.appcoholic.notifications.di
 import android.content.Context
 import com.quran.data.di.AppScope
 import com.quran.data.pageinfo.mapper.AyahMapper
-import com.quran.labs.androidquran.model.translation.TranslationModel
+import com.quran.mobile.translation.verse.TranslationModel
 import com.quran.labs.androidquran.model.translation.TranslationModelImpl
 import com.quran.labs.androidquran.util.QuranFileUtils
 import com.quran.mobile.di.qualifier.ApplicationContext

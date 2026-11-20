@@ -21,7 +21,7 @@ plugins {
 val useFirebase = true
 val oauthProperties = Properties().apply {
   // Optional local sync config. Android OAuth uses PKCE, so client secrets are intentionally unsupported.
-  val oauthPropertiesFile = rootProject.file("oauth.properties")
+  val oauthPropertiesFile = isolated.rootProject.projectDirectory.file("oauth.properties").asFile
   if (oauthPropertiesFile.exists()) {
     oauthPropertiesFile.inputStream().use(::load)
   }
@@ -33,7 +33,7 @@ val oauthProperties = Properties().apply {
 // then -PRELEASE_STORE_FILE etc. (app/gradle.properties holds placeholder values under the
 // plain names, so those are never read as Gradle properties).
 fun loadProperties(name: String) = Properties().apply {
-  val propertiesFile = rootProject.file(name)
+  val propertiesFile = isolated.rootProject.projectDirectory.file(name).asFile
   if (propertiesFile.exists()) {
     propertiesFile.inputStream().use(::load)
   }
@@ -47,10 +47,10 @@ fun signingValue(key: String, legacyKey: String): String? =
     ?: (findProperty("RELEASE_$legacyKey") as String?)?.takeIf { it.isNotBlank() }
 
 val releaseStoreFile =
-  keystoreProperties.getProperty("storeFile")?.takeIf { it.isNotBlank() }?.let { rootProject.file(it) }
+  keystoreProperties.getProperty("storeFile")?.takeIf { it.isNotBlank() }?.let { isolated.rootProject.projectDirectory.file(it).asFile }
     // legacy local.properties paths were resolved relative to app/, keep that
     ?: localProperties.getProperty("STORE_FILE")?.takeIf { it.isNotBlank() }?.let { file(it) }
-    ?: (findProperty("RELEASE_STORE_FILE") as String?)?.takeIf { it.isNotBlank() }?.let { rootProject.file(it) }
+    ?: (findProperty("RELEASE_STORE_FILE") as String?)?.takeIf { it.isNotBlank() }?.let { isolated.rootProject.projectDirectory.file(it).asFile }
 
 // passwordCommand prints the password (e.g. from the system keyring); it only runs when a
 // release task was requested, and at most once per build.
@@ -275,6 +275,11 @@ repositories {
   // Add this if it's not already present
   maven(url = "https://www.jitpack.io")  // Use parentheses and 'url =' for Kotlin DSL
   maven(url = "https://repo.grails.org/grails/core/")
+  // Rattil: a project-level repositories block replaces the ones in settings.gradle.kts, so
+  // mobile-sync's own repo has to be listed here too (newer releases are not on Maven Central)
+  maven("https://quran.github.io/mobile-sync/maven") {
+    content { includeGroup("com.quran") }
+  }
 }
 
 dependencies {
@@ -298,6 +303,7 @@ dependencies {
   implementation(project(":feature:audio"))
   implementation(project(":feature:audiobar"))
   implementation(project(":feature:ayahbookmark"))
+  implementation(project(":feature:pagetheme"))
   implementation(project(":feature:downloadmanager"))
   implementation(project(":feature:qarilist"))
   implementation(project(":feature:gpt"))
@@ -371,6 +377,7 @@ dependencies {
   testImplementation(libs.sqldelight.sqlite.driver)
   testImplementation(libs.sqldelight.primitive.adapters)
   testImplementation(libs.quran.mobile.sync)
+  testImplementation(libs.quran.mobile.sync.v2)
 
   errorprone(libs.errorprone.core)
 

@@ -12,6 +12,10 @@ dependencyResolutionManagement {
     google()
     mavenCentral()
     maven("https://androidx.dev/storage/compose-compiler/repository/")
+    // mobile-sync releases; older versions also live on Maven Central.
+    maven("https://quran.github.io/mobile-sync/maven") {
+      content { includeGroup("com.quran") }
+    }
   }
 }
 
@@ -47,6 +51,7 @@ include(":feature:ayahbookmark")
 include(":feature:downloadmanager")
 include(":feature:gpt")
 include(":feature:linebyline")
+include(":feature:pagetheme")
 include(":feature:qarilist")
 include(":feature:recitation")
 include(":feature:sync")
