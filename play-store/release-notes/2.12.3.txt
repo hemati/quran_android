@@ -1,0 +1,18 @@
+<en-US>
+What's new in 2.12.3:
+• Your bookmarks, tags, highlights and reading positions carry over to the new bookmark storage.
+• New page themes and an app theme setting.
+• The daily verse now also arrives when the app is closed.
+• Fixed the app freezing with the bookmarks widget on the home screen.
+• Change your ad consent at any time under Settings.
+• Better Arabic search and many smaller fixes.
+</en-US>
+<de-DE>
+Neu in 2.12.3:
+• Lesezeichen, Schlagwörter, Markierungen und Lesepositionen werden in den neuen Lesezeichen-Speicher übernommen.
+• Neue Seitenthemen und eine Einstellung für das App-Design.
+• Der Vers des Tages kommt jetzt auch, wenn die App geschlossen ist.
+• Behoben: Die App hing mit dem Lesezeichen-Widget auf dem Startbildschirm.
+• Die Einwilligung für Werbung lässt sich jederzeit in den Einstellungen ändern.
+• Bessere arabische Suche und viele kleine Verbesserungen.
+</de-DE>

@@ -79,8 +79,8 @@ android {
   namespace = "com.quran.labs.androidquran"
 
   defaultConfig {
-    versionCode = 261122
-    versionName = "2.12.2"
+    versionCode = 261123
+    versionName = "2.12.3"
     testInstrumentationRunner = "com.quran.labs.androidquran.core.QuranTestRunner"
   }
 
