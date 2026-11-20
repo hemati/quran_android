@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="ad_privacy_settings_title">Privacidad de los anuncios</string>
+  <string name="ad_privacy_settings_summary">Cambia tu consentimiento para los anuncios personalizados</string>
+</resources>

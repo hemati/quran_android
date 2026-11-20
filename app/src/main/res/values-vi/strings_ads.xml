@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="ad_privacy_settings_title">Cài đặt quyền riêng tư quảng cáo</string>
+  <string name="ad_privacy_settings_summary">Thay đổi sự đồng ý của bạn đối với quảng cáo được cá nhân hóa</string>
+</resources>

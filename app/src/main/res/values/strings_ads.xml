@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Rattil-owned ad strings (com.appcoholic.ads), separate from upstream strings.xml. -->
+<resources>
+  <string name="ad_privacy_settings_title">Ad privacy settings</string>
+  <string name="ad_privacy_settings_summary">Change your consent for personalized ads</string>
+</resources>

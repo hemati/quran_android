@@ -43,6 +43,13 @@ class QuranSettingsFragment : PreferenceFragmentCompat() {
     addPreferencesFromResource(R.xml.quran_preferences)
 
     val appContext = requireContext().applicationContext
+    // Rattil: ad consent can be changed here wherever the UMP consent form applies
+    findPreference<Preference>("key_prefs_ad_privacy")?.let { adPrivacy ->
+      adPrivacy.isVisible = com.appcoholic.ads.AdPrivacyOptions.isRequired(appContext)
+      com.appcoholic.ads.AdPrivacyOptions.refresh(requireActivity()) { required ->
+        adPrivacy.isVisible = required
+      }
+    }
 
     // field injection
     (appContext as QuranApplication).applicationComponent.inject(this)
@@ -135,6 +142,9 @@ class QuranSettingsFragment : PreferenceFragmentCompat() {
       return true
     } else if ("key_prefs_reminders" == key) {
       startActivity(Intent(activity, com.appcoholic.notifications.settings.ReminderSettingsActivity::class.java))
+      return true
+    } else if ("key_prefs_ad_privacy" == key) {
+      com.appcoholic.ads.AdPrivacyOptions.show(requireActivity())
       return true
     } else if (Constants.PREF_PAGE_TYPE == key) {
       val intent = Intent(activity, PageSelectActivity::class.java)

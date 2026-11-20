@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="ad_privacy_settings_title">إعدادات خصوصية الإعلانات</string>
+  <string name="ad_privacy_settings_summary">غيّر موافقتك على الإعلانات المخصّصة</string>
+</resources>

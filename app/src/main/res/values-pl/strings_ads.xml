@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="ad_privacy_settings_title">Ustawienia prywatności reklam</string>
+  <string name="ad_privacy_settings_summary">Zmień zgodę na spersonalizowane reklamy</string>
+</resources>

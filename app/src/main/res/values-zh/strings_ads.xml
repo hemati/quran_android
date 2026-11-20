@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="ad_privacy_settings_title">广告隐私设置</string>
+  <string name="ad_privacy_settings_summary">更改您对个性化广告的同意</string>
+</resources>

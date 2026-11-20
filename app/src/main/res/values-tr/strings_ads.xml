@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="ad_privacy_settings_title">Reklam gizlilik ayarları</string>
+  <string name="ad_privacy_settings_summary">Kişiselleştirilmiş reklamlar için onayınızı değiştirin</string>
+</resources>

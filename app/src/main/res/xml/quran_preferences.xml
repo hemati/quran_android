@@ -109,6 +109,14 @@
         android:summary="@string/notif_pref_daily_verse_summary"
         android:title="@string/notif_settings_title"
         app:iconSpaceReserved="false"/>
+
+    <!-- Rattil: change ad consent later; only shown where UMP requires it (see AdPrivacyOptions) -->
+    <Preference
+        android:key="key_prefs_ad_privacy"
+        android:summary="@string/ad_privacy_settings_summary"
+        android:title="@string/ad_privacy_settings_title"
+        app:isPreferenceVisible="false"
+        app:iconSpaceReserved="false"/>
   </PreferenceCategory>
 
   <PreferenceCategory
