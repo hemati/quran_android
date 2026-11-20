@@ -1,11 +1,13 @@
 package com.appcoholic.gpt;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
 import com.android.billingclient.api.BillingClient;
@@ -27,7 +29,9 @@ public class BillingHelper {
   private static final String TAG = "BillingHelper";
   private static BillingHelper instance;
 
+  private final Context appContext;
   private BillingClient billingClient;
+  /** The activity that registered last (getInstance); only it may end the shared connection. */
   private Activity activity;
   private BillingUpdatesListener billingUpdatesListener;
   private FirebaseAnalytics firebaseAnalytics;
@@ -46,6 +50,7 @@ public class BillingHelper {
   }
 
   public BillingHelper(Activity activity, BillingUpdatesListener listener) {
+    this.appContext = activity.getApplicationContext();
     this.activity = activity;
     this.billingUpdatesListener = listener;
     setupBillingClient();
@@ -68,8 +73,22 @@ public class BillingHelper {
     this.activity = activity;
   }
 
+  @VisibleForTesting
+  static synchronized void resetInstanceForTest() {
+    if (instance != null && instance.billingClient != null) {
+      instance.billingClient.endConnection();
+    }
+    instance = null;
+  }
+
+  @VisibleForTesting
+  boolean hasBillingClient() {
+    return billingClient != null;
+  }
+
   private void setupBillingClient() {
-    billingClient = BillingClient.newBuilder(activity)
+    // the application context, so the singleton's client doesn't hold on to an old activity
+    billingClient = BillingClient.newBuilder(appContext)
         .setListener(this::handlePurchaseUpdate)
         .enablePendingPurchases(
             PendingPurchasesParams.newBuilder().enableOneTimeProducts().build())
@@ -86,16 +105,22 @@ public class BillingHelper {
     });
   }
 
-  private void startConnection() {
+  /** The connection may have been ended (endConnection); a closed client can't be reused. */
+  private BillingClient client() {
     if (billingClient == null) {
       setupBillingClient();
     }
-    if (billingClient.isReady()) {
+    return billingClient;
+  }
+
+  private void startConnection() {
+    BillingClient client = client();
+    if (client.isReady()) {
       // a listener registered after the connection was set up never gets onBillingSetupFinished;
       // post so callers that are still being constructed (getInstance) are fully initialized
       notifyListener(BillingUpdatesListener::onBillingClientSetupFinished);
     } else {
-      billingClient.startConnection(billingClientStateListener);
+      client.startConnection(billingClientStateListener);
     }
   }
 
@@ -136,7 +161,7 @@ public class BillingHelper {
   }
 
   public void queryPurchases() {
-    billingClient.queryPurchasesAsync(
+    client().queryPurchasesAsync(
         QueryPurchasesParams.newBuilder()
             .setProductType(BillingClient.ProductType.SUBS)
             .build(),
@@ -163,7 +188,7 @@ public class BillingHelper {
         .setProductList(products)
         .build();
 
-    billingClient.queryProductDetailsAsync(params, (billingResult, result) -> {
+    client().queryProductDetailsAsync(params, (billingResult, result) -> {
       if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
         if (!result.getUnfetchedProductList().isEmpty()) {
           Log.e(TAG, "Unfetched products: " + result.getUnfetchedProductList().size());
@@ -191,7 +216,7 @@ public class BillingHelper {
         .setProductDetailsParamsList(productDetailsParamsList)
         .build();
 
-    BillingResult result = billingClient.launchBillingFlow(this.activity, billingFlowParams);
+    BillingResult result = client().launchBillingFlow(this.activity, billingFlowParams);
     if (result.getResponseCode() != BillingClient.BillingResponseCode.OK) {
       Log.e(TAG, "Error launching billing flow: " + result.getDebugMessage());
       notifyListener(l -> l.onPurchaseError(result.getDebugMessage()));
@@ -205,7 +230,7 @@ public class BillingHelper {
               .setPurchaseToken(purchase.getPurchaseToken())
               .build();
 
-      billingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
+      client().acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
           notifyListener(l -> l.onPurchaseAcknowledged(purchase));
         } else {
@@ -216,7 +241,17 @@ public class BillingHelper {
   }
 
 
-  public void endConnection() {
+  /**
+   * Ends the shared connection when [owner] is still the activity that registered last. A
+   * recreated or newer activity registers before the old one is destroyed, and ending the client
+   * from the old one left the new one with a null client (NPE in queryPurchases).
+   */
+  public void endConnection(Activity owner) {
+    if (owner != activity) {
+      return;
+    }
+    activity = null;
+    billingUpdatesListener = null;
     if (billingClient != null) {
       billingClient.endConnection();
       billingClient = null;

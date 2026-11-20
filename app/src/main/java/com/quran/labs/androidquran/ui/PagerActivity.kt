@@ -1378,7 +1378,7 @@ class PagerActivity : AppCompatActivity(), AudioBarListener, OnBookmarkTagsUpdat
     downloadBridge.unsubscribe()
     handler.removeCallbacksAndMessages(null)
     scope.cancel()
-    billingHelper?.endConnection()
+    billingHelper?.endConnection(this)
     super.onDestroy()
   }
 
