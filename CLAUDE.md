@@ -14,7 +14,7 @@ git fetch quran_android && git merge quran_android/main  # Upstream-Sync, Regeln
 ```
 
 - Gradle braucht ein JDK mit `javac` (17–21). Ein reines JRE scheitert mit `does not provide the required capabilities: [JAVA_COMPILER]`.
-- `QuranActivityTest` schlägt bekannt fehl (Remote Config ohne FirebaseApp unter Robolectric). `-PdisableFirebase` aus der CI wirkt im Fork nicht: `useFirebase` ist in `app/build.gradle.kts` fest `true`.
+- Robolectric-Tests laufen mit einer Test-FirebaseApp aus `TestApplication` (Activities lesen Remote Config). `-PdisableFirebase` aus der CI wirkt im Fork nicht: `useFirebase` ist in `app/build.gradle.kts` fest `true`.
 - Tests: Fakes statt Mocks, siehe `TESTING_STRATEGY.md`. Commits: Conventional Commits (`feat(gpt): …`, `fix(ads): …`, `chore: …`).
 
 ## Struktur
