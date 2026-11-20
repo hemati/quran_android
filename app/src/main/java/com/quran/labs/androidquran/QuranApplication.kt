@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.core.os.UserManagerCompat
 import androidx.work.Configuration
 import androidx.work.WorkManager
+import com.appcoholic.ui.RattilAccent
+import com.quran.labs.androidquran.common.ui.core.QuranAccent
 import com.quran.labs.androidquran.core.worker.QuranWorkerFactory
 import com.quran.labs.androidquran.di.component.application.ApplicationComponent
 import com.quran.labs.androidquran.util.QuranSettings
@@ -37,6 +39,8 @@ open class QuranApplication : Application(), QuranApplicationComponentProvider, 
 
   override fun onCreate() {
     super.onCreate()
+    // Rattil: green accent for the Compose screens too (upstream defaults to navy/gold)
+    QuranAccent.current = RattilAccent
     setupTimber()
     applicationComponent = initializeInjector()
     applicationComponent.inject(this)
