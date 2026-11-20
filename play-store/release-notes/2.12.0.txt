@@ -1,0 +1,12 @@
+<en-US>
+What's new in 2.12.0:
+• Your bookmarks, tags, highlights and reading positions carry over to the new bookmark storage.
+• New page themes and an app theme setting.
+• Better Arabic search and many smaller fixes.
+</en-US>
+<de-DE>
+Neu in 2.12.0:
+• Lesezeichen, Schlagwörter, Markierungen und Lesepositionen werden in den neuen Lesezeichen-Speicher übernommen.
+• Neue Seitenthemen und eine Einstellung für das App-Design.
+• Bessere arabische Suche und viele kleine Verbesserungen.
+</de-DE>
